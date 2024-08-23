@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.82/Build/Cesium/Cesium.js"></script>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.82/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    // Get your token from https://cesium.com/ion/tokens
+    // A. トークンを設定
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5N2UyMjcwOS00MDY1LTQxYjEtYjZjMy00YTU0ZTg5MmViYWQiLCJpZCI6ODAzMDYsImlhdCI6MTY0Mjc0ODI2MX0.dkwAL1CcljUV7NA7fDbhXXnmyZQU_c-G5zRx8PtEcxE';
+    // B. terrainProviderを設定
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrainProvider: new Cesium.CesiumTerrainProvider({
+          url: Cesium.IonResource.fromAssetId(770371)
+      })
+    }
+    );
+    // ①建物モデルの追加
+    var your_3d_tiles =viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+      url : 'https://plateau.geospatial.jp/main/data/3d-tiles/bldg/13100_tokyo/13104_shinjuku-ku/low_resolution/tileset.json'
+    }));
+    // ②カメラのズーム
+    viewer.flyTo(your_3d_tiles);
+  </script>
+</body>
+</html>
