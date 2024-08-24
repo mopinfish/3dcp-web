@@ -4,6 +4,16 @@ import { useEffect, useRef } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
+import Link from 'next/link'
+import { renderToStaticMarkup } from 'react-dom/server'
+
+const PopupHtml: React.FC<{ name: string; url: string }> = ({ name, url }) => {
+  return (
+    <Link href={url} rel="noopener noreferrer" target="_blank">
+      {name}
+    </Link>
+  )
+}
 
 export default function Map() {
   const mapContainer = useRef<HTMLDivElement | null>(null)
@@ -70,6 +80,8 @@ export default function Map() {
         const feature = event.features[0]
         const coordinates = event.lngLat
         const name = feature.properties['名称']
+        const url = '/luma/' + '1'
+        console.log(renderToStaticMarkup(<PopupHtml name={name} url={url} />))
 
         // ポップアップを表示する
         new maplibregl.Popup({
@@ -77,7 +89,7 @@ export default function Map() {
           closeButton: false, // 閉じるボタンの表示
         })
           .setLngLat(coordinates)
-          .setHTML(name)
+          .setHTML(renderToStaticMarkup(<PopupHtml name={name} url={url} />))
           .addTo(map.current!)
       })
     }
