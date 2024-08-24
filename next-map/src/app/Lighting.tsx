@@ -37,7 +37,7 @@ export const Lighting: React.FC = () => {
  
     // シャドウマップのZファイティングを避けるために非公開APIのnormalOffsetScaleを調
     // 整します。ブラウザやGPUドライバによっては不要かもしれません。
-    ;(scene.shadowMap as any)._primitiveBias.normalOffsetScale = 5
+    ;(scene.shadowMap)._primitiveBias.normalOffsetScale = 5
   }, [viewer])
  
   return null

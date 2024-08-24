@@ -3,11 +3,10 @@ import React, { useContext, useEffect } from 'react'
 
 import { ViewerContext } from './Viewer'
 
-export interface MapboxImageryProps
-  extends Pick<
+export type MapboxImageryProps = Pick<
     MapboxStyleImageryProvider.ConstructorOptions,
     'accessToken' | 'username' | 'styleId'
-  > {}
+  >
 
 export const MapboxImagery: React.FC<MapboxImageryProps> = ({
   accessToken,

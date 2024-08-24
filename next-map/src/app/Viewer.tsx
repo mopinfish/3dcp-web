@@ -61,7 +61,7 @@ export const Viewer = forwardRef<HTMLDivElement, ViewerProps>(
  
       // 視覚的なパラメータ調整です。
       const scene = viewer.scene
-      scene.skyBox = undefined as any
+      scene.skyBox = undefined
       scene.globe.baseColor = Color.WHITE
  
       // デフォルトでは地形に対してデプステストが行われません（地面にめり込んでいる建物
