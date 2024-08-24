@@ -9,3 +9,4 @@ package-lock.json
 .prettierrc.json
 .eslintrc.json
 Makefile
+*.svg
