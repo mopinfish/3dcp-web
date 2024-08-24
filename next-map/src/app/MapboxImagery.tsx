@@ -4,15 +4,11 @@ import React, { useContext, useEffect } from 'react'
 import { ViewerContext } from './Viewer'
 
 export type MapboxImageryProps = Pick<
-    MapboxStyleImageryProvider.ConstructorOptions,
-    'accessToken' | 'username' | 'styleId'
-  >
+  MapboxStyleImageryProvider.ConstructorOptions,
+  'accessToken' | 'username' | 'styleId'
+>
 
-export const MapboxImagery: React.FC<MapboxImageryProps> = ({
-  accessToken,
-  username,
-  styleId
-}) => {
+export const MapboxImagery: React.FC<MapboxImageryProps> = ({ accessToken, username, styleId }) => {
   const viewer = useContext(ViewerContext)
   useEffect(() => {
     if (viewer?.isDestroyed() !== false) {
@@ -23,8 +19,8 @@ export const MapboxImagery: React.FC<MapboxImageryProps> = ({
         accessToken,
         username,
         styleId,
-        scaleFactor: true
-      })
+        scaleFactor: true,
+      }),
     )
     return () => {
       if (!viewer.isDestroyed()) {

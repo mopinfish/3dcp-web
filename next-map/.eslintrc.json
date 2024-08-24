@@ -8,5 +8,6 @@
   "root": true,
   "rules": {
     // 必要に応じてカスタムルールを追加
-  }
+  },
+  "ignorePatterns": ["node_modules/", "dist/", ".next/", "public/"]
 }

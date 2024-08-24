@@ -9,25 +9,24 @@ import React, {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState
+  useState,
 } from 'react'
 import { mergeRefs } from 'react-merge-refs'
- 
-const useIsomorphicLayoutEffect =
-  typeof window !== 'undefined' ? useLayoutEffect : useEffect
- 
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
+
 export const ViewerContext = createContext<CesiumViewer | undefined>(undefined)
- 
+
 const Root = styled.div(css`
   position: relative;
   width: 100%;
   height: 100%;
 `)
- 
+
 export interface ViewerProps extends ComponentPropsWithRef<typeof Root> {
   viewerRef?: ForwardedRef<CesiumViewer>
 }
- 
+
 export const Viewer = forwardRef<HTMLDivElement, ViewerProps>(
   ({ viewerRef, children, ...props }, forwardedRef) => {
     const ref = useRef<HTMLDivElement>(null)
@@ -49,32 +48,32 @@ export const Viewer = forwardRef<HTMLDivElement, ViewerProps>(
         selectionIndicator: false,
         timeline: false,
         navigationHelpButton: false,
-        navigationInstructionsInitiallyVisible: false
+        navigationInstructionsInitiallyVisible: false,
       })
- 
+
       // Viewerのピクセル密度をデバイスのピクセル密度に合わせます。
       // 注意：レンダリング品質は向上しますが、GPUへの負荷は大きくなります。
       viewer.resolutionScale = window.devicePixelRatio
- 
+
       // 今回は使用しないため、組み込みのImagery Layerを削除します。
       viewer.scene.imageryLayers.removeAll()
- 
+
       // 視覚的なパラメータ調整です。
       const scene = viewer.scene
       // scene.skyBox = undefined
       scene.globe.baseColor = Color.WHITE
- 
+
       // デフォルトでは地形に対してデプステストが行われません（地面にめり込んでいる建物
       // やその部分が表示される）。PLATEAUの3D都市モデルを用いる場合には基本的にtrueに
       // することになるでしょう。
       scene.globe.depthTestAgainstTerrain = true
- 
+
       setViewer(viewer)
       return () => {
         viewer.destroy()
       }
     }, [])
- 
+
     // コンポーネント外から`viewerRef`経由でViewerオブジェクトを利用可能にします。
     useEffect(() => {
       if (typeof viewerRef === 'function') {
@@ -83,7 +82,7 @@ export const Viewer = forwardRef<HTMLDivElement, ViewerProps>(
         viewerRef.current = viewer ?? null
       }
     }, [viewerRef, viewer])
- 
+
     return (
       <Root ref={mergeRefs([ref, forwardedRef])} {...props}>
         <Global
@@ -98,10 +97,8 @@ export const Viewer = forwardRef<HTMLDivElement, ViewerProps>(
             }
           `}
         />
-        <ViewerContext.Provider value={viewer}>
-          {children}
-        </ViewerContext.Provider>
+        <ViewerContext.Provider value={viewer}>{children}</ViewerContext.Provider>
       </Root>
     )
-  }
+  },
 )

@@ -1,0 +1,11 @@
+# Ignore artifacts:
+build
+
+# Other files
+.next
+.vscode
+package.json
+package-lock.json
+.prettierrc.json
+.eslintrc.json
+Makefile
