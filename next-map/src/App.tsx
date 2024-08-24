@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { Camera } from './Camera'
-import { Clock } from './Clock'
-import { Lighting } from './Lighting'
-import { MapboxImagery } from './MapboxImagery'
-import { Viewer } from './Viewer'
+import { Camera } from './app/Camera'
+import { Clock } from './app/Clock'
+import { Lighting } from './app/Lighting'
+import { MapboxImagery } from './app/MapboxImagery'
+import { Viewer } from './app/Viewer'
 
 export const App: React.FC = () => {
   return (

@@ -2,9 +2,9 @@ import { Global, css } from '@emotion/react'
 import { NextPage } from 'next'
 import React from 'react'
 
-import { App } from '../app/App'
+import Map from '../components/Map'
 
-const Index: NextPage = () => {
+const Home: NextPage = () => {
   return (
     <>
       <Global
@@ -18,9 +18,10 @@ const Index: NextPage = () => {
           }
         `}
       />
-      <App />
+      <h1>My Map</h1>
+      <Map />
     </>
   )
 }
 
-export default Index
+export default Home

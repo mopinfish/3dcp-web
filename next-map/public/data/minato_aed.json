@@ -1,0 +1,2469 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.755562", "35.651717", 0]
+      },
+      "properties": {
+        "施設名": "障害保健福祉センター (ヒューマンぷらざ）",
+        "所在地": "東京都港区芝一丁目8番23号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.752746", "35.653044", 0]
+      },
+      "properties": {
+        "施設名": "区立公衆浴場「ふれあいの湯」",
+        "所在地": "東京都港区芝二丁目2番18号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750176", "35.651349", 0]
+      },
+      "properties": {
+        "施設名": "芝小学校",
+        "所在地": "東京都港区芝二丁目21番3号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750176", "35.651349", 0]
+      },
+      "properties": {
+        "施設名": "放課GO→クラブしば",
+        "所在地": "東京都港区芝二丁目21番3号　芝小学校内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.748084", "35.651516", 0]
+      },
+      "properties": {
+        "施設名": "芝高齢者在宅サービスセンター",
+        "所在地": "東京都港区芝三丁目24番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.746479", "35.651372", 0]
+      },
+      "properties": {
+        "施設名": "芝の家（地域コミュニティの場）",
+        "所在地": "東京都港区芝三丁目26番8号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749725", "35.648901", 0]
+      },
+      "properties": {
+        "施設名": "三田いきいきプラザ",
+        "所在地": "東京都港区芝四丁目1番17号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.744917", "35.649283", 0]
+      },
+      "properties": {
+        "施設名": "芝区民協働スペース　芝コミュニティはうす",
+        "所在地": "東京都港区芝五丁目13番15号  芝三田森ビル2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.747716", "35.6484", 0]
+      },
+      "properties": {
+        "施設名": "芝保育園",
+        "所在地": "東京都港区芝五丁目18番1-101号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.747741", "35.648186", 0]
+      },
+      "properties": {
+        "施設名": "みなと子育て応援プラザ　Ｐｏｋｋｅ（ぽっけ）",
+        "所在地": "東京都港区芝五丁目18番1-102号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.74476441968093", "35.64522504360484", 0]
+      },
+      "properties": {
+        "施設名": "札ノ辻スクエア",
+        "所在地": "東京都港区芝五丁目36番4号　1階　エントランス"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.74476441968093", "35.64522504360484", 0]
+      },
+      "properties": {
+        "施設名": "産業振興センター",
+        "所在地": "東京都港区芝五丁目36番4号　札ノ辻スクエア内　9～11階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.745214", "35.647149", 0]
+      },
+      "properties": {
+        "施設名": "三田図書館",
+        "所在地": "東京都港区芝五丁目36番4号　札ノ辻スクエア内　4～6階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.758469", "35.65649", 0]
+      },
+      "properties": {
+        "施設名": "浜松町駅北口自転車等駐車場",
+        "所在地": "東京都港区海岸一丁目2番34号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.757085", "35.665603", 0]
+      },
+      "properties": {
+        "施設名": "生涯学習センター（ばるーん）",
+        "所在地": "東京都港区新橋三丁目16番3号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.756518", "35.665097", 0]
+      },
+      "properties": {
+        "施設名": "桜田公園自転車駐車場",
+        "所在地": "東京都港区新橋三丁目16番15号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.754025", "35.662317", 0]
+      },
+      "properties": {
+        "施設名": "きらきらプラザ新橋",
+        "所在地": "東京都港区新橋六丁目4番2号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.754025", "35.662317", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ新橋",
+        "所在地": "東京都港区新橋六丁目4番2号 　 きらきらプラザ新橋2・3階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.752236", "35.666211", 0]
+      },
+      "properties": {
+        "施設名": "南桜公園管理棟",
+        "所在地": "東京都港区西新橋二丁目10番13号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750385", "35.661742", 0]
+      },
+      "properties": {
+        "施設名": "御成門中学校",
+        "所在地": "東京都港区西新橋三丁目25番30号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750391", "35.661661", 0]
+      },
+      "properties": {
+        "施設名": "御成門中学校屋内プール",
+        "所在地": "東京都港区西新橋三丁目25番30号　御成門中学校地下1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.743015", "35.653988", 0]
+      },
+      "properties": {
+        "施設名": "みなと保健所",
+        "所在地": "東京都港区三田一丁目4番10号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.7424793706974", "35.651824321640824", 0]
+      },
+      "properties": {
+        "施設名": "赤羽小学校",
+        "所在地": "東京都港区三田二丁目6番2号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.74231833862473", "35.65178043671961", 0]
+      },
+      "properties": {
+        "施設名": "赤羽幼稚園",
+        "所在地": "東京都港区三田二丁目6番2号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.757421", "35.658802", 0]
+      },
+      "properties": {
+        "施設名": "神明保育園",
+        "所在地": "東京都港区浜松町一丁目6番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.757595", "35.658791", 0]
+      },
+      "properties": {
+        "施設名": "神明いきいきプラザ",
+        "所在地": "東京都港区浜松町一丁目6番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.757469", "35.658743", 0]
+      },
+      "properties": {
+        "施設名": "神明子ども中高生プラザ",
+        "所在地": "東京都港区浜松町一丁目6番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.756852", "35.658833", 0]
+      },
+      "properties": {
+        "施設名": "エコプラザ",
+        "所在地": "東京都港区浜松町一丁目13番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.757163", "35.658767", 0]
+      },
+      "properties": {
+        "施設名": "シティハイツ神明（竹芝防災センター）",
+        "所在地": "東京都港区浜松町一丁目13番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.75163", "35.658203", 0]
+      },
+      "properties": {
+        "施設名": "港区役所",
+        "所在地": "東京都港区芝公園一丁目5番25号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.751576", "35.658185", 0]
+      },
+      "properties": {
+        "施設名": "芝地区総合支所",
+        "所在地": "東京都港区芝公園一丁目5番25号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.75126571164043", "35.658018713954526", 0]
+      },
+      "properties": {
+        "施設名": "港区議会事務局",
+        "所在地": "東京都港区芝公園一丁目5番25号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750659", "35.654579", 0]
+      },
+      "properties": {
+        "施設名": "芝公園多目的運動場　（アクアフィールド芝公園）",
+        "所在地": "東京都港区芝公園二丁目7番2号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750533", "35.654291", 0]
+      },
+      "properties": {
+        "施設名": "芝公園保育園",
+        "所在地": "東京都港区芝公園二丁目7番3号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750599", "35.65417", 0]
+      },
+      "properties": {
+        "施設名": "芝公園区民協働スペース",
+        "所在地": "東京都港区芝公園二丁目7番3号　芝公園保育園3階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750758", "35.653838", 0]
+      },
+      "properties": {
+        "施設名": "芝公園二丁目保育室",
+        "所在地": "東京都港区芝公園二丁目12番10号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749586", "35.661084", 0]
+      },
+      "properties": {
+        "施設名": "御成門小学校",
+        "所在地": "東京都港区芝公園三丁目2番4号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750171", "35.66002", 0]
+      },
+      "properties": {
+        "施設名": "みなと図書館",
+        "所在地": "東京都港区芝公園三丁目2番25号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.744849", "35.660857", 0]
+      },
+      "properties": {
+        "施設名": "芝給水所公園運動場",
+        "所在地": "東京都港区芝公園三丁目6番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.74854", "35.655553", 0]
+      },
+      "properties": {
+        "施設名": "芝公園　管理棟",
+        "所在地": "東京都港区芝公園四丁目8番4号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.748736", "35.667896", 0]
+      },
+      "properties": {
+        "施設名": "虎ノ門いきいきプラザ（とらトピア）",
+        "所在地": "東京都港区虎ノ門一丁目21番10号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.748725", "35.667905", 0]
+      },
+      "properties": {
+        "施設名": "虎ノ門高齢者在宅サービスセンター",
+        "所在地": "東京都港区虎ノ門一丁目21番10号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.745976", "35.665942", 0]
+      },
+      "properties": {
+        "施設名": "みなと科学館",
+        "所在地": "東京都港区虎ノ門三丁目6番9号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.745744", "35.666068", 0]
+      },
+      "properties": {
+        "施設名": "教育センター",
+        "所在地": "東京都港区虎ノ門三丁目6番9号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.747011", "35.663343", 0]
+      },
+      "properties": {
+        "施設名": "愛宕区民協働スペース　愛宕コミュニティはうす",
+        "所在地": "東京都港区虎ノ門三丁目19番15号　ザ・パークハウス愛宕虎ノ門　1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735051", "35.651486", 0]
+      },
+      "properties": {
+        "施設名": "南麻布いきいきプラザ",
+        "所在地": "東京都港区南麻布一丁目5番26号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735051", "35.651486", 0]
+      },
+      "properties": {
+        "施設名": "南麻布高齢者在宅サービスセンター",
+        "所在地": "東京都港区南麻布一丁目5番26号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735848", "35.650937", 0]
+      },
+      "properties": {
+        "施設名": "東町小学校",
+        "所在地": "東京都港区南麻布一丁目8番11号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735764", "35.647692", 0]
+      },
+      "properties": {
+        "施設名": "南麻布学童クラブ",
+        "所在地": "東京都港区南麻布二丁目11番10号　OJビル4階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.730423", "35.651044", 0]
+      },
+      "properties": {
+        "施設名": "旧南麻布三丁目保育室",
+        "所在地": "東京都港区南麻布三丁目5番15号　1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.730274", "35.649917", 0]
+      },
+      "properties": {
+        "施設名": "本村幼稚園",
+        "所在地": "東京都港区南麻布三丁目9番33号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.729979", "35.64993", 0]
+      },
+      "properties": {
+        "施設名": "本村小学校",
+        "所在地": "東京都港区南麻布三丁目9番33号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.729882", "35.649869", 0]
+      },
+      "properties": {
+        "施設名": "本村小学校屋内プール",
+        "所在地": "東京都港区南麻布三丁目9番33号　本村小学校地下1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.72407", "35.647872", 0]
+      },
+      "properties": {
+        "施設名": "南麻布保育園",
+        "所在地": "東京都港区南麻布四丁目2番29-101号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.727458", "35.650799", 0]
+      },
+      "properties": {
+        "施設名": "ありすいきいきプラザ",
+        "所在地": "東京都港区南麻布四丁目6番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726235", "35.650308", 0]
+      },
+      "properties": {
+        "施設名": "児童発達支援センタ－（ぱお）",
+        "所在地": "東京都港区南麻布四丁目6番13号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726224", "35.650303", 0]
+      },
+      "properties": {
+        "施設名": "障害者支援ホーム南麻布（ホーム南部坂ありす）",
+        "所在地": "東京都港区南麻布四丁目6番13号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.722061", "35.65318", 0]
+      },
+      "properties": {
+        "施設名": "広尾駅自転車駐車場",
+        "所在地": "東京都港区南麻布五丁目1番25号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.727731", "35.652458", 0]
+      },
+      "properties": {
+        "施設名": "麻布運動場",
+        "所在地": "東京都港区南麻布五丁目6番33号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726331", "35.651307", 0]
+      },
+      "properties": {
+        "施設名": "有栖川宮記念公園",
+        "所在地": "東京都港区南麻布五丁目7番29号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.730044", "35.653119", 0]
+      },
+      "properties": {
+        "施設名": "元麻布保育園",
+        "所在地": "東京都港区元麻布二丁目14番12号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.731122", "35.657344", 0]
+      },
+      "properties": {
+        "施設名": "南山小学校",
+        "所在地": "東京都港区元麻布三丁目8番15号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.731122", "35.657344", 0]
+      },
+      "properties": {
+        "施設名": "放課GO→クラブなんざん",
+        "所在地": "東京都港区元麻布三丁目8番15号　南山小学校内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73075132582497", "35.65622032125636", 0]
+      },
+      "properties": {
+        "施設名": "麻布いきいきプラザ",
+        "所在地": "東京都港区元麻布三丁目9番6号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.722718", "35.660833", 0]
+      },
+      "properties": {
+        "施設名": "西麻布保育園",
+        "所在地": "東京都港区西麻布二丁目13番3号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.722809", "35.660764", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ西麻布",
+        "所在地": "東京都港区西麻布二丁目13番3号　西麻布いきいきプラザ　3階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.722724", "35.660781", 0]
+      },
+      "properties": {
+        "施設名": "西麻布いきいきプラザ",
+        "所在地": "東京都港区西麻布二丁目13番3号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.72491", "35.656564", 0]
+      },
+      "properties": {
+        "施設名": "笄小学校",
+        "所在地": "東京都港区西麻布三丁目11番16号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.720543", "35.65703", 0]
+      },
+      "properties": {
+        "施設名": "高陵中学校",
+        "所在地": "東京都港区西麻布四丁目14番8号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.720463", "35.657139", 0]
+      },
+      "properties": {
+        "施設名": "高陵中学校屋内プール",
+        "所在地": "東京都港区西麻布四丁目14番8号　高陵中学校地下2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.733836", "35.664518", 0]
+      },
+      "properties": {
+        "施設名": "三河台公園自転車駐車場",
+        "所在地": "東京都港区六本木四丁目2番27号　三河台公園内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735818", "35.657508", 0]
+      },
+      "properties": {
+        "施設名": "麻布図書館",
+        "所在地": "東京都港区六本木五丁目12番24号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735818", "35.657508", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ麻布",
+        "所在地": "東京都港区六本木五丁目12番24号　麻布図書館　1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735091", "35.660657", 0]
+      },
+      "properties": {
+        "施設名": "麻布地区総合支所",
+        "所在地": "東京都港区六本木五丁目16番45号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735016", "35.660753", 0]
+      },
+      "properties": {
+        "施設名": "麻布区民センター",
+        "所在地": "東京都港区六本木五丁目16番45号　麻布地区総合支所内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73503726256826", "35.66126125908505", 0]
+      },
+      "properties": {
+        "施設名": "麻布保育園",
+        "所在地": "東京都港区六本木五丁目16番46号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73503726256826", "35.66126125908505", 0]
+      },
+      "properties": {
+        "施設名": "麻布区民協働スペース",
+        "所在地": "東京都港区六本木五丁目16番46号　麻布保育園内　3階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.730769", "35.660958", 0]
+      },
+      "properties": {
+        "施設名": "六本木区民協働スペース",
+        "所在地": "東京都港区六本木六丁目5番19号　シティハイツ六本木　公共施設棟1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.730802", "35.661003", 0]
+      },
+      "properties": {
+        "施設名": "シティハイツ六本木等複合施設住宅棟",
+        "所在地": "東京都港区六本木六丁目5番25号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.732184", "35.660552", 0]
+      },
+      "properties": {
+        "施設名": "六本木中学校",
+        "所在地": "東京都港区六本木六丁目8番16号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.738551", "35.662043", 0]
+      },
+      "properties": {
+        "施設名": "麻布小学校",
+        "所在地": "東京都港区麻布台一丁目5番15号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734507", "35.657052", 0]
+      },
+      "properties": {
+        "施設名": "麻布十番公共駐車場",
+        "所在地": "東京都港区麻布十番一丁目4番10号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.743532", "35.655912", 0]
+      },
+      "properties": {
+        "施設名": "飯倉保育園（飯倉学童クラブ）",
+        "所在地": "東京都港区東麻布一丁目21番2号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.742559", "35.658203", 0]
+      },
+      "properties": {
+        "施設名": "東麻布保育園",
+        "所在地": "東京都港区東麻布二丁目1番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.742569", "35.658172", 0]
+      },
+      "properties": {
+        "施設名": "東麻布学童クラブ",
+        "所在地": "東京都港区東麻布二丁目1番1号　4階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.740984", "35.656913", 0]
+      },
+      "properties": {
+        "施設名": "飯倉いきいきプラザ",
+        "所在地": "東京都港区東麻布二丁目16番11号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.7378509732211", "35.656015616917244", 0]
+      },
+      "properties": {
+        "施設名": "一の橋公園自転車駐車場",
+        "所在地": "東京都港区東麻布三丁目9番1号　港区立一の橋公園内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.731725", "35.674775", 0]
+      },
+      "properties": {
+        "施設名": "赤坂地区総合支所",
+        "所在地": "東京都港区赤坂四丁目18番13号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.731621", "35.674864", 0]
+      },
+      "properties": {
+        "施設名": "赤坂区民センター",
+        "所在地": "東京都港区赤坂四丁目18番13号　赤坂コミュニティーぷらざ内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.731629", "35.674816", 0]
+      },
+      "properties": {
+        "施設名": "健康増進センター（ヘルシーナ）",
+        "所在地": "東京都港区赤坂四丁目18番13号　赤坂コミュニティーぷらざ6階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734061", "35.671125", 0]
+      },
+      "properties": {
+        "施設名": "赤坂保育園",
+        "所在地": "東京都港区赤坂五丁目5番26-101号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734901", "35.670363", 0]
+      },
+      "properties": {
+        "施設名": "赤坂いきいきプラザ",
+        "所在地": "東京都港区赤坂六丁目4番8号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.737543", "35.6698", 0]
+      },
+      "properties": {
+        "施設名": "特別養護老人ホーム　サン・サン赤坂(高齢者在宅サービスセンター）",
+        "所在地": "東京都港区赤坂六丁目6番14号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73769", "35.669742", 0]
+      },
+      "properties": {
+        "施設名": "氷川武道場",
+        "所在地": "東京都港区赤坂六丁目6番14号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.728858", "35.67381", 0]
+      },
+      "properties": {
+        "施設名": "高橋是清翁記念公園",
+        "所在地": "東京都港区赤坂七丁目3番39号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73102", "35.669408", 0]
+      },
+      "properties": {
+        "施設名": "赤坂学園　赤坂小学校",
+        "所在地": "東京都港区赤坂八丁目13番29号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73168820383566", "35.66806326009347", 0]
+      },
+      "properties": {
+        "施設名": "赤坂学園　赤坂中学校",
+        "所在地": "東京都港区赤坂九丁目2番3号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73168820383566", "35.66806326009347", 0]
+      },
+      "properties": {
+        "施設名": "赤坂学園　赤坂中学校屋内プール",
+        "所在地": "東京都港区赤坂九丁目2番3号　赤坂学園　赤坂中学校内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73143962728707", "35.66785562689406", 0]
+      },
+      "properties": {
+        "施設名": "中之町幼稚園",
+        "所在地": "東京都港区赤坂九丁目2番26号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.729839", "35.668377", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ赤坂",
+        "所在地": "東京都港区赤坂九丁目4番2号　パークコート赤坂檜町ザタワー　2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.725328", "35.671596", 0]
+      },
+      "properties": {
+        "施設名": "赤坂図書館",
+        "所在地": "東京都港区南青山一丁目3番3号　青山一丁目タワー3階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.725527", "35.671188", 0]
+      },
+      "properties": {
+        "施設名": "南青山保育園",
+        "所在地": "東京都港区南青山一丁目3番15号　"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.721248", "35.669229", 0]
+      },
+      "properties": {
+        "施設名": "青山いきいきプラザ",
+        "所在地": "東京都港区南青山二丁目16番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.719009", "35.669901", 0]
+      },
+      "properties": {
+        "施設名": "青山小学校",
+        "所在地": "東京都港区南青山二丁目21番2号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.718596", "35.668957", 0]
+      },
+      "properties": {
+        "施設名": "青山運動場",
+        "所在地": "東京都港区南青山二丁目21番12号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.718451", "35.669903", 0]
+      },
+      "properties": {
+        "施設名": "みなと子育てサポートハウス「あい・ぽーと」",
+        "所在地": "東京都港区南青山二丁目25番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.724349", "35.665826", 0]
+      },
+      "properties": {
+        "施設名": "区民斎場「やすらぎ会館」",
+        "所在地": "東京都港区南青山二丁目34番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.717311", "35.666534", 0]
+      },
+      "properties": {
+        "施設名": "青南いきいきプラザ",
+        "所在地": "東京都港区南青山四丁目10番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.716965", "35.663577", 0]
+      },
+      "properties": {
+        "施設名": "青南幼稚園",
+        "所在地": "東京都港区南青山四丁目18番17号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.716788", "35.664202", 0]
+      },
+      "properties": {
+        "施設名": "第二青南保育室",
+        "所在地": "東京都港区南青山四丁目19番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.71689", "35.664286", 0]
+      },
+      "properties": {
+        "施設名": "青山生涯学習館",
+        "所在地": "東京都港区南青山四丁目19番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.71689", "35.664286", 0]
+      },
+      "properties": {
+        "施設名": "放課GO→クラブせいなん",
+        "所在地": "東京都港区南青山四丁目19番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.716584", "35.66396", 0]
+      },
+      "properties": {
+        "施設名": "青南保育室",
+        "所在地": "東京都港区南青山四丁目19番18号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.716123", "35.663616", 0]
+      },
+      "properties": {
+        "施設名": "青南小学校",
+        "所在地": "東京都港区南青山四丁目21番15号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.713122", "35.662774", 0]
+      },
+      "properties": {
+        "施設名": "子ども家庭支援センター",
+        "所在地": "東京都港区南青山五丁目7番11号　港区子ども家庭総合支援センター（ミナトイク）内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.713122", "35.662774", 0]
+      },
+      "properties": {
+        "施設名": "港区児童相談所",
+        "所在地": "東京都港区南青山五丁目7番11号　港区子ども家庭総合支援センター（ミナトイク）内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.722158", "35.674389", 0]
+      },
+      "properties": {
+        "施設名": "青山中学校",
+        "所在地": "東京都港区北青山一丁目1番9号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.72167", "35.673644", 0]
+      },
+      "properties": {
+        "施設名": "北青山高齢者在宅サービスセンター",
+        "所在地": "東京都港区北青山一丁目6番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.721404", "35.674579", 0]
+      },
+      "properties": {
+        "施設名": "国際交流スペース",
+        "所在地": "東京都港区北青山一丁目6番3号　都営北青山一丁目アパート3号棟地下1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.71267", "35.667216", 0]
+      },
+      "properties": {
+        "施設名": "青山保育園",
+        "所在地": "東京都港区北青山三丁目4番1-101号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.712219", "35.667302", 0]
+      },
+      "properties": {
+        "施設名": "赤坂子ども中高生プラザ青山館（カリッパ）",
+        "所在地": "東京都港区北青山三丁目4番1-201号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.7291847450826", "35.644381139485255", 0]
+      },
+      "properties": {
+        "施設名": "御田小学校",
+        "所在地": "（仮校舎）東京都港区白金三丁目18番2号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.740831", "35.645357", 0]
+      },
+      "properties": {
+        "施設名": "三田中学校",
+        "所在地": "東京都港区三田四丁目13番13号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.738726", "35.640411", 0]
+      },
+      "properties": {
+        "施設名": "伊皿子坂保育園",
+        "所在地": "東京都港区三田四丁目19番30号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.739656", "35.646551", 0]
+      },
+      "properties": {
+        "施設名": "豊岡いきいきプラザ",
+        "所在地": "東京都港区三田五丁目7番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.739584", "35.646538", 0]
+      },
+      "properties": {
+        "施設名": "豊岡児童館",
+        "所在地": "東京都港区三田五丁目7番7号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734595", "35.643382", 0]
+      },
+      "properties": {
+        "施設名": "白金高輪駅自転車駐車場",
+        "所在地": "東京都港区高輪一丁目3番20号先"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73503104848845", "35.64310812761594", 0]
+      },
+      "properties": {
+        "施設名": "精神障害者支援センター（あいはーと・みなと）",
+        "所在地": "東京都港区高輪一丁目4番8号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734778", "35.642362", 0]
+      },
+      "properties": {
+        "施設名": "高輪子ども中高生プラザ(TAP（たっぷ））",
+        "所在地": "東京都港区高輪一丁目4番35号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734045", "35.642076", 0]
+      },
+      "properties": {
+        "施設名": "高輪地区総合支所",
+        "所在地": "東京都港区高輪一丁目16番25号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734013", "35.64217", 0]
+      },
+      "properties": {
+        "施設名": "高輪区民センター",
+        "所在地": "東京都港区高輪一丁目16番25号　高輪コミュニティーぷらざ内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734035", "35.642079", 0]
+      },
+      "properties": {
+        "施設名": "高輪図書館",
+        "所在地": "東京都港区高輪一丁目16番25号 高輪コミュニティーぷらざ3階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734131", "35.640627", 0]
+      },
+      "properties": {
+        "施設名": "高松中学校",
+        "所在地": "東京都港区高輪一丁目16番25号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734499", "35.640655", 0]
+      },
+      "properties": {
+        "施設名": "高松中学校屋内プール",
+        "所在地": "東京都港区高輪一丁目16番25号　高松中学校5階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.734367", "35.63642", 0]
+      },
+      "properties": {
+        "施設名": "高輪台小学校",
+        "所在地": "東京都港区高輪二丁目8番24号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735378", "35.635088", 0]
+      },
+      "properties": {
+        "施設名": "桂坂学童クラブ",
+        "所在地": "東京都港区高輪二丁目12番24号　高輪桂坂ビル"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735274", "35.635513", 0]
+      },
+      "properties": {
+        "施設名": "高輪幼稚園",
+        "所在地": "東京都港区高輪二丁目12番31号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.737943", "35.634398", 0]
+      },
+      "properties": {
+        "施設名": "シティハイツ桂坂",
+        "所在地": "東京都港区高輪二丁目13番8号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735579", "35.633202", 0]
+      },
+      "properties": {
+        "施設名": "高輪いきいきプラザ",
+        "所在地": "東京都港区高輪三丁目18番15号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735724", "35.633207", 0]
+      },
+      "properties": {
+        "施設名": "高輪保育園",
+        "所在地": "東京都港区高輪三丁目18番15号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.735722", "35.633222", 0]
+      },
+      "properties": {
+        "施設名": "高輪児童館",
+        "所在地": "東京都港区高輪三丁目18番15号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.737205", "35.633431", 0]
+      },
+      "properties": {
+        "施設名": "桂坂保育室 　Ａ・Ｂ・Ｃ棟",
+        "所在地": "東京都港区高輪三丁目19番36号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.73367", "35.645795", 0]
+      },
+      "properties": {
+        "施設名": "志田町保育室",
+        "所在地": "東京都港区白金一丁目11番16号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.730247", "35.64577", 0]
+      },
+      "properties": {
+        "施設名": "白金三丁目保育室",
+        "所在地": "東京都港区白金三丁目7番13号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.731076", "35.644936", 0]
+      },
+      "properties": {
+        "施設名": "白金保育園",
+        "所在地": "東京都港区白金三丁目10番12号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.731076", "35.644936", 0]
+      },
+      "properties": {
+        "施設名": "みなと保育サポート白金",
+        "所在地": "東京都港区白金三丁目10番12号　白金保育園内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.731052", "35.644938", 0]
+      },
+      "properties": {
+        "施設名": "白金いきいきプラザ",
+        "所在地": "東京都港区白金三丁目10番12号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.728861", "35.645013", 0]
+      },
+      "properties": {
+        "施設名": "三光幼稚園",
+        "所在地": "東京都港区白金三丁目13番8号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726835", "35.6437", 0]
+      },
+      "properties": {
+        "施設名": "白金の丘学園　白金の丘小学校",
+        "所在地": "東京都港区白金四丁目1番12号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726835", "35.6437", 0]
+      },
+      "properties": {
+        "施設名": "白金の丘学園　白金の丘中学校",
+        "所在地": "東京都港区白金四丁目1番12号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.72457721175044", "35.643652877365206", 0]
+      },
+      "properties": {
+        "施設名": "神応いきいきプラザ",
+        "所在地": "東京都港区白金六丁目9番5号 神応ほっとプラザ4階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.7246147625989", "35.64374442539137", 0]
+      },
+      "properties": {
+        "施設名": "神応学童クラブ",
+        "所在地": "東京都港区白金六丁目9番5号 神応ほっとプラザ3階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.72457721175044", "35.643652877365206", 0]
+      },
+      "properties": {
+        "施設名": "神応保育園",
+        "所在地": "東京都港区白金六丁目9番5号 神応ほっとプラザ1・2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.728568", "35.636912", 0]
+      },
+      "properties": {
+        "施設名": "白金小学校",
+        "所在地": "東京都港区白金台一丁目4番26号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726546", "35.635683", 0]
+      },
+      "properties": {
+        "施設名": "白金台幼稚園",
+        "所在地": "東京都港区白金台三丁目7番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726711", "35.639161", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ白金台",
+        "所在地": "東京都港区白金台四丁目6番2号　ゆかしの杜1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726711", "35.639161", 0]
+      },
+      "properties": {
+        "施設名": "郷土歴史館",
+        "所在地": "東京都港区白金台四丁目6番2号　ゆかしの杜"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726394", "35.639085", 0]
+      },
+      "properties": {
+        "施設名": "がん在宅緩和ケア支援センター（ういケアみなと）",
+        "所在地": "東京都港区白金台四丁目6番2号　ゆかしの杜5階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.726727", "35.639144", 0]
+      },
+      "properties": {
+        "施設名": "ゆかしの杜学童クラブ（白金台学童クラブ）",
+        "所在地": "東京都港区白金台四丁目6番2号　ゆかしの杜6階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.724966", "35.63773", 0]
+      },
+      "properties": {
+        "施設名": "白金台いきいきプラザ",
+        "所在地": "東京都港区白金台四丁目8番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.72499", "35.637797", 0]
+      },
+      "properties": {
+        "施設名": "白金台児童館",
+        "所在地": "東京都港区白金台四丁目8番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.72205", "35.636599", 0]
+      },
+      "properties": {
+        "施設名": "白金台どんぐり児童遊園",
+        "所在地": "東京都港区白金台五丁目19番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.721938", "35.637152", 0]
+      },
+      "properties": {
+        "施設名": "特別養護老人ホーム白金の森（高齢者在宅サービスセンター）",
+        "所在地": "東京都港区白金台五丁目20番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.753896", "35.647708", 0]
+      },
+      "properties": {
+        "施設名": "伝統文化交流館",
+        "所在地": "東京都港区芝浦一丁目11番15号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.751501", "35.646408", 0]
+      },
+      "properties": {
+        "施設名": "芝浦港南地区総合支所",
+        "所在地": "東京都港区芝浦一丁目16番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.751724", "35.646616", 0]
+      },
+      "properties": {
+        "施設名": "みなとパーク芝浦",
+        "所在地": "東京都港区芝浦一丁目16番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.751501", "35.646408", 0]
+      },
+      "properties": {
+        "施設名": "介護予防総合センター(ラクっちゃ)",
+        "所在地": "東京都港区芝浦一丁目16番1号  みなとパーク芝浦2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.751501", "35.646408", 0]
+      },
+      "properties": {
+        "施設名": "男女平等参画センター(リーブラ)",
+        "所在地": "東京都港区芝浦一丁目16番1号  みなとパーク芝浦2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.751501", "35.646408", 0]
+      },
+      "properties": {
+        "施設名": "スポーツセンター",
+        "所在地": "東京都港区芝浦一丁目16番1号  みなとパーク芝浦内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.751919", "35.646473", 0]
+      },
+      "properties": {
+        "施設名": "しばうら保育園分園",
+        "所在地": "東京都港区芝浦一丁目16番1号  みなとパーク芝浦内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750962", "35.646369", 0]
+      },
+      "properties": {
+        "施設名": "芝浜小学校",
+        "所在地": "東京都港区芝浦一丁目16番31号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750962", "35.646369", 0]
+      },
+      "properties": {
+        "施設名": "放課GO→クラブしばはま",
+        "所在地": "東京都港区芝浦一丁目16番31号　芝浜小学校内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750407", "35.645216", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ芝浦",
+        "所在地": "東京都港区芝浦三丁目1番16号1階　しばうら保育園内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750214", "35.645136", 0]
+      },
+      "properties": {
+        "施設名": "しばうら保育園",
+        "所在地": "東京都港区芝浦三丁目1番16号2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.748264", "35.644315", 0]
+      },
+      "properties": {
+        "施設名": "田町駅東口自転車等駐車場",
+        "所在地": "東京都港区芝浦三丁目3番先"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.745528", "35.643735", 0]
+      },
+      "properties": {
+        "施設名": "たまち保育室",
+        "所在地": "東京都港区芝浦三丁目4番1号　グランパークプラザ棟2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.747921", "35.643438", 0]
+      },
+      "properties": {
+        "施設名": "シティハイツ芝浦",
+        "所在地": "東京都港区芝浦三丁目5番34号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.74483", "35.638959", 0]
+      },
+      "properties": {
+        "施設名": "芝浦橋保育室",
+        "所在地": "東京都港区芝浦四丁目6番8号　田町ファーストビル2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.74618", "35.638325", 0]
+      },
+      "properties": {
+        "施設名": "芝浦幼稚園",
+        "所在地": "東京都港区芝浦四丁目8番18号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.746255", "35.638203", 0]
+      },
+      "properties": {
+        "施設名": "芝浦小学校",
+        "所在地": "東京都港区芝浦四丁目8番18号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749001", "35.639616", 0]
+      },
+      "properties": {
+        "施設名": "芝浦学童クラブ",
+        "所在地": "東京都港区芝浦四丁目12番28号　芝浦中島ビル"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.748642", "35.640607", 0]
+      },
+      "properties": {
+        "施設名": "芝浦港南区民センター",
+        "所在地": "東京都港区芝浦四丁目13番1号　トリニティー芝浦1・2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.752365", "35.640426", 0]
+      },
+      "properties": {
+        "施設名": "芝浦アイランドこども園",
+        "所在地": "東京都港区芝浦四丁目20番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.752402", "35.640413", 0]
+      },
+      "properties": {
+        "施設名": "芝浦アイランド児童高齢者交流プラザ　（あいぷら）",
+        "所在地": "東京都港区芝浦四丁目20番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.75161", "35.636657", 0]
+      },
+      "properties": {
+        "施設名": "五色橋保育室",
+        "所在地": "東京都港区海岸三丁目5番13号　五色橋ビル1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.75161", "35.636657", 0]
+      },
+      "properties": {
+        "施設名": "五色橋学童クラブ",
+        "所在地": "東京都港区海岸三丁目5番13号　五色橋ビル2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.755597", "35.641684", 0]
+      },
+      "properties": {
+        "施設名": "埠頭少年野球場",
+        "所在地": "東京都港区海岸三丁目14番34号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.759891", "35.637322", 0]
+      },
+      "properties": {
+        "施設名": "芝浦南ふ頭公園運動広場　（かいがんぱ～く）",
+        "所在地": "東京都港区海岸三丁目33番20号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.742953", "35.634688", 0]
+      },
+      "properties": {
+        "施設名": "芝浦中央公園　B面",
+        "所在地": "東京都港区港南一丁目2番28号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.746319", "35.634584", 0]
+      },
+      "properties": {
+        "施設名": "芝浦中央公園運動場　C面",
+        "所在地": "東京都港区港南一丁目4番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.742583", "35.629712", 0]
+      },
+      "properties": {
+        "施設名": "こうなん星の公園自転車駐車場",
+        "所在地": "東京都港区港南一丁目9番24号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.743229", "35.629186", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ港南",
+        "所在地": "東京都港区港南二丁目3番13号　品川フロントビル　キッズ館3階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.74185", "35.628635", 0]
+      },
+      "properties": {
+        "施設名": "品川駅港南口自転車等駐車場",
+        "所在地": "東京都港区港南二丁目14番6号　港南ふれあい広場地下"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.741682", "35.628966", 0]
+      },
+      "properties": {
+        "施設名": "品川駅港南口公共駐車場",
+        "所在地": "東京都港区港南二丁目14番17号　港南ふれあい広場地下"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749575", "35.633141", 0]
+      },
+      "properties": {
+        "施設名": "港南図書館",
+        "所在地": "東京都港区港南三丁目3番17号　シティハイツ港南1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749676", "35.633092", 0]
+      },
+      "properties": {
+        "施設名": "シティハイツ港南",
+        "所在地": "東京都港区港南三丁目3番17号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749216", "35.633407", 0]
+      },
+      "properties": {
+        "施設名": "特別養護老人ホーム港南の郷",
+        "所在地": "東京都港区港南三丁目3番23号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.751329", "35.634364", 0]
+      },
+      "properties": {
+        "施設名": "みなとリサイクル清掃事務所",
+        "所在地": "東京都港区港南三丁目9番59号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.747065", "35.629675", 0]
+      },
+      "properties": {
+        "施設名": "港南いきいきプラザ（ゆとりーむ）",
+        "所在地": "東京都港区港南四丁目2番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.747918", "35.629827", 0]
+      },
+      "properties": {
+        "施設名": "こうなん保育園",
+        "所在地": "東京都港区港南四丁目2番3-101号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.747604", "35.630213", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ港南四丁目",
+        "所在地": "東京都港区港南四丁目2番4号　都営住宅　1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749119", "35.631301", 0]
+      },
+      "properties": {
+        "施設名": "港南中学校",
+        "所在地": "東京都港区港南四丁目3番3号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749802", "35.631088", 0]
+      },
+      "properties": {
+        "施設名": "港南区民協働スペース",
+        "所在地": "東京都港区港南四丁目3番7号　さんぽーと港南　1階・2階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749972", "35.631151", 0]
+      },
+      "properties": {
+        "施設名": "港南子ども中高生プラザ（プラリバ）",
+        "所在地": "東京都港区港南四丁目3番7号　"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749972", "35.631151", 0]
+      },
+      "properties": {
+        "施設名": "たかはま保育園",
+        "所在地": "東京都港区港南四丁目3番7号　港南子ども中高生プラザ内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.748862", "35.629337", 0]
+      },
+      "properties": {
+        "施設名": "港南幼稚園",
+        "所在地": "東京都港区港南四丁目3番27号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749618", "35.629326", 0]
+      },
+      "properties": {
+        "施設名": "港南小学校",
+        "所在地": "東京都港区港南四丁目3番28号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749656", "35.62957", 0]
+      },
+      "properties": {
+        "施設名": "港南小学校屋内プール",
+        "所在地": "東京都港区港南四丁目3番28号　港南小学校1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.749618", "35.629326", 0]
+      },
+      "properties": {
+        "施設名": "放課GO→クラブこうなん",
+        "所在地": "東京都港区港南四丁目3番28号　港南小学校敷地内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.750643", "35.628637", 0]
+      },
+      "properties": {
+        "施設名": "港南緑水公園",
+        "所在地": "東京都港区港南四丁目7番47号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.757018", "35.631227", 0]
+      },
+      "properties": {
+        "施設名": "港資源化センター",
+        "所在地": "東京都港区港南五丁目7番1号　　みなと清掃工場内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.777116", "35.633708", 0]
+      },
+      "properties": {
+        "施設名": "お台場学園　港陽小学校",
+        "所在地": "東京都港区台場一丁目1番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.777132", "35.634209", 0]
+      },
+      "properties": {
+        "施設名": "お台場学園　港陽中学校",
+        "所在地": "東京都港区台場一丁目1番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.77713", "35.634155", 0]
+      },
+      "properties": {
+        "施設名": "お台場学園　港陽中学校屋内プール",
+        "所在地": "東京都港区台場一丁目1番5号 お台場学園港陽中学校地下1階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.777476", "35.633486", 0]
+      },
+      "properties": {
+        "施設名": "にじのはし幼稚園",
+        "所在地": "東京都港区台場一丁目1番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.777934", "35.633084", 0]
+      },
+      "properties": {
+        "施設名": "お台場レインボー公園",
+        "所在地": "東京都港区台場一丁目3番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.777312", "35.629723", 0]
+      },
+      "properties": {
+        "施設名": "芝浦港南地区総合支所台場分室",
+        "所在地": "東京都港区台場一丁目5番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.777081", "35.630048", 0]
+      },
+      "properties": {
+        "施設名": "台場区民センター",
+        "所在地": "東京都港区台場一丁目5番1号　台場コミュニティーぷらざ内"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.777095", "35.630093", 0]
+      },
+      "properties": {
+        "施設名": "台場児童館",
+        "所在地": "東京都港区台場一丁目5番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.7773040343295", "35.629537796532645", 0]
+      },
+      "properties": {
+        "施設名": "台場保育園",
+        "所在地": "東京都港区台場一丁目5番1号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.777969", "35.630669", 0]
+      },
+      "properties": {
+        "施設名": "台場高齢者在宅サービスセンター",
+        "所在地": "東京都港区台場一丁目5番5号"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.774373", "35.628175", 0]
+      },
+      "properties": {
+        "施設名": "子育てひろば　あっぴぃ台場",
+        "所在地": "東京都港区台場一丁目7番1号　アクアシティお台場　4階"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.07125", "35.238167", 0]
+      },
+      "properties": {
+        "施設名": "大平台みなと荘",
+        "所在地": "神奈川県足柄下郡箱根町大平台294番"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": ["139.007617", "35.270289", 0]
+      },
+      "properties": {
+        "施設名": "箱根ニコニコ高原学園",
+        "所在地": "神奈川県足柄下郡箱根町仙石原502番"
+      }
+    }
+  ]
+}
