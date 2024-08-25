@@ -60,7 +60,7 @@ const Luma: NextPage = () => {
           }
         `}
       />
-      <h1>My Luma</h1>
+      <h1>OPEN3D Map</h1>
       <LumaThree />
     </>
   )

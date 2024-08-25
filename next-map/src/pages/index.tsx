@@ -1,10 +1,22 @@
 import { Global, css } from '@emotion/react'
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import React from 'react'
+import { sql } from '@vercel/postgres'
 
 import Map from '../components/Map'
 
-const Home: NextPage = () => {
+interface Dataset {
+  id: number
+  name: string
+  description: string
+  file_name: string
+}
+
+interface HomeProps {
+  datasets: Dataset[]
+}
+
+const Home = ({ datasets }: HomeProps) => {
   return (
     <>
       <Global
@@ -18,10 +30,35 @@ const Home: NextPage = () => {
           }
         `}
       />
-      <h1>My Map</h1>
+      <h1>OPEN3D Map</h1>
+      {datasets.map((dataset) => (
+        <div key={dataset.id}>
+          <h2>{dataset.name}</h2>
+          <p>{dataset.description}</p>
+        </div>
+      ))}
       <Map />
     </>
   )
 }
 
 export default Home
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const { rows } = await sql`SELECT * FROM open3d.datasets`
+
+    return {
+      props: {
+        datasets: rows,
+      },
+    }
+  } catch (error) {
+    console.error('データベースクエリエラー:', error)
+    return {
+      props: {
+        datasets: [],
+      },
+    }
+  }
+}
