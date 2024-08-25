@@ -10,3 +10,4 @@ package-lock.json
 .eslintrc.json
 Makefile
 *.svg
+.vercel

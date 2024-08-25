@@ -1,5 +1,5 @@
 import { Global, css } from '@emotion/react'
-import { GetServerSideProps, NextPage } from 'next'
+import { GetServerSideProps } from 'next'
 import React from 'react'
 import { sql } from '@vercel/postgres'
 
