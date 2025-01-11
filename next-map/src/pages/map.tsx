@@ -1,6 +1,8 @@
 import { GetServerSideProps } from 'next'
 import React from 'react'
 import { sql } from '@vercel/postgres'
+
+import Map from '../components/Map'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
 
 interface Dataset {
@@ -10,12 +12,11 @@ interface Dataset {
   file_name: string
 }
 
-interface HomeProps {
+interface MapScreenProps {
   datasets: Dataset[]
 }
 
-const Home = ({ datasets }: HomeProps) => {
-  console.log(datasets)
+const MapScreen = ({ datasets }: MapScreenProps) => {
   return (
     <LayoutWithFooter>
       <>
@@ -26,12 +27,13 @@ const Home = ({ datasets }: HomeProps) => {
             <p>{dataset.description}</p>
           </div>
         ))}
+        <Map />
       </>
     </LayoutWithFooter>
   )
 }
 
-export default Home
+export default MapScreen
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
