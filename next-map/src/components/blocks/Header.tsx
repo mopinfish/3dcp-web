@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import Link from 'next/link'
+import { media } from '../helpers/media'
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -19,20 +20,29 @@ const Logo = styled.div`
 
 const Nav = styled.nav`
   ul {
-    display: flex;
     list-style-type: none;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+
+    ${media.md`
+      flex-direction: row;
+    `}
   }
 
   li {
-    margin-left: 1rem;
+    margin-bottom: 0.5rem;
+
+    ${media.md`
+      margin-bottom: 0;
+      margin-right: 1rem;
+    `}
   }
 
   a {
-    text-decoration: none;
     color: #333;
+    text-decoration: none;
     font-weight: bold;
-    font-size: 1.2rem;
   }
 `
 
