@@ -1,8 +1,9 @@
 import { GetServerSideProps } from 'next'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { sql } from '@vercel/postgres'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
 import Article from '@/components/blocks/Article'
+import { cultural_property as culturalPropertyService } from '@/domains/services'
 
 interface Dataset {
   id: number
@@ -16,7 +17,17 @@ interface HomeProps {
 }
 
 const Home = ({ datasets }: HomeProps) => {
-  console.log(datasets)
+  const actions = {
+    onload: async () => {
+      console.log('onload')
+      const properties = await culturalPropertyService.getProperties()
+      console.log(properties)
+    },
+  }
+  useEffect(() => {
+    actions.onload()
+  }, [])
+
   return (
     <LayoutWithFooter>
       <>
