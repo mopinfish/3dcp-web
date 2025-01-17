@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Map from '../components/Map'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
-import Article from '@/components/blocks/Article'
 import { cultural_property as culturalPropertyService } from '@/domains/services'
 import { CulturalProperties } from '@/domains/models/cultural_property'
 import NavigationTab from '@/components/blocks/NavigationTab'
 
-const Home = () => {
+const MapScreen = () => {
   const [properties, setProperties] = useState<CulturalProperties>([])
 
   const actions = {
@@ -19,24 +19,12 @@ const Home = () => {
     actions.onload()
   }, [])
 
-  const imageUrls = ['/img/cp_01.jpg', '/img/cp_01.jpg', '/img/cp_01.jpg', '/img/cp_01.jpg']
   return (
     <LayoutWithFooter>
-      <>
-        <NavigationTab />
-        {properties.map((property) => (
-          <Article
-            key={property.id}
-            imageUrls={imageUrls}
-            title={property.name}
-            description={property.note ?? ''}
-            linkHref={`/luma/${property.movies[0].id}`}
-            linkText="3Dモデルを見る"
-          />
-        ))}
-      </>
+      <NavigationTab />
+      <Map properties={properties} />
     </LayoutWithFooter>
   )
 }
 
-export default Home
+export default MapScreen

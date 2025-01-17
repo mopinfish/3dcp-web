@@ -1,10 +1,9 @@
-import { Global, css } from '@emotion/react'
 import { NextPage } from 'next'
 import React, { useEffect, useRef } from 'react'
-//import { useRouter } from 'next/router'
 import { WebGLRenderer, PerspectiveCamera, Scene } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { LumaSplatsThree } from '@lumaai/luma-web'
+//import { LayoutWithFooter } from '@/components/layouts/Layout'
 
 const LumaThree: React.FC = () => {
   const canvas = useRef<HTMLCanvasElement | null>(null)
@@ -35,32 +34,12 @@ const LumaThree: React.FC = () => {
       renderer.render(scene, camera)
     })
   }, [])
-  return (
-    <>
-      <canvas ref={canvas}></canvas>
-    </>
-  )
+  return <canvas ref={canvas}></canvas>
 }
 
 const Luma: NextPage = () => {
-  //const router = useRouter()
-  //const { object_id } = router.query
-  //console.log(object_id)
-
   return (
     <>
-      <Global
-        styles={css`
-          html,
-          body,
-          #__next {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-          }
-        `}
-      />
-      <h1>OPEN3D Map</h1>
       <LumaThree />
     </>
   )

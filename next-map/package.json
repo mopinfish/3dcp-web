@@ -21,7 +21,7 @@
     "@vercel/postgres": "^0.9.0",
     "cesium": "^1.120.0",
     "maplibre-gl": "^4.6.0",
-    "next": "14.2.5",
+    "next": "^14.2.23",
     "react": "^18",
     "react-dom": "^18.3.1",
     "react-merge-refs": "^2.1.1",
