@@ -4,24 +4,57 @@ import { useEffect, useRef } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
-import Link from 'next/link'
 import { renderToStaticMarkup } from 'react-dom/server'
+import styled from 'styled-components'
 import { CulturalProperties } from '@/domains/models/cultural_property'
 
-const PopupHtml: React.FC<{ name: string; url: string }> = ({ name, url }) => {
+const PopupCard = styled.div`
+  width: 100%;
+  padding: 10px;
+`
+
+const PopupImage = styled.img`
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 4px;
+`
+
+const PopupTitle = styled.h3`
+  margin: 10px 0 5px;
+  font-size: 18px;
+`
+
+const PopupAddress = styled.p`
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #666;
+`
+
+const PopupLink = styled.a`
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+`
+
+const PopupHtml: React.FC<{ name: string; url: string; address: string }> = ({
+  name,
+  url,
+  address,
+}) => {
   return (
-    <div>
-      <Link href={url} rel="noopener noreferrer" target="_blank">
-        {name}
-      </Link>
-      {/**
-      <form id="popup-form">
-        <label htmlFor="name">名前:</label>
-        <input type="text" id="name" name="name" required />
-        <button type="submit">送信</button>
-      </form>
-      */}
-    </div>
+    <PopupCard>
+      <PopupImage src={'/img/cp_01.jpg'} alt={name} />
+      <PopupTitle>{name}</PopupTitle>
+      <PopupAddress>{address}</PopupAddress>
+      <PopupLink href={url} target="_blank" rel="noopener noreferrer">
+        3Dモデルを見る
+      </PopupLink>
+    </PopupCard>
   )
 }
 
@@ -45,6 +78,7 @@ export default function Map({ properties }: MapProps) {
       properties: {
         id: item.id,
         name: item.name,
+        address: item.address,
         movies: item.movies,
         // その他必要なプロパティを追加
       },
@@ -113,6 +147,7 @@ export default function Map({ properties }: MapProps) {
         const name = property.name
         const movie = JSON.parse(property.movies)[0]
         const url = '/luma/' + movie.id
+        const address = property.address
 
         // ポップアップを表示する
         new maplibregl.Popup({
@@ -120,7 +155,7 @@ export default function Map({ properties }: MapProps) {
           closeButton: false, // 閉じるボタンの表示
         })
           .setLngLat(coordinates)
-          .setHTML(renderToStaticMarkup(<PopupHtml name={name} url={url} />))
+          .setHTML(renderToStaticMarkup(<PopupHtml name={name} url={url} address={address} />))
           .addTo(map.current!)
       })
     }
