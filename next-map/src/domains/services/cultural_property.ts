@@ -13,8 +13,13 @@ export default class ScoresService {
 
   async getProperties() {
     const props = { has_movies: 'true' }
-    const properties = await this.repositories.cultural_property?.get(props)
-    if (!properties) return []
-    return properties
+    try {
+      const properties = await this.repositories.cultural_property?.get(props)
+      if (!properties) return []
+      return properties
+    } catch (e) {
+      console.error(e)
+      return []
+    }
   }
 }

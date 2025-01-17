@@ -158,7 +158,11 @@ export default function Map({ properties }: MapProps) {
           closeButton: false, // 閉じるボタンの表示
         })
           .setLngLat(coordinates)
-          .setHTML(renderToStaticMarkup(<PopupHtml name={name} imageUrl={imageUrl} url={url} address={address} />))
+          .setHTML(
+            renderToStaticMarkup(
+              <PopupHtml name={name} imageUrl={imageUrl} url={url} address={address} />,
+            ),
+          )
           .addTo(map.current!)
       })
     }
