@@ -4,7 +4,6 @@ import Article from '@/components/blocks/Article'
 import { cultural_property as culturalPropertyService } from '@/domains/services'
 import { CulturalProperties } from '@/domains/models/cultural_property'
 import NavigationTab from '@/components/blocks/NavigationTab'
-import Features from '@/components/blocks/Features'
 
 const Home = () => {
   const [properties, setProperties] = useState<CulturalProperties>([])
@@ -23,7 +22,6 @@ const Home = () => {
   return (
     <LayoutWithFooter>
       <>
-        <Features />
         <NavigationTab />
         {properties.map((property) => (
           <Article
