@@ -11,8 +11,7 @@ const TabContainer = styled.div`
   margin-bottom: 20px;
 `
 
-const TabLink = styled(Link)`
-`
+const TabLink = styled(Link)``
 
 const TabButton = styled.button<{ active: boolean }>`
   padding: 10px 20px;

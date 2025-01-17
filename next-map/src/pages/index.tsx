@@ -1,6 +1,4 @@
-import { GetServerSideProps } from 'next'
 import React, { useEffect, useState } from 'react'
-import { sql } from '@vercel/postgres'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
 import Article from '@/components/blocks/Article'
 import { cultural_property as culturalPropertyService } from '@/domains/services'
@@ -42,22 +40,3 @@ const Home = () => {
 }
 
 export default Home
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const { rows } = await sql`SELECT * FROM open3d.datasets`
-
-    return {
-      props: {
-        datasets: rows,
-      },
-    }
-  } catch (error) {
-    console.error('データベースクエリエラー:', error)
-    return {
-      props: {
-        datasets: [],
-      },
-    }
-  }
-}

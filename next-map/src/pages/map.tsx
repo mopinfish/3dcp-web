@@ -1,54 +1,30 @@
-import { GetServerSideProps } from 'next'
-import React from 'react'
-import { sql } from '@vercel/postgres'
-
+import React, { useState, useEffect } from 'react'
 import Map from '../components/Map'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
+import { cultural_property as culturalPropertyService } from '@/domains/services'
+import { CulturalProperties } from '@/domains/models/cultural_property'
+import NavigationTab from '@/components/blocks/NavigationTab'
 
-interface Dataset {
-  id: number
-  name: string
-  description: string
-  file_name: string
-}
+const MapScreen = () => {
+  const [properties, setProperties] = useState<CulturalProperties>([])
 
-interface MapScreenProps {
-  datasets: Dataset[]
-}
+  const actions = {
+    onload: async () => {
+      const properties = await culturalPropertyService.getProperties()
+      setProperties(properties)
+    },
+  }
 
-const MapScreen = ({ datasets }: MapScreenProps) => {
+  useEffect(() => {
+    actions.onload()
+  }, [])
+
   return (
     <LayoutWithFooter>
-      <>
-        {datasets.map((dataset) => (
-          <div key={dataset.id}>
-            <h2>{dataset.name}</h2>
-            <p>{dataset.description}</p>
-          </div>
-        ))}
-        <Map />
-      </>
+      <NavigationTab />
+      <Map properties={properties} />
     </LayoutWithFooter>
   )
 }
 
 export default MapScreen
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  try {
-    const { rows } = await sql`SELECT * FROM open3d.datasets`
-
-    return {
-      props: {
-        datasets: rows,
-      },
-    }
-  } catch (error) {
-    console.error('データベースクエリエラー:', error)
-    return {
-      props: {
-        datasets: [],
-      },
-    }
-  }
-}

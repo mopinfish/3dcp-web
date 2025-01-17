@@ -6,6 +6,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
 import Link from 'next/link'
 import { renderToStaticMarkup } from 'react-dom/server'
+import { CulturalProperties } from '@/domains/models/cultural_property'
 
 const PopupHtml: React.FC<{ name: string; url: string }> = ({ name, url }) => {
   return (
@@ -13,23 +14,45 @@ const PopupHtml: React.FC<{ name: string; url: string }> = ({ name, url }) => {
       <Link href={url} rel="noopener noreferrer" target="_blank">
         {name}
       </Link>
+      {/**
       <form id="popup-form">
         <label htmlFor="name">名前:</label>
         <input type="text" id="name" name="name" required />
         <button type="submit">送信</button>
       </form>
+      */}
     </div>
   )
 }
 
-export default function Map() {
+type MapProps = {
+  properties: CulturalProperties
+}
+
+export default function Map({ properties }: MapProps) {
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<maplibregl.Map | null>(null)
 
-  useEffect(() => {
-    if (map.current) return // マップが既に初期化されている場合は何もしない
+  // GeoJSONフィーチャーコレクションに変換
+  const geojsonData: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
+    type: 'FeatureCollection',
+    features: properties.map((item) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [item.longitude, item.latitude],
+      },
+      properties: {
+        id: item.id,
+        name: item.name,
+        movies: item.movies,
+        // その他必要なプロパティを追加
+      },
+    })),
+  }
 
-    if (mapContainer.current) {
+  useEffect(() => {
+    if (properties && mapContainer.current) {
       map.current = new maplibregl.Map({
         container: mapContainer.current,
         style: {
@@ -52,8 +75,8 @@ export default function Map() {
             },
           ],
         },
-        center: [139.767, 35.6814], // 東京の座標
-        zoom: 11,
+        center: [139.7975443779719, 35.678396026551994],
+        zoom: 13,
       })
 
       map.current.addControl(new maplibregl.NavigationControl(), 'top-right')
@@ -61,23 +84,23 @@ export default function Map() {
         if (map.current === null) return
 
         // 地図の読み込み完了後に実行
-        const image = await map.current.loadImage('/img/property_icon.png')
+        const image = await map.current.loadImage('/img/marker_icon.png')
         map.current.addImage('property_icon', image.data)
 
-        // GeoJSONファイルを外部から読み込む
-        map.current.addSource('cultural_properties', {
+        // ソースを追加
+        map.current.addSource('cultural-properties', {
           type: 'geojson',
-          data: '/data/koto_cultural_properties.geojson', // GeoJSONファイルへのパス
+          data: geojsonData,
         })
 
         // ポイントを表示するレイヤーの追加
         map.current.addLayer({
           id: 'cultural_properties',
           type: 'symbol',
-          source: 'cultural_properties',
+          source: 'cultural-properties',
           layout: {
             'icon-image': 'property_icon',
-            'icon-size': 0.1,
+            'icon-size': 0.2,
           },
         })
       })
@@ -86,8 +109,10 @@ export default function Map() {
         if (event.features === undefined) return
         const feature = event.features[0]
         const coordinates = event.lngLat
-        const name = feature.properties['名称']
-        const url = '/luma/' + '1'
+        const property = feature.properties
+        const name = property.name
+        const movie = JSON.parse(property.movies)[0]
+        const url = '/luma/' + movie.id
 
         // ポップアップを表示する
         new maplibregl.Popup({
@@ -105,7 +130,7 @@ export default function Map() {
         map.current.remove()
       }
     }
-  }, [])
+  }, [properties])
 
-  return <div ref={mapContainer} style={{ width: '100%', height: '400px' }} />
+  return <div ref={mapContainer} style={{ width: '100wh', height: '100vh' }} />
 }
