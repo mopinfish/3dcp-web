@@ -41,14 +41,15 @@ const PopupLink = styled.a`
   font-size: 14px;
 `
 
-const PopupHtml: React.FC<{ name: string; url: string; address: string }> = ({
+const PopupHtml: React.FC<{ name: string; imageUrl: string; url: string; address: string }> = ({
   name,
+  imageUrl,
   url,
   address,
 }) => {
   return (
     <PopupCard>
-      <PopupImage src={'/img/cp_01.jpg'} alt={name} />
+      <PopupImage src={imageUrl} alt={name} />
       <PopupTitle>{name}</PopupTitle>
       <PopupAddress>{address}</PopupAddress>
       <PopupLink href={url} target="_blank" rel="noopener noreferrer">
@@ -80,6 +81,7 @@ export default function Map({ properties }: MapProps) {
         name: item.name,
         address: item.address,
         movies: item.movies,
+        images: item.images,
         // その他必要なプロパティを追加
       },
     })),
@@ -146,6 +148,7 @@ export default function Map({ properties }: MapProps) {
         const property = feature.properties
         const name = property.name
         const movie = JSON.parse(property.movies)[0]
+        const imageUrl = JSON.parse(property.images)[0]?.image ?? '/img/noimage.png'
         const url = '/luma/' + movie.id
         const address = property.address
 
@@ -155,7 +158,7 @@ export default function Map({ properties }: MapProps) {
           closeButton: false, // 閉じるボタンの表示
         })
           .setLngLat(coordinates)
-          .setHTML(renderToStaticMarkup(<PopupHtml name={name} url={url} address={address} />))
+          .setHTML(renderToStaticMarkup(<PopupHtml name={name} imageUrl={imageUrl} url={url} address={address} />))
           .addTo(map.current!)
       })
     }

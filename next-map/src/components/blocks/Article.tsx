@@ -86,7 +86,7 @@ const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, li
           {imageUrls.slice(0, 4).map((url, index) => (
             <ImageWrapper key={index}>
               <Image
-                src={url}
+                src={url ?? '/img/noimage.png'}
                 alt={`${title} - image ${index + 1}`}
                 fill
                 style={{ objectFit: 'cover' }}

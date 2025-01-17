@@ -19,7 +19,6 @@ const Home = () => {
     actions.onload()
   }, [])
 
-  const imageUrls = ['/img/cp_01.jpg', '/img/cp_01.jpg', '/img/cp_01.jpg', '/img/cp_01.jpg']
   return (
     <LayoutWithFooter>
       <>
@@ -27,7 +26,7 @@ const Home = () => {
         {properties.map((property) => (
           <Article
             key={property.id}
-            imageUrls={imageUrls}
+            imageUrls={property.images.map((image) => image.image)}
             title={property.name}
             description={property.note ?? ''}
             linkHref={`/luma/${property.movies[0].id}`}
