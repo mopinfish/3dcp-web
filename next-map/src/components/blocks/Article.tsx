@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import Image from 'next/image'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
@@ -54,6 +53,13 @@ const ImageWrapper = styled.div`
   }
 `
 
+const Image = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+`
+
 const Description = styled.div`
   font-size: 1rem;
   margin-bottom: 1rem;
@@ -88,8 +94,6 @@ const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, li
               <Image
                 src={url ?? '/img/noimage.png'}
                 alt={`${title} - image ${index + 1}`}
-                fill
-                style={{ objectFit: 'cover' }}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </ImageWrapper>
