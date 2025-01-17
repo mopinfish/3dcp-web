@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
@@ -8,10 +8,18 @@ import Link from 'next/link'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 const PopupHtml: React.FC<{ name: string; url: string }> = ({ name, url }) => {
+  const [editMode, setEditMode] = useState(false)
   return (
-    <Link href={url} rel="noopener noreferrer" target="_blank">
-      {name}
-    </Link>
+    <div>
+      <Link href={url} rel="noopener noreferrer" target="_blank">
+        {name}
+      </Link>
+      <form id="popup-form">
+        <label htmlFor="name">名前:</label>
+        <input type="text" id="name" name="name" required />
+        <button type="submit">送信</button>
+      </form>
+    </div>
   )
 }
 
@@ -81,7 +89,6 @@ export default function Map() {
         const coordinates = event.lngLat
         const name = feature.properties['名称']
         const url = '/luma/' + '1'
-        console.log(renderToStaticMarkup(<PopupHtml name={name} url={url} />))
 
         // ポップアップを表示する
         new maplibregl.Popup({
