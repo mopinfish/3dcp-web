@@ -49,17 +49,18 @@ const Nav = styled.nav`
 const Header = () => {
   return (
     <HeaderContainer>
-      <Logo>
-        <Link href="/">
+      <Link href="/">
+        <Logo>
           <Image
             src="/img/logo.png"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt="OPEN3D Map Logo"
-            layout="fill"
-            objectFit="contain"
+            fill
+            style={{ objectFit: 'contain' }}
             priority
           />
-        </Link>
-      </Logo>
+        </Logo>
+      </Link>
       <Nav>
         <ul>
           <li>

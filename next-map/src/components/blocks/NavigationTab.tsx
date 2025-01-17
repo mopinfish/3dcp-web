@@ -13,19 +13,19 @@ const TabContainer = styled.div`
 
 const TabLink = styled(Link)``
 
-const TabButton = styled.button<{ active: boolean }>`
+const TabButton = styled.button<{ $active: boolean }>`
   padding: 10px 20px;
   margin: 0 10px 0;
   font-size: 1.2rem;
-  background-color: ${(props) => (props.active ? '#007bff' : 'transparent')};
-  color: ${(props) => (props.active ? 'white' : 'black')};
+  background-color: ${(props) => (props.$active ? '#007bff' : 'transparent')};
+  color: ${(props) => (props.$active ? 'white' : 'black')};
   border-radius: 5px;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => (props.active ? '#007bff' : '#e0e0e0')};
+    background-color: ${(props) => (props.$active ? '#007bff' : '#e0e0e0')};
   }
 `
 
@@ -34,11 +34,11 @@ const NavigationTab: React.FC = () => {
 
   return (
     <TabContainer>
-      <TabLink href="/list" passHref>
-        <TabButton active={router.pathname === '/'}>一覧をみる</TabButton>
+      <TabLink href="/" passHref>
+        <TabButton $active={router.pathname === '/'}>一覧をみる</TabButton>
       </TabLink>
       <TabLink href="/map" passHref>
-        <TabButton active={router.pathname === '/map'}>地図を見る</TabButton>
+        <TabButton $active={router.pathname === '/map'}>地図を見る</TabButton>
       </TabLink>
     </TabContainer>
   )

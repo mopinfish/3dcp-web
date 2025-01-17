@@ -54,7 +54,7 @@ const ImageWrapper = styled.div`
   }
 `
 
-const Description = styled.p`
+const Description = styled.div`
   font-size: 1rem;
   margin-bottom: 1rem;
 `
@@ -85,7 +85,13 @@ const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, li
         <ImagesWrapper>
           {imageUrls.slice(0, 4).map((url, index) => (
             <ImageWrapper key={index}>
-              <Image src={url} alt={`${title} - image ${index + 1}`} fill objectFit="cover" />
+              <Image
+                src={url}
+                alt={`${title} - image ${index + 1}`}
+                fill
+                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
             </ImageWrapper>
           ))}
         </ImagesWrapper>
