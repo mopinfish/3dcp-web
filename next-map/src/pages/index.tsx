@@ -5,18 +5,7 @@ import { LayoutWithFooter } from '@/components/layouts/Layout'
 import Article from '@/components/blocks/Article'
 import { cultural_property as culturalPropertyService } from '@/domains/services'
 
-interface Dataset {
-  id: number
-  name: string
-  description: string
-  file_name: string
-}
-
-interface HomeProps {
-  datasets: Dataset[]
-}
-
-const Home = ({ datasets }: HomeProps) => {
+const Home = () => {
   const actions = {
     onload: async () => {
       console.log('onload')

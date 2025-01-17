@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
@@ -8,7 +8,6 @@ import Link from 'next/link'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 const PopupHtml: React.FC<{ name: string; url: string }> = ({ name, url }) => {
-  const [editMode, setEditMode] = useState(false)
   return (
     <div>
       <Link href={url} rel="noopener noreferrer" target="_blank">
