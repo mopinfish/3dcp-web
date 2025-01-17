@@ -66,7 +66,7 @@ const Header = () => {
             <Link href="/">Home</Link>
           </li>
           <li>
-            <Link href="/map">Map</Link>
+            <Link href="/">About</Link>
           </li>
         </ul>
       </Nav>

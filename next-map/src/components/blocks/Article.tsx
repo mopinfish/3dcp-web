@@ -1,95 +1,29 @@
-import React, { useEffect, useRef, useState, FC } from 'react'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
-interface IntersectionObserverOptions {
-  root?: Element | null
-  rootMargin?: string
-  threshold?: number | number[]
-}
-
-function useIntersectionObserver(options: IntersectionObserverOptions = {}) {
-  const [isIntersecting, setIsIntersecting] = useState<boolean>(false)
-  const targetRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]: IntersectionObserverEntry[]) => {
-      setIsIntersecting(entry.isIntersecting)
-    }, options)
-
-    if (targetRef.current) {
-      observer.observe(targetRef.current)
-    }
-
-    return () => {
-      if (targetRef.current) {
-        observer.unobserve(targetRef.current)
-      }
-    }
-  }, [options])
-
-  return [targetRef, isIntersecting] as const
-}
-
-interface TypingEffectProps {
-  text: string
-  speed?: number
-}
-
-const TypingEffect: FC<TypingEffectProps> = ({ text, speed = 50 }) => {
-  const [ref, isVisible] = useIntersectionObserver({
-    threshold: 0.1, // 10%が表示されたらイベントを発火
-  })
-  const [displayedText, setDisplayedText] = useState<string>('')
-  const [index, setIndex] = useState<number>(0)
-
-  useEffect(() => {
-    if (isVisible) {
-      console.log('コンポーネントが表示領域に入りました')
-
-      if (index < text.length) {
-        const timer = setTimeout(() => {
-          setDisplayedText((prevText: string) => prevText + text[index])
-          setIndex((prevIndex: number) => prevIndex + 1)
-        }, speed)
-
-        return () => clearTimeout(timer)
-      }
-    }
-  }, [isVisible, index, text, speed])
-
-  return <span ref={ref}>{displayedText}</span>
-}
+const HtmlRenderer = dynamic(() => import('@/components/helpers/html_renderer'), { ssr: false })
 
 const ArticleContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 800px;
   margin: 0 auto 1rem;
-  margin-bottom:last-child: 0;
   padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   background-color: #ffffff;
 
-  @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: center;
-  }
-`
-
-const ImageWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 200px;
-  margin-bottom: 1rem;
-
-  @media (min-width: 768px) {
-    width: 200px;
-    height: 200px;
+  &:last-child {
     margin-bottom: 0;
-    margin-right: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    flex-direction: column;
   }
 `
 
@@ -100,6 +34,24 @@ const ContentWrapper = styled.div`
 const Title = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
+`
+
+const ImagesWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+`
+
+const ImageWrapper = styled.div`
+  position: relative;
+  width: calc(50% - 0.5rem);
+  height: 150px;
+
+  @media (min-width: 768px) {
+    width: calc(25% - 0.75rem);
+    height: 200px;
+  }
 `
 
 const Description = styled.p`
@@ -118,25 +70,31 @@ const StyledLink = styled(Link)`
 `
 
 interface ArticleProps {
-  imageUrl: string
+  imageUrls: string[]
   title: string
   description: string
   linkHref: string
   linkText: string
 }
 
-const Article: FC<ArticleProps> = ({ imageUrl, title, description, linkHref, linkText }) => {
+const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, linkText }) => {
   return (
     <ArticleContainer>
-      <ImageWrapper>
-        <Image src={imageUrl} alt={title} fill objectFit="contain" />
-      </ImageWrapper>
       <ContentWrapper>
         <Title>{title}</Title>
+        <ImagesWrapper>
+          {imageUrls.slice(0, 4).map((url, index) => (
+            <ImageWrapper key={index}>
+              <Image src={url} alt={`${title} - image ${index + 1}`} fill objectFit="cover" />
+            </ImageWrapper>
+          ))}
+        </ImagesWrapper>
         <Description>
-          <TypingEffect text={description} />
+          <HtmlRenderer htmlContent={description} />
         </Description>
-        <StyledLink href={linkHref}>{linkText}</StyledLink>
+        <StyledLink href={linkHref} target="_blank">
+          {linkText}
+        </StyledLink>
       </ContentWrapper>
     </ArticleContainer>
   )

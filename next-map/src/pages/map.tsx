@@ -20,7 +20,6 @@ const MapScreen = ({ datasets }: MapScreenProps) => {
   return (
     <LayoutWithFooter>
       <>
-        <h1>OPEN3D Map</h1>
         {datasets.map((dataset) => (
           <div key={dataset.id}>
             <h2>{dataset.name}</h2>

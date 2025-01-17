@@ -17,6 +17,15 @@
 },
  */
 
+type Movie = {
+  id: number
+  title: string
+  note: string
+  url: string
+}
+
+type Movies = Movie[]
+
 export type CulturalProperty = {
   id: number
   name: string
@@ -32,6 +41,7 @@ export type CulturalProperty = {
   url: string
   note: string | null
   geom: string
+  movies: Movies
 }
 
 export type CulturalProperties = CulturalProperty[]
