@@ -6,6 +6,8 @@ const Subtitle = styled.h2`
 `
 
 const FeatureSection = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-bottom: 40px;
 `
 
@@ -14,8 +16,11 @@ const FeatureTitle = styled.h3`
 `
 
 const FeatureImage = styled.img`
-  max-width: 100%;
+  max-width: 60%;
   height: auto;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  margin: 0 auto;
 `
 
 const Features: React.FC = () => {
