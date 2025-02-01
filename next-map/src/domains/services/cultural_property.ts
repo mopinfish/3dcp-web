@@ -4,7 +4,7 @@ type Reporitories = {
   cultural_property: CulturalPropertyRepository | null
 }
 
-export default class ScoresService {
+export default class CulturalPropertyService {
   constructor(
     readonly repositories: Reporitories = {
       cultural_property: null,

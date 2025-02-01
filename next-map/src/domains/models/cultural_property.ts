@@ -1,3 +1,5 @@
+import { Movies } from './movie'
+import { Images } from './image'
 /**
 {
 "id": 131083000000,
@@ -16,22 +18,6 @@
 "geom": "SRID=6668;POINT (139.817322 35.672793)"
 },
  */
-
-type Movie = {
-  id: number
-  title: string
-  note: string
-  url: string
-}
-
-type Movies = Movie[]
-
-type Image = {
-  id: number
-  image: string
-}
-
-type Images = Image[]
 
 export type CulturalProperty = {
   id: number
