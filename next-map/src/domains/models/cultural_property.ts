@@ -1,4 +1,5 @@
 import { Movies } from './movie'
+import { Images } from './image'
 /**
 {
 "id": 131083000000,
