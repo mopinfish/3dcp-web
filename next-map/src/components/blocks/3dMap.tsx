@@ -24,10 +24,6 @@ const plateauLayer: maplibregl.FillExtrusionLayerSpecification = {
     'fill-extrusion-height': ['get', 'measuredHeight'],
   },
 }
-const customSources: { [key: string]: maplibregl.SourceSpecification } = {
-  plateau: plateauSource,
-}
-const customLayers: maplibregl.LayerSpecification[] = [plateauLayer]
 const initialStyles: { [key: string]: maplibregl.StyleSpecification } = {
   osm: {
     version: 8,
@@ -39,6 +35,7 @@ const initialStyles: { [key: string]: maplibregl.StyleSpecification } = {
         attribution:
           '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       },
+      plateau: plateauSource,
     },
     layers: [
       {
@@ -48,6 +45,7 @@ const initialStyles: { [key: string]: maplibregl.StyleSpecification } = {
         minzoom: 0,
         maxzoom: 19,
       },
+      plateauLayer,
     ],
   },
 }
@@ -58,7 +56,6 @@ type MapProps = {
 
 const Map3D = ({ properties }: MapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null)
-  const [map, setMap] = useState<maplibregl.Map | null>(null)
   const [styles, setStyles] = useState<Record<string, maplibregl.StyleSpecification>>(initialStyles)
   // GeoJSONフィーチャーコレクションに変換
   const geojsonData: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
@@ -84,18 +81,7 @@ const Map3D = ({ properties }: MapProps) => {
   /**
    * 地図スタイルの読み込みおよび設定
    */
-  const loadStyles = async () => {
-    /**
-     * れきちずスタイルの読み込み
-     */
-    const response = await fetch(
-      'https://mierune.github.io/rekichizu-style/styles/street/style.json',
-    )
-    const rekichizuStyle = await response.json()
-    const styles: { [key: string]: maplibregl.StyleSpecification } = {
-      ...initialStyles,
-      rekichizu: rekichizuStyle,
-    }
+  const loadStyles = () => {
     const otherSources: { [key: string]: maplibregl.GeoJSONSourceSpecification } = {
       cultural_properties: {
         type: 'geojson',
@@ -113,20 +99,14 @@ const Map3D = ({ properties }: MapProps) => {
         },
       },
     ]
-
-    /**
-     * カスタムソースおよびカスタムレイヤーを追加
-     */
-    Object.keys(styles).forEach((key) => {
-      styles[key].sources = { ...styles[key].sources, ...customSources, ...otherSources }
-      styles[key].layers = [
-        ...styles[key].layers,
-        ...customLayers,
+    if (!initialStyles.osm.sources.cultural_properties) {
+      initialStyles.osm.sources = { ...initialStyles.osm.sources, ...otherSources }
+      initialStyles.osm.layers = [
+        ...initialStyles.osm.layers,
         ...(otherLayers as maplibregl.LayerSpecification[]),
       ]
-    })
-
-    setStyles(styles)
+    }
+    setStyles(initialStyles)
   }
 
   const onMapLoad = async (mapInstance: maplibregl.Map) => {
@@ -171,7 +151,6 @@ const Map3D = ({ properties }: MapProps) => {
       const id = Number(movie.id)
       const url = '/luma/' + movie.id
 
-      console.log('click', id)
       const popupContainer = document.createElement('div') // 動的コンテンツ用のコンテナ
       // ポップアップを表示する
       const popup = new maplibregl.Popup({
@@ -196,10 +175,6 @@ const Map3D = ({ properties }: MapProps) => {
   useEffect(() => {
     if (!mapContainer.current) return
     loadStyles()
-  }, [])
-
-  useEffect(() => {
-    if (!mapContainer.current) return
     const mapInstance = new maplibregl.Map({
       container: mapContainer.current as HTMLElement,
       style: styles.osm,
@@ -220,29 +195,12 @@ const Map3D = ({ properties }: MapProps) => {
       mapInstance.getCanvas().style.cursor = ''
     })
 
-    setMap(mapInstance)
-
     return () => mapInstance.remove()
-  }, [styles, properties])
-
-  const switchStyle = (styleKey: 'osm' | 'konjaku' | 'rekichizu') => {
-    if (map) {
-      map.setStyle(styles[styleKey])
-    }
-  }
+  }, [properties])
 
   return (
     <>
-      <div ref={mapContainer} style={{ width: '100wh', height: '100vh' }}>
-        <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}>
-          <button onClick={() => switchStyle('osm')}>OpenStreetMap</button>
-          {/**
-         * CORSの問題を解消できるまで、今昔マップのスタイルはコメントアウト
-        <button onClick={() => switchStyle('konjaku')}>今昔マップ</button>
-         */}
-          <button onClick={() => switchStyle('rekichizu')}>れきちず</button>
-        </div>
-      </div>
+      <div ref={mapContainer} style={{ width: '100wh', height: '100vh' }}></div>
     </>
   )
 }

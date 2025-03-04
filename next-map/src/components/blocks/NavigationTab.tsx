@@ -40,6 +40,9 @@ const NavigationTab: React.FC = () => {
       <TabLink href="/map" passHref>
         <TabButton $active={router.pathname === '/map'}>地図を見る</TabButton>
       </TabLink>
+      <TabLink href="/3d_map" passHref>
+        <TabButton $active={router.pathname === '/3d_map'}>3D地図を見る</TabButton>
+      </TabLink>
     </TabContainer>
   )
 }

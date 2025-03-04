@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { styled } from 'styled-components'
 import { ThreeCanvas } from './ThreeCanvas'
 
@@ -8,7 +8,7 @@ const Loading: React.FC = () => {
 
 const PopupCard = styled.div`
   width: 100%;
-: display: flex;
+  :display: flex;
   flex-direction: column;
 `
 
@@ -93,9 +93,7 @@ export const CulturalPropertyThreeCanvasPopup: React.FC<CulturalPropertyThreeCan
 
   return (
     <PopupCard ref={popupRef}>
-      <PopupCanvasWrapper>
-        {!id ? <Loading /> : <ThreeCanvas id={id} />}
-      </PopupCanvasWrapper>
+      <PopupCanvasWrapper>{!id ? <Loading /> : <ThreeCanvas id={id} />}</PopupCanvasWrapper>
       <PopupLinkWrapper>
         <PopupLink href={url} target="_blank" rel="noopener noreferrer">
           大きな画面で見る
