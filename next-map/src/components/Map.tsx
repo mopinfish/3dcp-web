@@ -5,59 +5,8 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import styled from 'styled-components'
 import { CulturalProperties } from '@/domains/models/cultural_property'
-
-const PopupCard = styled.div`
-  width: 100%;
-  padding: 10px;
-`
-
-const PopupImage = styled.img`
-  width: 100%;
-  height: 100px;
-  object-fit: contain;
-  border-radius: 4px;
-`
-
-const PopupTitle = styled.h3`
-  margin: 10px 0 5px;
-  font-size: 18px;
-`
-
-const PopupAddress = styled.p`
-  margin: 0 0 10px;
-  font-size: 14px;
-  color: #666;
-`
-
-const PopupLink = styled.a`
-  display: inline-block;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  font-size: 14px;
-`
-
-const PopupHtml: React.FC<{ name: string; imageUrl: string; url: string; address: string }> = ({
-  name,
-  imageUrl,
-  url,
-  address,
-}) => {
-  return (
-    <PopupCard>
-      <PopupImage src={imageUrl} alt={name} />
-      <PopupTitle>{name}</PopupTitle>
-      <PopupAddress>{address}</PopupAddress>
-      <PopupLink href={url} target="_blank" rel="noopener noreferrer">
-        3Dモデルを見る
-      </PopupLink>
-    </PopupCard>
-  )
-}
+import { CulturalPropertyPopup } from './blocks/Popup'
 
 type MapProps = {
   properties: CulturalProperties
@@ -160,7 +109,7 @@ export default function Map({ properties }: MapProps) {
           .setLngLat(coordinates)
           .setHTML(
             renderToStaticMarkup(
-              <PopupHtml name={name} imageUrl={imageUrl} url={url} address={address} />,
+              <CulturalPropertyPopup name={name} imageUrl={imageUrl} url={url} address={address} />,
             ),
           )
           .addTo(map.current!)
