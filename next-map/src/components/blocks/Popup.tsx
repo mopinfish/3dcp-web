@@ -8,7 +8,7 @@ const Loading: React.FC = () => {
 
 const PopupCard = styled.div`
   width: 100%;
-  display: flex;
+: display: flex;
   flex-direction: column;
 `
 
@@ -89,28 +89,12 @@ export const CulturalPropertyThreeCanvasPopup: React.FC<CulturalPropertyThreeCan
   id,
   url,
 }: CulturalPropertyThreeCanvasPopupProps) => {
-  const [size, setSize] = useState({ width: 0, height: 0 })
   const popupRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const updateSize = () => {
-      if (popupRef.current) {
-        setSize({
-          width: 200,
-          height: 200,
-        })
-      }
-    }
-
-    updateSize()
-    window.addEventListener('resize', updateSize)
-    return () => window.removeEventListener('resize', updateSize)
-  }, [])
 
   return (
     <PopupCard ref={popupRef}>
       <PopupCanvasWrapper>
-        {!id ? <Loading /> : <ThreeCanvas id={id} width={size.width} height={size.height} />}
+        {!id ? <Loading /> : <ThreeCanvas id={id} />}
       </PopupCanvasWrapper>
       <PopupLinkWrapper>
         <PopupLink href={url} target="_blank" rel="noopener noreferrer">
