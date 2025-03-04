@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import { CulturalProperties } from '@/domains/models'
 
 const plateauSource: maplibregl.VectorSourceSpecification = {
   type: 'vector',
@@ -69,35 +70,36 @@ const initialStyles: { [key: string]: maplibregl.StyleSpecification } = {
       },
     ],
   },
-  /**
-   * CORSの問題を解消できるまで、今昔マップのスタイルはコメントアウト
-  konjaku: {
-    version: 8,
-    sources: {
-      konjaku: {
-        type: 'raster',
-        tiles: ['https://ktgis.net/kjmapw/kjtilemap/tokyo50/2man/{z}/{x}/{y}.png'],
-        tileSize: 256,
-        attribution: '今昔マップ',
-      },
-    },
-    layers: [
-      {
-        id: 'konjaku-layer',
-        type: 'raster',
-        source: 'konjaku',
-        minzoom: 0,
-        maxzoom: 19,
-      },
-    ],
-  },
-   */
 }
 
-const Map3D = () => {
+type MapProps = {
+  properties: CulturalProperties
+}
+
+const Map3D = ({ properties }: MapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null)
   const [map, setMap] = useState<maplibregl.Map | null>(null)
   const [styles, setStyles] = useState<Record<string, maplibregl.StyleSpecification>>(initialStyles)
+  // GeoJSONフィーチャーコレクションに変換
+  const geojsonData: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
+    type: 'FeatureCollection',
+    features: properties.map((item) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [item.longitude, item.latitude],
+      },
+      properties: {
+        id: item.id,
+        name: item.name,
+        address: item.address,
+        movies: item.movies,
+        images: item.images,
+        // その他必要なプロパティを追加
+      },
+    })),
+  }
+
   /**
    * 地図スタイルの読み込みおよび設定
    */
@@ -109,15 +111,32 @@ const Map3D = () => {
       'https://mierune.github.io/rekichizu-style/styles/street/style.json',
     )
     const rekichizuStyle = await response.json()
-    /**
-     * カスタムソースおよびカスタムレイヤーを追加
-     */
     const styles: { [key: string]: maplibregl.StyleSpecification } = {
       ...initialStyles,
       rekichizu: rekichizuStyle,
     }
-    //styles.osm.sources = { ...styles.osm.sources, ...customSources }
-    //styles.osm.layers = [...styles.osm.layers, ...customLayers]
+    /**
+        // ソースを追加
+        map.current.addSource('cultural-properties', {
+          type: 'geojson',
+          data: geojsonData,
+        })
+
+        // ポイントを表示するレイヤーの追加
+        map.current.addLayer({
+          id: 'cultural_properties',
+          type: 'symbol',
+          source: 'cultural-properties',
+          layout: {
+            'icon-image': 'property_icon',
+            'icon-size': 0.2,
+          },
+        })
+    */
+
+    /**
+     * カスタムソースおよびカスタムレイヤーを追加
+     */
     Object.keys(styles).forEach((key) => {
       styles[key].sources = { ...styles[key].sources, ...customSources }
       styles[key].layers = [...styles[key].layers, ...customLayers]
@@ -126,6 +145,43 @@ const Map3D = () => {
     })
 
     setStyles(styles)
+  }
+
+  const onMapLoad = async (mapInstance: maplibregl.Map) => {
+    const geojson = await fetch('./tokyo_ks.geojson').then((res) => res.json())
+
+    // GeoJSON内の各ポイントについて画像を動的にロード
+    const uniqueIcons = new Array<string>()
+    geojson.features.forEach((feature: GeoJSON.Feature<GeoJSON.Geometry, { icon?: string }>) => {
+      if (feature.properties && feature.properties.icon) {
+        uniqueIcons.push(feature.properties.icon)
+      }
+    })
+
+    // 各アイコン画像を事前にロードしてマップに追加
+    for (const icon of uniqueIcons) {
+      if (mapInstance && !mapInstance.hasImage(icon)) {
+        const response = await fetch(icon)
+        const blob = await response.blob()
+        const imageBitmap = await createImageBitmap(blob)
+        mapInstance.addImage(icon, imageBitmap)
+      }
+    }
+
+    console.log('すべてのアイコンがロードされました')
+  }
+  const onClickFacilityPoint = (mapInstance: maplibregl.Map, e: maplibregl.MapLayerMouseEvent) => {
+    if (e.features && e.features.length > 0) {
+      const feature = e.features[0]
+      const coordinates: [number, number] =
+        feature.geometry.type === 'Point'
+          ? ((feature.geometry as GeoJSON.Point).coordinates.slice(0, 2) as [number, number])
+          : [0, 0]
+
+      const name = feature.properties?.P12_001 || 'No name'
+
+      new maplibregl.Popup().setLngLat(coordinates).setHTML(`<h3>${name}</h3>`).addTo(map)
+    }
   }
 
   useEffect(() => {
@@ -143,33 +199,11 @@ const Map3D = () => {
       pitch: 45,
       maxPitch: 85,
     })
-
     mapInstance.addControl(new maplibregl.NavigationControl())
 
-    mapInstance.on('load', async () => {
-      const geojson = await fetch('./tokyo_ks.geojson').then((res) => res.json())
-
-      // GeoJSON内の各ポイントについて画像を動的にロード
-      const uniqueIcons = new Array<string>()
-      geojson.features.forEach((feature: GeoJSON.Feature<GeoJSON.Geometry, { icon?: string }>) => {
-        if (feature.properties && feature.properties.icon) {
-          uniqueIcons.push(feature.properties.icon)
-        }
-      })
-
-      // 各アイコン画像を事前にロードしてマップに追加
-      for (const icon of uniqueIcons) {
-        if (mapInstance && !mapInstance.hasImage(icon)) {
-          const response = await fetch(icon)
-          const blob = await response.blob()
-          const imageBitmap = await createImageBitmap(blob)
-          mapInstance.addImage(icon, imageBitmap)
-        }
-      }
-
-      console.log('すべてのアイコンがロードされました')
+    mapInstance.on('load', () => {
+      onMapLoad(mapInstance)
     })
-
     mapInstance.on('mouseenter', 'facility_point', () => {
       mapInstance.getCanvas().style.cursor = 'pointer'
     })
@@ -177,17 +211,7 @@ const Map3D = () => {
       mapInstance.getCanvas().style.cursor = ''
     })
     mapInstance.on('click', 'facility_point', (e) => {
-      if (e.features && e.features.length > 0) {
-        const feature = e.features[0]
-        const coordinates: [number, number] =
-          feature.geometry.type === 'Point'
-            ? ((feature.geometry as GeoJSON.Point).coordinates.slice(0, 2) as [number, number])
-            : [0, 0]
-
-        const name = feature.properties?.P12_001 || 'No name'
-
-        new maplibregl.Popup().setLngLat(coordinates).setHTML(`<h3>${name}</h3>`).addTo(mapInstance)
-      }
+      onClickFacilityPoint(mapInstance, e)
     })
 
     setMap(mapInstance)
@@ -203,14 +227,15 @@ const Map3D = () => {
 
   return (
     <>
-      <div ref={mapContainer} style={{ position: 'absolute', top: 0, bottom: 0, width: '100%' }} />
-      <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}>
-        <button onClick={() => switchStyle('osm')}>OpenStreetMap</button>
-        {/**
+      <div ref={mapContainer} style={{ width: '100wh', height: '100vh' }}>
+        <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}>
+          <button onClick={() => switchStyle('osm')}>OpenStreetMap</button>
+          {/**
          * CORSの問題を解消できるまで、今昔マップのスタイルはコメントアウト
         <button onClick={() => switchStyle('konjaku')}>今昔マップ</button>
          */}
-        <button onClick={() => switchStyle('rekichizu')}>れきちず</button>
+          <button onClick={() => switchStyle('rekichizu')}>れきちず</button>
+        </div>
       </div>
     </>
   )

@@ -1,21 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import dynamic from 'next/dynamic'
+import { LayoutWithFooter } from '@/components/layouts/Layout'
+import { cultural_property as culturalPropertyService } from '@/domains/services'
+import { CulturalProperties } from '@/domains/models/cultural_property'
+import NavigationTab from '@/components/blocks/NavigationTab'
 
 const Map3D = dynamic(() => import('../components/blocks/3dMap'), {
   ssr: false,
 })
 
 const MapScreen3D: NextPage = () => {
+  const [properties, setProperties] = useState<CulturalProperties>([])
+
+  const actions = {
+    onload: async () => {
+      const properties = await culturalPropertyService.getProperties()
+      setProperties(properties)
+    },
+  }
+
+  useEffect(() => {
+    actions.onload()
+  }, [])
   return (
-    <div>
-      <Head>
-        <title>PLATEAU 3D都市モデル表示</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      <Map3D />
-    </div>
+    <LayoutWithFooter>
+      <NavigationTab />
+      <Map3D properties={properties} />
+    </LayoutWithFooter>
   )
 }
 
