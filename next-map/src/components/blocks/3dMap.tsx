@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { CulturalProperties } from '@/domains/models'
+import { CulturalPropertyThreeCanvasPopup } from './Popup'
+import { createRoot } from 'react-dom/client'
 
 const plateauSource: maplibregl.VectorSourceSpecification = {
   type: 'vector',
@@ -22,32 +24,10 @@ const plateauLayer: maplibregl.FillExtrusionLayerSpecification = {
     'fill-extrusion-height': ['get', 'measuredHeight'],
   },
 }
-const facilityPointSource: maplibregl.GeoJSONSourceSpecification = {
-  type: 'geojson',
-  data: './tokyo_ks.geojson',
-}
-const facilityPointLayer: maplibregl.SymbolLayerSpecification = {
-  id: 'facility_point',
-  type: 'symbol',
-  source: 'facility_point',
-  layout: {
-    'icon-image': ['get', 'icon'], // GeoJSON内の`icon`プロパティを参照
-    'icon-size': 0.2,
-  },
-  paint: {
-    'icon-halo-width': 2,
-    'icon-halo-color': '#fff',
-    'icon-halo-blur': 1,
-    'icon-translate': [0, -2],
-    'icon-translate-anchor': 'viewport',
-    'icon-opacity': 0.9,
-  },
-}
 const customSources: { [key: string]: maplibregl.SourceSpecification } = {
   plateau: plateauSource,
-  facility_point: facilityPointSource,
 }
-const customLayers: maplibregl.LayerSpecification[] = [plateauLayer, facilityPointLayer]
+const customLayers: maplibregl.LayerSpecification[] = [plateauLayer]
 const initialStyles: { [key: string]: maplibregl.StyleSpecification } = {
   osm: {
     version: 8,
@@ -95,6 +75,7 @@ const Map3D = ({ properties }: MapProps) => {
         address: item.address,
         movies: item.movies,
         images: item.images,
+        thumb: item.images[0].image,
         // その他必要なプロパティを追加
       },
     })),
@@ -115,33 +96,34 @@ const Map3D = ({ properties }: MapProps) => {
       ...initialStyles,
       rekichizu: rekichizuStyle,
     }
-    /**
-        // ソースを追加
-        map.current.addSource('cultural-properties', {
-          type: 'geojson',
-          data: geojsonData,
-        })
-
-        // ポイントを表示するレイヤーの追加
-        map.current.addLayer({
-          id: 'cultural_properties',
-          type: 'symbol',
-          source: 'cultural-properties',
-          layout: {
-            'icon-image': 'property_icon',
-            'icon-size': 0.2,
-          },
-        })
-    */
+    const otherSources: { [key: string]: maplibregl.GeoJSONSourceSpecification } = {
+      cultural_properties: {
+        type: 'geojson',
+        data: geojsonData,
+      },
+    }
+    const otherLayers = [
+      {
+        id: 'cultural_properties',
+        type: 'symbol',
+        source: 'cultural_properties',
+        layout: {
+          'icon-image': ['get', 'thumb'],
+          'icon-size': 0.2,
+        },
+      },
+    ]
 
     /**
      * カスタムソースおよびカスタムレイヤーを追加
      */
     Object.keys(styles).forEach((key) => {
-      styles[key].sources = { ...styles[key].sources, ...customSources }
-      styles[key].layers = [...styles[key].layers, ...customLayers]
-      console.log(key)
-      console.log(styles[key])
+      styles[key].sources = { ...styles[key].sources, ...customSources, ...otherSources }
+      styles[key].layers = [
+        ...styles[key].layers,
+        ...customLayers,
+        ...(otherLayers as maplibregl.LayerSpecification[]),
+      ]
     })
 
     setStyles(styles)
@@ -167,21 +149,48 @@ const Map3D = ({ properties }: MapProps) => {
         mapInstance.addImage(icon, imageBitmap)
       }
     }
+    for (const property in properties) {
+      const imageUrl = properties[property].images[0].image
+      if (mapInstance && !mapInstance.hasImage(imageUrl)) {
+        const response = await fetch(imageUrl)
+        const blob = await response.blob()
+        const imageBitmap = await createImageBitmap(blob)
+        mapInstance.addImage(imageUrl, imageBitmap)
+      }
+    }
 
     console.log('すべてのアイコンがロードされました')
-  }
-  const onClickFacilityPoint = (mapInstance: maplibregl.Map, e: maplibregl.MapLayerMouseEvent) => {
-    if (e.features && e.features.length > 0) {
-      const feature = e.features[0]
-      const coordinates: [number, number] =
-        feature.geometry.type === 'Point'
-          ? ((feature.geometry as GeoJSON.Point).coordinates.slice(0, 2) as [number, number])
-          : [0, 0]
 
-      const name = feature.properties?.P12_001 || 'No name'
+    // ポップアップを表示する
+    mapInstance.on('click', 'cultural_properties', (event) => {
+      if (event.features === undefined) return
+      const feature = event.features[0]
+      const coordinates = event.lngLat
+      const property = feature.properties
+      const movie = JSON.parse(property.movies)[0]
+      const id = Number(movie.id)
+      const url = '/luma/' + movie.id
 
-      new maplibregl.Popup().setLngLat(coordinates).setHTML(`<h3>${name}</h3>`).addTo(map)
-    }
+      console.log('click', id)
+      const popupContainer = document.createElement('div') // 動的コンテンツ用のコンテナ
+      // ポップアップを表示する
+      const popup = new maplibregl.Popup({
+        offset: 10, // ポップアップの位置
+        closeButton: false, // 閉じるボタンの表示
+      })
+        .setLngLat(coordinates)
+        .setDOMContent(popupContainer) // HTMLではなくDOM要素を設定
+        .addTo(mapInstance)
+
+      // Reactコンポーネントをポップアップ内のコンテナにマウント
+      const root = createRoot(popupContainer)
+      root.render(<CulturalPropertyThreeCanvasPopup id={id} url={url} />)
+
+      // ポップアップが閉じられたときにReactコンポーネントをアンマウント
+      popup.on('close', () => {
+        root.unmount()
+      })
+    })
   }
 
   useEffect(() => {
@@ -194,8 +203,8 @@ const Map3D = ({ properties }: MapProps) => {
     const mapInstance = new maplibregl.Map({
       container: mapContainer.current as HTMLElement,
       style: styles.osm,
-      center: [139.745461, 35.65856],
-      zoom: 14,
+      center: [139.7975443779719, 35.678396026551994],
+      zoom: 13,
       pitch: 45,
       maxPitch: 85,
     })
@@ -204,20 +213,17 @@ const Map3D = ({ properties }: MapProps) => {
     mapInstance.on('load', () => {
       onMapLoad(mapInstance)
     })
-    mapInstance.on('mouseenter', 'facility_point', () => {
+    mapInstance.on('mouseenter', 'cultural_properties', () => {
       mapInstance.getCanvas().style.cursor = 'pointer'
     })
-    mapInstance.on('mouseleave', 'facility_point', () => {
+    mapInstance.on('mouseleave', 'cultural_properties', () => {
       mapInstance.getCanvas().style.cursor = ''
-    })
-    mapInstance.on('click', 'facility_point', (e) => {
-      onClickFacilityPoint(mapInstance, e)
     })
 
     setMap(mapInstance)
 
     return () => mapInstance.remove()
-  }, [styles])
+  }, [styles, properties])
 
   const switchStyle = (styleKey: 'osm' | 'konjaku' | 'rekichizu') => {
     if (map) {
