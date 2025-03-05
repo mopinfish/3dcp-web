@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自動翻訳デモ</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      p {
+        font-size: 18px;
+        color: #666;
+      }
+
+      /* 🔽 翻訳ボタンのスタイル */
+      #translateButton {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        transition:
+          background-color 0.3s,
+          transform 0.2s;
+      }
+
+      #translateButton:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+      }
+
+      #translateButton:active {
+        background-color: #004494;
+        transform: scale(0.98);
+      }
+    </style>
+    <script>
+      async function translateText(text, targetLang = 'en') {
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ja|${targetLang}`
+        try {
+          const response = await fetch(url)
+          const data = await response.json()
+          return data.responseData.translatedText || text // 翻訳失敗時は元のテキスト
+        } catch (error) {
+          console.error('翻訳エラー:', error)
+          return text // エラー時は元のテキストを返す
+        }
+      }
+
+      async function translatePage(targetLang = 'en') {
+        const elements = document.querySelectorAll('h1, p, span, div') // 翻訳対象の要素
+        for (const el of elements) {
+          if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+            // テキストノードのみ処理
+            el.dataset.originalText = el.innerText // 元のテキストを保存
+            el.innerText = await translateText(el.innerText, targetLang)
+          }
+        }
+      }
+
+      function restoreOriginalText() {
+        document.querySelectorAll('[data-original-text]').forEach((el) => {
+          el.innerText = el.dataset.originalText // 保存した元のテキストに戻す
+        })
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        let isEnglish = false
+        const button = document.getElementById('translateButton')
+
+        button.addEventListener('click', async () => {
+          if (isEnglish) {
+            restoreOriginalText()
+            button.textContent = 'Translate to English'
+          } else {
+            await translatePage('en')
+            button.textContent = '戻す (Revert)'
+          }
+          isEnglish = !isEnglish
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <h1>こんにちは、世界！</h1>
+    <p>これは自動翻訳のデモです。</p>
+    <p>翻訳ボタンを押すと、このページのテキストが英語に変換されます。</p>
+
+    <!-- 🔽 右下固定の翻訳ボタン -->
+    <button id="translateButton">Translate to English</button>
+  </body>
+</html>
