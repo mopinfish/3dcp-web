@@ -113,12 +113,16 @@ const Map3D = ({ properties }: MapProps) => {
     for (const property in properties) {
       const imageUrl = properties[property].images[0].image
       if (mapInstance && !mapInstance.hasImage(imageUrl)) {
-        const response = await fetch(imageUrl, {
-          mode: "cors", // CORSリクエストを明示
-        })
-        const blob = await response.blob()
-        const imageBitmap = await createImageBitmap(blob)
-        mapInstance.addImage(imageUrl, imageBitmap)
+        try {
+          const response = await fetch(imageUrl, {
+            mode: "cors", // CORSリクエストを明示
+          })
+          const blob = await response.blob()
+          const imageBitmap = await createImageBitmap(blob)
+          mapInstance.addImage(imageUrl, imageBitmap)
+        } catch (error) {
+          console.error('画像の読み込みエラー:', error)
+        }
       }
     }
 
