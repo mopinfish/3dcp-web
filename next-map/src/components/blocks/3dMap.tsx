@@ -110,29 +110,12 @@ const Map3D = ({ properties }: MapProps) => {
   }
 
   const onMapLoad = async (mapInstance: maplibregl.Map) => {
-    const geojson = await fetch('./tokyo_ks.geojson').then((res) => res.json())
-
-    // GeoJSON内の各ポイントについて画像を動的にロード
-    const uniqueIcons = new Array<string>()
-    geojson.features.forEach((feature: GeoJSON.Feature<GeoJSON.Geometry, { icon?: string }>) => {
-      if (feature.properties && feature.properties.icon) {
-        uniqueIcons.push(feature.properties.icon)
-      }
-    })
-
-    // 各アイコン画像を事前にロードしてマップに追加
-    for (const icon of uniqueIcons) {
-      if (mapInstance && !mapInstance.hasImage(icon)) {
-        const response = await fetch(icon)
-        const blob = await response.blob()
-        const imageBitmap = await createImageBitmap(blob)
-        mapInstance.addImage(icon, imageBitmap)
-      }
-    }
     for (const property in properties) {
       const imageUrl = properties[property].images[0].image
       if (mapInstance && !mapInstance.hasImage(imageUrl)) {
-        const response = await fetch(imageUrl)
+        const response = await fetch(imageUrl, {
+          mode: "cors", // CORSリクエストを明示
+        })
         const blob = await response.blob()
         const imageBitmap = await createImageBitmap(blob)
         mapInstance.addImage(imageUrl, imageBitmap)
