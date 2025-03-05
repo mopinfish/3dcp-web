@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR.js Location Based Example with Popup</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <style>
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        #closePopup {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <a-scene
+        vr-mode-ui="enabled: false"
+        embedded
+        arjs="sourceType: webcam; debugUIEnabled: false;"
+    >
+        <a-image
+            id="arImage"
+            src="img/cp_01.jpg"
+            look-at="[gps-camera]"
+            scale="10 10 10"
+            gps-entity-place="latitude: 35.67815172657091; longitude:139.7976367644179;"
+            class="clickable"
+        ></a-image>
+        
+        <a-camera gps-camera rotation-reader>
+            <a-entity cursor="fuse: false; rayOrigin: mouse;" raycaster="objects: .clickable"></a-entity>
+        </a-camera>
+    </a-scene>
+
+    <div id="popup">
+        <span id="closePopup">&times;</span>
+        <h2>採荼庵跡</h2>
+        <p>採荼庵跡は、江東区深川1-8付近に位置する江戸時代中期の重要な史跡です。1981年4月10日に江東区の指定文化財となりました。</p>
+    </div>
+
+    <script>
+        AFRAME.registerComponent('clickhandler', {
+            init: function () {
+                this.el.addEventListener('click', function (evt) {
+                    document.getElementById('popup').style.display = 'block';
+                });
+            }
+        });
+
+        document.querySelector('#arImage').setAttribute('clickhandler', '');
+
+        document.getElementById('closePopup').addEventListener('click', function() {
+            document.getElementById('popup').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
