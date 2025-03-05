@@ -15,20 +15,27 @@
     "fmt": "prettier --write **/*"
   },
   "dependencies": {
+    "@ar-js-org/ar.js": "^3.4.7",
+    "@ar-js-org/ar.js-threejs": "^0.3.2",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@lumaai/luma-web": "^0.2.2",
+    "@types/three": "^0.174.0",
     "@vercel/postgres": "^0.9.0",
+    "aframe": "^1.7.0",
     "cesium": "^1.120.0",
+    "geojson": "^0.5.0",
     "maplibre-gl": "^4.6.0",
     "next": "^14.2.23",
     "react": "^18",
     "react-dom": "^18.3.1",
     "react-merge-refs": "^2.1.1",
-    "styled-components": "^6.1.12"
+    "styled-components": "^6.1.12",
+    "three": "^0.174.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@types/aframe": "^1.2.8",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
