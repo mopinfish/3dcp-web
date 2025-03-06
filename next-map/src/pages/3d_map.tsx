@@ -5,6 +5,7 @@ import { LayoutWithFooter } from '@/components/layouts/Layout'
 import { cultural_property as culturalPropertyService } from '@/domains/services'
 import { CulturalProperties } from '@/domains/models/cultural_property'
 import NavigationTab from '@/components/blocks/NavigationTab'
+import SearchConditionTab from '@/components/blocks/SearchConditionTab'
 
 const Map3D = dynamic(() => import('../components/blocks/3dMap'), {
   ssr: false,
@@ -26,6 +27,9 @@ const MapScreen3D: NextPage = () => {
   return (
     <LayoutWithFooter>
       <NavigationTab />
+      {/* 検索条件タブを追加 */}
+      <SearchConditionTab onUpdateProperties={setProperties} />
+
       <Map3D properties={properties} />
     </LayoutWithFooter>
   )
