@@ -82,6 +82,8 @@ const Map3D = ({ properties }: MapProps) => {
    * 地図スタイルの読み込みおよび設定
    */
   const loadStyles = () => {
+    // propertiesが読み込まれてから下記の処理を実行
+    if (properties.length === 0) return
     const otherSources: { [key: string]: maplibregl.GeoJSONSourceSpecification } = {
       cultural_properties: {
         type: 'geojson',
@@ -110,8 +112,8 @@ const Map3D = ({ properties }: MapProps) => {
   }
 
   const onMapLoad = async (mapInstance: maplibregl.Map) => {
-    for (const property in properties) {
-      const imageUrl = properties[property].images[0].image
+    for (const feature of geojsonData.features) {
+      const imageUrl = feature.properties ? feature.properties.thumb : '/img/noimage.png'
       if (mapInstance && !mapInstance.hasImage(imageUrl)) {
         try {
           const response = await fetch(imageUrl, {
@@ -160,8 +162,8 @@ const Map3D = ({ properties }: MapProps) => {
   }
 
   useEffect(() => {
-    if (!mapContainer.current) return
     loadStyles()
+    if (!mapContainer.current) return
     const mapInstance = new maplibregl.Map({
       container: mapContainer.current as HTMLElement,
       style: styles.osm,
@@ -183,7 +185,7 @@ const Map3D = ({ properties }: MapProps) => {
     })
 
     return () => mapInstance.remove()
-  }, [properties])
+  }, [properties, styles])
 
   return (
     <>
