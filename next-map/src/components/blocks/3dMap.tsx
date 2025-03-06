@@ -117,7 +117,7 @@ const Map3D = ({ properties }: MapProps) => {
       if (mapInstance && !mapInstance.hasImage(imageUrl)) {
         try {
           const response = await fetch(imageUrl, {
-            mode: "cors", // CORSリクエストを明示
+            mode: 'cors', // CORSリクエストを明示
           })
           const blob = await response.blob()
           const imageBitmap = await createImageBitmap(blob)

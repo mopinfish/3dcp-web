@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -87,7 +87,14 @@ interface ArticleProps {
   movieId: number
 }
 
-const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, linkText, movieId }) => {
+const Article: FC<ArticleProps> = ({
+  imageUrls,
+  title,
+  description,
+  linkHref,
+  linkText,
+  movieId,
+}) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
   const [canvasKey] = useState(() => uuidv4())
 
@@ -109,9 +116,7 @@ const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, li
         <Description>
           <HtmlRenderer htmlContent={description} />
         </Description>
-        <div ref={ref}>
-          {inView && <ThreeCanvas key={canvasKey} id={movieId} />}
-        </div>
+        <div ref={ref}>{inView && <ThreeCanvas key={canvasKey} id={movieId} />}</div>
         <StyledLink href={linkHref} target="_blank">
           {linkText}
         </StyledLink>
