@@ -167,7 +167,7 @@ const Map3D = ({ properties }: MapProps) => {
     const mapInstance = new maplibregl.Map({
       container: mapContainer.current as HTMLElement,
       style: styles.osm,
-      center: [139.7975443779719, 35.678396026551994],
+      center: [139.79667139325397, 35.71489576634944],
       zoom: 13,
       pitch: 45,
       maxPitch: 85,

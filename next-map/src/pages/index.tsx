@@ -30,7 +30,8 @@ const Home = () => {
           title={property.name}
           description={property.note ?? ''}
           linkHref={`/luma/${property.movies[0].id}`}
-          linkText="3Dモデルを見る"
+          linkText="大きな画面で3Dモデルを見る"
+          movieId={property.movies[0].id}
         />
       ))}
       {/* 右下固定の翻訳ボタン */}

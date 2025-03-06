@@ -60,7 +60,7 @@ export default function Map({ properties }: MapProps) {
             },
           ],
         },
-        center: [139.7975443779719, 35.678396026551994],
+        center: [139.79667139325397, 35.71489576634944],
         zoom: 13,
       })
 

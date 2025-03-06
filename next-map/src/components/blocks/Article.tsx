@@ -1,7 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { useInView } from 'react-intersection-observer'
+import { ThreeCanvas } from '@/components/blocks/ThreeCanvas'
+import { v4 as uuidv4 } from 'uuid'
 
 const HtmlRenderer = dynamic(() => import('@/components/helpers/html_renderer'), { ssr: false })
 
@@ -81,9 +84,13 @@ interface ArticleProps {
   description: string
   linkHref: string
   linkText: string
+  movieId: number
 }
 
-const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, linkText }) => {
+const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, linkText, movieId }) => {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
+  const [canvasKey] = useState(() => uuidv4())
+
   return (
     <ArticleContainer>
       <ContentWrapper>
@@ -102,6 +109,9 @@ const Article: FC<ArticleProps> = ({ imageUrls, title, description, linkHref, li
         <Description>
           <HtmlRenderer htmlContent={description} />
         </Description>
+        <div ref={ref}>
+          {inView && <ThreeCanvas key={canvasKey} id={movieId} />}
+        </div>
         <StyledLink href={linkHref} target="_blank">
           {linkText}
         </StyledLink>
