@@ -24,7 +24,7 @@ export default class CulturalPropertyService {
   }
 
   async getPropertiesByLocation(lat: number, lon: number, distance: number) {
-    const props = { lat: lat.toString(), lon: lon.toString(), distance: distance.toString() }
+    const props = { lat: lat.toString(), lon: lon.toString(), distance: distance.toString(), has_movies: 'true' } 
     try {
       const properties = await this.repositories.cultural_property?.get(props)
       if (!properties) return []
@@ -36,7 +36,7 @@ export default class CulturalPropertyService {
   }
 
   async getPropertiesByTag(tagId: number) {
-    const props = { tag_id: tagId.toString() }
+    const props = { tag_id: tagId.toString(), has_movies: 'true' }
     try {
       const properties = await this.repositories.cultural_property?.get(props)
       if (!properties) return []
