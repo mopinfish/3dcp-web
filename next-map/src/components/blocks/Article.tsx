@@ -68,6 +68,11 @@ const Description = styled.div`
   margin-bottom: 1rem;
 `
 
+const CanvasWarpper = styled.div`
+  width: 100%;
+  margin-bottom: 1rem;
+`
+
 const StyledLink = styled(Link)`
   display: inline-block;
   padding: 0.5rem 1rem;
@@ -102,6 +107,12 @@ const Article: FC<ArticleProps> = ({
     <ArticleContainer>
       <ContentWrapper>
         <Title>{title}</Title>
+        <CanvasWarpper>
+          <div ref={ref}>{inView && <ThreeCanvas key={canvasKey} id={movieId} />}</div>
+          <StyledLink href={linkHref} target="_blank">
+            {linkText}
+          </StyledLink>
+        </CanvasWarpper>
         <ImagesWrapper>
           {imageUrls.slice(0, 4).map((url, index) => (
             <ImageWrapper key={index}>
@@ -116,10 +127,6 @@ const Article: FC<ArticleProps> = ({
         <Description>
           <HtmlRenderer htmlContent={description} />
         </Description>
-        <div ref={ref}>{inView && <ThreeCanvas key={canvasKey} id={movieId} />}</div>
-        <StyledLink href={linkHref} target="_blank">
-          {linkText}
-        </StyledLink>
       </ContentWrapper>
     </ArticleContainer>
   )

@@ -72,7 +72,7 @@ const Map3D = ({ properties }: MapProps) => {
         address: item.address,
         movies: item.movies,
         images: item.images,
-        thumb: item.images[0].image,
+        thumb: item.images[0]?.image || '/img/noimage.png',
         // その他必要なプロパティを追加
       },
     })),
