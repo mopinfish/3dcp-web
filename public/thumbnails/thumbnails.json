@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1745039887213,
+    "movieId": 1,
+    "imageUrl": "/thumbnails/movie-1.jpg",
+    "width": 400,
+    "height": 300,
+    "createdAt": "2025-04-19T05:18:07.213Z",
+    "updatedAt": "2025-04-19T05:18:07.215Z"
+  },
+  {
+    "id": 1745039934588,
+    "movieId": 2,
+    "imageUrl": "/thumbnails/movie-2.jpg",
+    "width": 400,
+    "height": 300,
+    "createdAt": "2025-04-19T05:18:54.588Z",
+    "updatedAt": "2025-04-19T05:18:54.588Z"
+  },
+  {
+    "id": 1745039980176,
+    "movieId": 3,
+    "imageUrl": "/thumbnails/movie-3.jpg",
+    "width": 400,
+    "height": 300,
+    "createdAt": "2025-04-19T05:19:40.176Z",
+    "updatedAt": "2025-04-19T05:19:40.176Z"
+  },
+  {
+    "id": 1745040025707,
+    "movieId": 4,
+    "imageUrl": "/thumbnails/movie-4.jpg",
+    "width": 400,
+    "height": 300,
+    "createdAt": "2025-04-19T05:20:25.707Z",
+    "updatedAt": "2025-04-19T05:20:25.707Z"
+  },
+  {
+    "id": 1745040078946,
+    "movieId": 5,
+    "imageUrl": "/thumbnails/movie-5.jpg",
+    "width": 400,
+    "height": 300,
+    "createdAt": "2025-04-19T05:21:18.946Z",
+    "updatedAt": "2025-04-19T05:21:18.946Z"
+  },
+  {
+    "id": 1745040124515,
+    "movieId": 7,
+    "imageUrl": "/thumbnails/movie-7.jpg",
+    "width": 400,
+    "height": 300,
+    "createdAt": "2025-04-19T05:22:04.515Z",
+    "updatedAt": "2025-04-19T05:22:04.515Z"
+  },
+  {
+    "id": 1745040170126,
+    "movieId": 8,
+    "imageUrl": "/thumbnails/movie-8.jpg",
+    "width": 400,
+    "height": 300,
+    "createdAt": "2025-04-19T05:22:50.126Z",
+    "updatedAt": "2025-04-19T05:22:50.126Z"
+  },
+  {
+    "id": 1745040215824,
+    "movieId": 9,
+    "imageUrl": "/thumbnails/movie-9.jpg",
+    "width": 400,
+    "height": 300,
+    "createdAt": "2025-04-19T05:23:35.824Z",
+    "updatedAt": "2025-04-19T05:23:35.825Z"
+  }
+]

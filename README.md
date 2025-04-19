@@ -22,3 +22,23 @@ echo 'NEXT_PUBLIC_BACKEND_API_HOST="https://my-django.fly.dev"' > .env.developme
 # start dev server. Go here: http://localhost:3000
 npm run dev
 ```
+
+## Luma.ai Model Management
+
+The project includes scripts for managing Luma.ai 3D models and generating thumbnails:
+
+```bash
+# Fetch movie data from the backend API
+npm run generate-luma-list
+
+# Generate thumbnails for 3D models (skips existing ones)
+npm run thumbnails
+
+# Force regenerate all thumbnails
+npm run thumbnails:force
+
+# Update both movie data and thumbnails
+npm run update-luma
+```
+
+For detailed documentation, see [Luma.ai Model Management Guide](./docs/LUMA_MODEL_MANAGEMENT.md).

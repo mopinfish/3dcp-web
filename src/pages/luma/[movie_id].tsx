@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
 import { ThreeCanvas } from '@/components/blocks/ThreeCanvas'
 
@@ -10,11 +10,29 @@ const Loading: React.FC = () => {
 
 const Luma: NextPage = () => {
   const router = useRouter()
-  const { movie_id } = router.query
-  const id = Number(movie_id)
-  console.log('movie_id', movie_id)
+  const [movieId, setMovieId] = useState<number | null>(null)
 
-  return <LayoutWithFooter>{!id ? <Loading /> : <ThreeCanvas id={id} />}</LayoutWithFooter>
+  useEffect(() => {
+    if (router.isReady && router.query.movie_id) {
+      const id = Number(router.query.movie_id)
+      console.log('movie_id set to:', id)
+      setMovieId(id)
+    }
+  }, [router.isReady, router.query.movie_id])
+
+  if (!movieId) {
+    return (
+      <LayoutWithFooter>
+        <Loading />
+      </LayoutWithFooter>
+    )
+  }
+
+  return (
+    <LayoutWithFooter>
+      <ThreeCanvas id={movieId} fullPage={true} />
+    </LayoutWithFooter>
+  )
 }
 
 export default Luma
