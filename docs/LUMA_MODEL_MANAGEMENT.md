@@ -14,12 +14,12 @@
 
 以下のnpmスクリプトが利用可能です：
 
-| コマンド | 説明 |
-| ------- | ---- |
-| `npm run generate-luma-list` | バックエンドAPIから映画データを取得してJSONファイルに保存 |
-| `npm run thumbnails` | 既存の映画データから3Dモデルのサムネイルを生成（既存のものはスキップ） |
-| `npm run thumbnails:force` | 全てのサムネイルを強制的に再生成 |
-| `npm run update-luma` | 映画データの取得とサムネイル生成を順番に実行 |
+| コマンド                     | 説明                                                                   |
+| ---------------------------- | ---------------------------------------------------------------------- |
+| `npm run generate-luma-list` | バックエンドAPIから映画データを取得してJSONファイルに保存              |
+| `npm run thumbnails`         | 既存の映画データから3Dモデルのサムネイルを生成（既存のものはスキップ） |
+| `npm run thumbnails:force`   | 全てのサムネイルを強制的に再生成                                       |
+| `npm run update-luma`        | 映画データの取得とサムネイル生成を順番に実行                           |
 
 ## データフロー
 
@@ -32,12 +32,14 @@
 ### 初回設定
 
 1. 最初にバックエンドAPI接続を設定
+
    ```
    # .env.development.local
    NEXT_PUBLIC_BACKEND_API_HOST=https://your-backend-api.com
    ```
 
 2. 映画データを取得
+
    ```bash
    npm run generate-luma-list
    ```
@@ -192,4 +194,4 @@ await page.waitForSelector('.new-capture-view-class', { timeout: 30000 })
 
 **作成日**: 2025/04/19  
 **最終更新日**: 2025/04/19
-**作成者**: ukyonagata0105 
+**作成者**: ukyonagata0105

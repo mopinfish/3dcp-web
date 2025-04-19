@@ -11,7 +11,7 @@ const Loading: React.FC = () => {
 const Luma: NextPage = () => {
   const router = useRouter()
   const [movieId, setMovieId] = useState<number | null>(null)
-  
+
   useEffect(() => {
     if (router.isReady && router.query.movie_id) {
       const id = Number(router.query.movie_id)
@@ -21,9 +21,13 @@ const Luma: NextPage = () => {
   }, [router.isReady, router.query.movie_id])
 
   if (!movieId) {
-    return <LayoutWithFooter><Loading /></LayoutWithFooter>
+    return (
+      <LayoutWithFooter>
+        <Loading />
+      </LayoutWithFooter>
+    )
   }
-  
+
   return (
     <LayoutWithFooter>
       <ThreeCanvas id={movieId} fullPage={true} />

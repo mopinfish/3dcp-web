@@ -130,19 +130,19 @@ const LumaList: React.FC = () => {
         }
         const movieData = await movieResponse.json()
         setMovies(movieData)
-        
+
         // サムネイルデータを読み込む
         try {
           const thumbnailResponse = await fetch('/thumbnails/thumbnails.json')
           if (thumbnailResponse.ok) {
             const thumbnailData = await thumbnailResponse.json()
-            
+
             // movieIdをキーとしたサムネイル画像URLのマップを作成
             const thumbnailMap: Record<number, string> = {}
-            thumbnailData.forEach((thumbnail: any) => {
+            thumbnailData.forEach((thumbnail: { movieId: number; imageUrl: string }) => {
               thumbnailMap[thumbnail.movieId] = thumbnail.imageUrl
             })
-            
+
             setThumbnails(thumbnailMap)
           }
         } catch (thumbnailError) {
@@ -203,4 +203,4 @@ const LumaList: React.FC = () => {
   )
 }
 
-export default LumaList 
+export default LumaList

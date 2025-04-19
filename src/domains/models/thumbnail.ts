@@ -8,4 +8,4 @@ export type Thumbnail = {
   updatedAt: string
 }
 
-export type Thumbnails = Thumbnail[] 
+export type Thumbnails = Thumbnail[]
