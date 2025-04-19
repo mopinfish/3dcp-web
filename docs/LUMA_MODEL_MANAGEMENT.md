@@ -118,6 +118,27 @@ npm run thumbnails          # サムネイルのみ更新（新規エントリ�
 
 3Dモデルとサムネイルの継続的なメンテナンスのためのベストプラクティスを紹介します。
 
+### 自動更新 (GitHub Actions)
+
+このプロジェクトではGitHub Actionsを使用して、movieリストとサムネイルの自動更新を行います：
+
+- **スケジュール**：毎日UTC 2:00（日本時間11:00）に自動実行
+- **手動実行**：GitHub上で手動トリガーも可能
+- **処理内容**：
+  1. 最新のLuma.aiデータを取得
+  2. 新しいエントリのサムネイルを生成
+  3. 変更があった場合、自動的にコミットしてプッシュ
+
+GitHub Actionsは `.github/workflows/update-luma-data.yml` で設定されており、以下の環境変数が必要です：
+
+- `BACKEND_API_HOST`：バックエンドAPIホスト（GitHubのSecretsに設定）
+
+```yaml
+# 手動で実行する場合
+name: Run Update Luma.ai Data Workflow
+run: gh workflow run update-luma-data.yml
+```
+
 ### 定期的なデータ同期
 
 以下のタイミングでデータを同期することをお勧めします：
