@@ -12,26 +12,36 @@
     "lint": "run-p lint:*",
     "lint:eslint": "next lint",
     "lint:prettier": "prettier \"**/*.(md|json|yml)\" --ignore-path .prettierignore --check",
-    "fmt": "prettier --write **/*"
+    "fmt": "prettier --write **/*",
+    "thumbnails": "node scripts/capture-thumbnails-batch.js",
+    "thumbnails:force": "node scripts/capture-thumbnails-batch.js --force",
+    "generate-luma-list": "node scripts/generate-luma-list.js",
+    "update-luma": "npm run generate-luma-list && npm run thumbnails"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@lumaai/luma-web": "^0.2.2",
     "@vercel/postgres": "^0.9.0",
+    "axios": "^1.8.4",
     "cesium": "^1.120.0",
+    "dotenv": "^16.5.0",
     "maplibre-gl": "^4.6.0",
     "next": "^14.2.23",
+    "node-fetch": "^2.7.0",
+    "puppeteer": "^24.6.1",
     "react": "^18",
     "react-dom": "^18.3.1",
     "react-intersection-observer": "^9.16.0",
     "react-merge-refs": "^2.1.1",
+    "sharp": "^0.34.1",
     "styled-components": "^6.1.12",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@types/node": "^20",
+    "@types/node-fetch": "^2.6.11",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/styled-components": "^5.1.34",
@@ -47,6 +57,7 @@
     "postcss": "^8",
     "prettier": "^3.3.3",
     "tailwindcss": "^2.0.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5",
     "typescript-eslint": "^8.2.0"
   }

@@ -9,6 +9,7 @@ const TabContainer = styled.div`
   padding: 10px 0;
   border-bottom: 1px solid #e0e0e0;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 `
 
 const TabLink = styled(Link)``
@@ -42,6 +43,9 @@ const NavigationTab: React.FC = () => {
       </TabLink>
       <TabLink href="/3d_map" passHref>
         <TabButton $active={router.pathname === '/3d_map'}>3D地図を見る</TabButton>
+      </TabLink>
+      <TabLink href="/luma-list" passHref>
+        <TabButton $active={router.pathname === '/luma-list'}>3Dモデルリスト</TabButton>
       </TabLink>
     </TabContainer>
   )
