@@ -14,7 +14,7 @@ const Luma: NextPage = () => {
   const id = Number(movie_id)
   console.log('movie_id', movie_id)
 
-  return <LayoutWithFooter>{!id ? <Loading /> : <ThreeCanvas id={id} />}</LayoutWithFooter>
+  return <LayoutWithFooter>{!id ? <Loading /> : <ThreeCanvas id={id} fullPage={true} />}</LayoutWithFooter>
 }
 
 export default Luma
