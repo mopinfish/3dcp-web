@@ -3,11 +3,11 @@ name: Update Luma.ai Model Data
 on:
   # 毎日深夜に実行
   schedule:
-    - cron: '0 2 * * *'  # 毎日UTC 2:00 (日本時間 11:00) に実行
-  
+    - cron: '0 2 * * *' # 毎日UTC 2:00 (日本時間 11:00) に実行
+
   # 手動で実行可能
   workflow_dispatch:
-  
+
   # mainブランチへのプッシュ時に実行（オプション）
   # push:
   #   branches: [ main ]
@@ -18,20 +18,20 @@ on:
 jobs:
   update-luma-data:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Install Puppeteer dependencies
         run: |
           sudo apt-get update
@@ -75,32 +75,32 @@ jobs:
             lsb-release \
             xdg-utils \
             wget
-      
+
       - name: Set environment variables
         run: |
           echo "NEXT_PUBLIC_BACKEND_API_HOST=${{ secrets.BACKEND_API_HOST }}" >> .env.local
-      
+
       - name: Generate Luma model list
         run: npm run generate-luma-list
-      
+
       - name: Generate thumbnails
         run: npm run thumbnails
-      
+
       - name: Configure Git
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-      
+
       - name: Commit and push changes
         run: |
           git add public/data/luma-movies.json
           git add public/thumbnails/
-          
+
           # 変更がなければコミットしない
           if git diff --staged --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          
+
           git commit -m "Update Luma.ai model data and thumbnails [automated]"
-          git push origin ${{ github.ref_name }} 
+          git push origin ${{ github.ref_name }}

@@ -12,7 +12,7 @@
     "lint": "run-p lint:*",
     "lint:eslint": "next lint",
     "lint:prettier": "prettier \"**/*.(md|json|yml)\" --ignore-path .prettierignore --check",
-    "fmt": "prettier --write **/*",
+    "fmt": "prettier \"**/*.(md|json|yml)\" --ignore-path .prettierignore --write",
     "thumbnails": "node scripts/capture-thumbnails-batch.js",
     "thumbnails:force": "node scripts/capture-thumbnails-batch.js --force",
     "generate-luma-list": "node scripts/generate-luma-list.js",

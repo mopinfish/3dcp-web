@@ -44,6 +44,7 @@ npm run update-luma
 ### Automated Updates
 
 This project uses GitHub Actions to automatically update movie data and thumbnails:
+
 - Updates run daily at UTC 2:00 (JST 11:00)
 - Can be manually triggered in GitHub's Actions tab
 - See `.github/workflows/update-luma-data.yml` for configuration
