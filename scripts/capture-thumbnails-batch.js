@@ -26,13 +26,41 @@ async function captureLumaThumbnail(modelId, lumaUrl) {
     return null
   }
 
-  const browser = await puppeteer.launch({
+  // Puppeteerのオプションを環境に応じて調整
+  const isCI = process.env.CI === 'true'
+  const launchOptions = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  })
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-accelerated-2d-canvas',
+      '--disable-gpu',
+    ],
+  }
+
+  // CIではダンプファイルを使用しない（メモリ使用量削減）
+  if (isCI) {
+    console.log('CI環境で実行中: メモリ最適化設定を使用')
+    launchOptions.dumpio = false
+  }
+
+  const browser = await puppeteer.launch(launchOptions)
 
   try {
     const page = await browser.newPage()
+
+    // リソース使用量の最適化
+    await page.setRequestInterception(true)
+    page.on('request', (request) => {
+      // 画像、フォント、スタイルシートなどの不要なリソースをスキップ
+      const resourceType = request.resourceType()
+      if (isCI && ['image', 'font', 'stylesheet'].includes(resourceType)) {
+        request.abort()
+      } else {
+        request.continue()
+      }
+    })
 
     // ビューポートサイズを設定
     await page.setViewport({ width: 1200, height: 800 })
