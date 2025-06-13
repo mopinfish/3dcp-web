@@ -1,77 +1,36 @@
 import React from 'react'
-import styled from 'styled-components'
 import Image from 'next/image'
 import Link from 'next/link'
-import { media } from '../helpers/media'
-
-const HeaderContainer = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background-color: #f0f0f0;
-`
-
-const Logo = styled.div`
-  position: relative;
-  width: 80px;
-  height: 80px;
-`
-
-const Nav = styled.nav`
-  ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-
-    ${media.md`
-      flex-direction: row;
-    `}
-  }
-
-  li {
-    margin-bottom: 0.5rem;
-
-    ${media.md`
-      margin-bottom: 0;
-      margin-right: 1rem;
-    `}
-  }
-
-  a {
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-  }
-`
 
 const Header = () => {
   return (
-    <HeaderContainer>
-      <Link href="/">
-        <Logo>
-          <Image
-            src="/img/logo.png"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            alt="OPEN3D Map Logo"
-            fill
-            style={{ objectFit: 'contain' }}
-            priority
-          />
-        </Logo>
+    <header className="flex justify-between items-center p-4 bg-gray-100">
+      <Link href="/" className="relative w-20 h-20">
+        <Image
+          src="/img/logo.png"
+          alt="OPEN3D Map Logo"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          style={{ objectFit: 'contain' }}
+          priority
+        />
       </Link>
-      <Nav>
-        <ul>
-          <li>
-            <Link href="/">Home</Link>
+
+      <nav>
+        <ul className="flex flex-col md:flex-row list-none p-0">
+          <li className="mb-2 md:mb-0 md:mr-4">
+            <Link href="/" className="text-gray-800 no-underline font-bold">
+              Home
+            </Link>
           </li>
-          <li>
-            <Link href="/about">About</Link>
+          <li className="mb-2 md:mb-0 md:mr-4">
+            <Link href="/about" className="text-gray-800 no-underline font-bold">
+              About
+            </Link>
           </li>
         </ul>
-      </Nav>
-    </HeaderContainer>
+      </nav>
+    </header>
   )
 }
 

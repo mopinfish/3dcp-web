@@ -1,119 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import styled from 'styled-components'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
 import { Movie } from '@/domains/models'
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-`
-
-const Title = styled.h1`
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  color: #333;
-`
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-`
-
-const Card = styled.div`
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  background-color: #fff;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-`
-
-const CardContent = styled.div`
-  padding: 1rem;
-`
-
-const CardTitle = styled.h2`
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  color: #1a1a1a;
-`
-
-const CardNote = styled.p`
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-`
-
-const ViewButton = styled.a`
-  display: inline-block;
-  background-color: #0070f3;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #0051a8;
-  }
-`
-
-const ThumbnailContainer = styled.div`
-  width: 100%;
-  height: 200px;
-  background-color: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  &::after {
-    content: '3D';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-  }
-`
-
-const ExternalLink = styled.a`
-  display: inline-block;
-  background-color: #6b7280;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color 0.2s ease;
-  margin-left: 0.5rem;
-
-  &:hover {
-    background-color: #4b5563;
-  }
-`
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`
 
 const LumaList: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([])
@@ -123,31 +11,23 @@ const LumaList: React.FC = () => {
   useEffect(() => {
     async function loadData() {
       try {
-        // 映画データを読み込む
         const movieResponse = await fetch('/data/luma-movies.json')
-        if (!movieResponse.ok) {
-          throw new Error('Failed to fetch movies')
-        }
+        if (!movieResponse.ok) throw new Error('Failed to fetch movies')
         const movieData = await movieResponse.json()
         setMovies(movieData)
 
-        // サムネイルデータを読み込む
         try {
           const thumbnailResponse = await fetch('/thumbnails/thumbnails.json')
           if (thumbnailResponse.ok) {
             const thumbnailData = await thumbnailResponse.json()
-
-            // movieIdをキーとしたサムネイル画像URLのマップを作成
             const thumbnailMap: Record<number, string> = {}
             thumbnailData.forEach((thumbnail: { movieId: number; imageUrl: string }) => {
               thumbnailMap[thumbnail.movieId] = thumbnail.imageUrl
             })
-
             setThumbnails(thumbnailMap)
           }
         } catch (thumbnailError) {
           console.error('Error loading thumbnails:', thumbnailError)
-          // サムネイル読み込みに失敗してもアプリは継続する
         }
       } catch (error) {
         console.error('Error loading movies:', error)
@@ -162,43 +42,62 @@ const LumaList: React.FC = () => {
   if (loading) {
     return (
       <LayoutWithFooter>
-        <Container>
-          <Title>Loading...</Title>
-        </Container>
+        <div className="max-w-screen-xl mx-auto p-8">
+          <h1 className="text-2xl mb-8 text-gray-800">Loading...</h1>
+        </div>
       </LayoutWithFooter>
     )
   }
 
   return (
     <LayoutWithFooter>
-      <Container>
-        <Title>Luma.ai 3Dモデルリスト</Title>
-        <Grid>
+      <div className="max-w-screen-xl mx-auto p-8">
+        <h1 className="text-2xl mb-8 text-gray-800">Luma.ai 3Dモデルリスト</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {movies.map((movie) => (
-            <Card key={movie.id}>
-              <ThumbnailContainer>
+            <div
+              key={movie.id}
+              className="rounded-lg overflow-hidden shadow-md bg-white transform transition-transform duration-300 hover:-translate-y-1"
+            >
+              <div className="w-full h-52 bg-gray-200 flex items-center justify-center relative overflow-hidden">
                 {thumbnails[movie.id] ? (
-                  <img src={thumbnails[movie.id]} alt={movie.title} />
+                  <img
+                    src={thumbnails[movie.id]}
+                    alt={movie.title}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
-                  <span>{movie.title}</span>
+                  <span className="text-sm text-gray-600">{movie.title}</span>
                 )}
-              </ThumbnailContainer>
-              <CardContent>
-                <CardTitle>{movie.title}</CardTitle>
-                <CardNote>{movie.note}</CardNote>
-                <ButtonContainer>
-                  <Link href={`/luma/${movie.id}`} passHref>
-                    <ViewButton>3Dモデルを見る</ViewButton>
+                <div className="absolute top-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                  3D
+                </div>
+              </div>
+              <div className="p-4">
+                <h2 className="text-lg font-semibold text-gray-900 mb-2">{movie.title}</h2>
+                <p className="text-sm text-gray-600 mb-4">{movie.note}</p>
+                <div className="flex gap-2">
+                  <Link
+                    href={`/luma/${movie.id}`}
+                    className="inline-block bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-800 transition"
+                  >
+                    3Dモデルを見る
                   </Link>
-                  <ExternalLink href={movie.url} target="_blank" rel="noopener noreferrer">
+
+                  <a
+                    href={movie.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-gray-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-700 transition"
+                  >
                     Luma.aiで見る
-                  </ExternalLink>
-                </ButtonContainer>
-              </CardContent>
-            </Card>
+                  </a>
+                </div>
+              </div>
+            </div>
           ))}
-        </Grid>
-      </Container>
+        </div>
+      </div>
     </LayoutWithFooter>
   )
 }

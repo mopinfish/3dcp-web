@@ -1,53 +1,36 @@
 import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import styled from 'styled-components'
-
-const TabContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-`
-
-const TabLink = styled(Link)``
-
-const TabButton = styled.button<{ $active: boolean }>`
-  padding: 10px 20px;
-  margin: 0 10px 0;
-  font-size: 1.2rem;
-  background-color: ${(props) => (props.$active ? '#007bff' : 'transparent')};
-  color: ${(props) => (props.$active ? 'white' : 'black')};
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: ${(props) => (props.$active ? '#007bff' : '#e0e0e0')};
-  }
-`
+import clsx from 'clsx'
 
 const NavigationTab: React.FC = () => {
   const router = useRouter()
 
+  const tabs = [
+    { href: '/', label: '一覧をみる' },
+    { href: '/map', label: '地図を見る' },
+    { href: '/3d_map', label: '3D地図を見る' },
+    { href: '/luma-list', label: '3Dモデルリスト' },
+  ]
+
   return (
-    <TabContainer>
-      <TabLink href="/" passHref>
-        <TabButton $active={router.pathname === '/'}>一覧をみる</TabButton>
-      </TabLink>
-      <TabLink href="/map" passHref>
-        <TabButton $active={router.pathname === '/map'}>地図を見る</TabButton>
-      </TabLink>
-      <TabLink href="/3d_map" passHref>
-        <TabButton $active={router.pathname === '/3d_map'}>3D地図を見る</TabButton>
-      </TabLink>
-      <TabLink href="/luma-list" passHref>
-        <TabButton $active={router.pathname === '/luma-list'}>3Dモデルリスト</TabButton>
-      </TabLink>
-    </TabContainer>
+    <div className="flex justify-center flex-wrap border-b border-gray-300 py-2 mb-5">
+      {tabs.map(({ href, label }) => {
+        const isActive = router.pathname === href
+        return (
+          <Link key={href} href={href}>
+            <button
+              className={clsx(
+                'px-5 py-2 mx-2 text-lg rounded transition-colors duration-300',
+                isActive ? 'bg-blue-600 text-white' : 'bg-transparent text-black hover:bg-gray-200',
+              )}
+            >
+              {label}
+            </button>
+          </Link>
+        )
+      })}
+    </div>
   )
 }
 
