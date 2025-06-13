@@ -1,65 +1,20 @@
 [
   {
     "id": 1,
-    "url": "https://lumalabs.ai/capture/c07332cc-cfb7-4bb2-b4b8-e68dd13999ae",
-    "title": "採茶庵跡",
-    "note": "採茶庵跡。2024年9月に撮影。",
-    "cultural_property": 880
+    "title": "サンプル3Dモデル1",
+    "note": "これはサンプルの3Dモデルです",
+    "url": "https://lumalabs.ai/capture/ca05e3db-63ba-4272-943c-4b0627e19c4d"
   },
   {
     "id": 2,
-    "url": "https://lumalabs.ai/capture/8380812a-46fb-4d59-b195-3c63d69a67d5",
-    "title": "横綱力士碑",
-    "note": "横綱力士碑",
-    "cultural_property": 378
+    "title": "サンプル3Dモデル2",
+    "note": "これは別のサンプル3Dモデルです",
+    "url": "https://lumalabs.ai/capture/e79f1d4d-2026-4c27-9cfe-98d429d9f927"
   },
   {
     "id": 3,
-    "url": "https://lumalabs.ai/capture/a53e6f05-a949-4a41-ba5b-0abff64b2500",
-    "title": "亀戸銭座跡",
-    "note": "亀戸銭座跡",
-    "cultural_property": 954
-  },
-  {
-    "id": 4,
-    "url": "https://lumalabs.ai/capture/76220de4-4446-46e6-abe8-a5309887e2c2",
-    "title": "五百羅漢道標",
-    "note": "五百羅漢道標",
-    "cultural_property": 577
-  },
-  {
-    "id": 5,
-    "url": "https://lumalabs.ai/capture/c07332cc-cfb7-4bb2-b4b8-e68dd13999ae",
-    "title": "深川の力持",
-    "note": "深川の力持",
-    "cultural_property": 750
-  },
-  {
-    "id": 6,
-    "url": "https://my-django.fly.dev/admin/open3d_map/culturalproperty/",
-    "title": "吉原神社",
-    "note": "吉原神社",
-    "cultural_property": 1013
-  },
-  {
-    "id": 7,
-    "url": "https://lumalabs.ai/capture/fe0322c2-34c5-4167-907a-e18044abcde5",
-    "title": "吉原大門跡",
-    "note": "吉原大門跡",
-    "cultural_property": 1012
-  },
-  {
-    "id": 8,
-    "url": "https://lumalabs.ai/capture/82154825-045c-48cf-befb-28317c9b3f0f",
-    "title": "台東区立 山谷堀公園",
-    "note": "台東区立 山谷堀公園",
-    "cultural_property": 1021
-  },
-  {
-    "id": 9,
-    "url": "https://lumalabs.ai/capture/c07332cc-cfb7-4bb2-b4b8-e68dd13999ae",
-    "title": "百度石",
-    "note": "2025年4月19日にSocialHackDayの一環で撮影。",
-    "cultural_property": 1156
+    "title": "東大寺大仏殿",
+    "note": "奈良時代に建立された東大寺の本堂",
+    "url": "https://lumalabs.ai/capture/137d129a-4139-45d1-9cb2-5230ef4b19cf"
   }
 ]
