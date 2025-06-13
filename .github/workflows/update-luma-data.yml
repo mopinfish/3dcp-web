@@ -101,4 +101,8 @@ jobs:
           fi
 
           git commit -m "Update Luma.ai model data and thumbnails [automated]"
+
+          # リモートURLをGITHUB_TOKENを用いて再設定
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
           git push origin ${{ github.ref_name }}
