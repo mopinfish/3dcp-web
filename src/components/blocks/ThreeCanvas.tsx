@@ -4,82 +4,6 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { LumaSplatsThree } from '@lumaai/luma-web'
 import { movie as movieService } from '@/domains/services'
 import { Movie } from '@/domains/models'
-import { styled } from 'styled-components'
-
-const Canvas = styled.canvas`
-  width: 100%;
-  height: 100%;
-  display: block;
-`
-
-type ThreeContainerProps = {
-  $fullPage?: boolean
-}
-
-const ThreeContainer = styled.div<ThreeContainerProps>`
-  width: 100%;
-  height: ${(props) => (props.$fullPage ? 'calc(100vh - 180px)' : '300px')};
-  position: relative;
-  cursor: pointer;
-`
-
-const ThumbnailContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  overflow: hidden;
-`
-
-const ThumbnailImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`
-
-const LoadingOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.2rem;
-  z-index: 10;
-`
-
-const PlayButton = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 2rem;
-  z-index: 5;
-
-  &::after {
-    content: '▶';
-    display: block;
-    margin-left: 5px;
-  }
-`
 
 type LumaThreeProps = {
   id: number
@@ -99,12 +23,9 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
   const actions = {
     onload: async () => {
       try {
-        console.log('Loading movie data for ID:', id)
         const movieData = await movieService.findMovie(id)
-        console.log('Movie data loaded:', movieData)
         setMovie(movieData)
 
-        // サムネイルのURLを設定（フルページモードでない場合のみ）
         if (!fullPage) {
           setThumbnailUrl(`/thumbnails/movie-${id}.jpg`)
         }
@@ -114,8 +35,7 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
       }
     },
     load3DModel: () => {
-      if (is3DLoaded) return // すでに読み込み済みの場合は何もしない
-
+      if (is3DLoaded) return
       setIsLoading(true)
       setTimeout(() => {
         try {
@@ -132,49 +52,31 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
   }
 
   useEffect(() => {
-    if (id) {
-      actions.onload()
-    }
+    if (id) actions.onload()
   }, [id])
 
   useEffect(() => {
-    // フルページモードで、かつ映画データがロードされた場合に自動的に3Dモデルを読み込む
     if (fullPage && movie) {
-      console.log('Auto-loading 3D model in fullPage mode')
       actions.load3DModel()
     }
   }, [movie, fullPage])
 
   useEffect(() => {
-    // ウィンドウリサイズ時にレンダラーのサイズを更新
     const handleResize = () => {
       if (containerRef.current && canvas.current && is3DLoaded) {
         const { clientWidth, clientHeight } = containerRef.current
-
-        if (rendererRef.current) {
-          rendererRef.current.setSize(clientWidth, clientHeight, false)
-        }
+        rendererRef.current?.setSize(clientWidth, clientHeight, false)
       }
     }
-
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [is3DLoaded])
 
   const initThreeJS = () => {
-    if (!movie || !canvas.current) {
-      console.error('Cannot initialize ThreeJS: movie or canvas is null')
-      return
-    }
-
-    if (!movie.url) {
-      console.error('Movie URL is missing')
+    if (!movie || !canvas.current || !movie.url) {
       setError('モデルURLが見つかりません')
       return
     }
-
-    console.log('Initializing ThreeJS with URL:', movie.url)
-    const source = movie.url
 
     try {
       const renderer = new WebGLRenderer({
@@ -183,30 +85,22 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
       })
       rendererRef.current = renderer
 
-      if (containerRef.current) {
-        const { clientWidth, clientHeight } = containerRef.current
-        renderer.setSize(clientWidth, clientHeight, false)
-      } else {
-        renderer.setSize(window.innerWidth, window.innerHeight, false)
+      const { clientWidth, clientHeight } = containerRef.current ?? {
+        clientWidth: window.innerWidth,
+        clientHeight: window.innerHeight,
       }
 
+      renderer.setSize(clientWidth, clientHeight, false)
+
       const scene = new Scene()
-
-      // アスペクト比を適切に設定
-      const aspect = containerRef.current
-        ? containerRef.current.clientWidth / containerRef.current.clientHeight
-        : window.innerWidth / window.innerHeight
-
+      const aspect = clientWidth / clientHeight
       const camera = new PerspectiveCamera(75, aspect, 0.1, 1000)
       camera.position.z = 2
 
       const controls = new OrbitControls(camera, canvas.current)
       controls.enableDamping = true
 
-      console.log('Creating LumaSplatsThree with source:', source)
-      const splat = new LumaSplatsThree({
-        source: source,
-      })
+      const splat = new LumaSplatsThree({ source: movie.url })
       scene.add(splat)
 
       renderer.setAnimationLoop(() => {
@@ -224,31 +118,44 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
   }
 
   return (
-    <ThreeContainer ref={containerRef} onClick={handleClick} $fullPage={fullPage}>
+    <div
+      ref={containerRef}
+      onClick={handleClick}
+      className={`relative w-full ${
+        fullPage ? 'h-[calc(100vh-180px)]' : 'h-[300px]'
+      } cursor-pointer`}
+    >
       {error && (
-        <LoadingOverlay>
-          <div>{error}</div>
-        </LoadingOverlay>
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white text-lg z-10">
+          {error}
+        </div>
       )}
 
       {!is3DLoaded && thumbnailUrl && !fullPage && !error && (
-        <ThumbnailContainer>
-          <ThumbnailImage
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-lg overflow-hidden">
+          <img
             src={thumbnailUrl}
             alt="3D model thumbnail"
+            className="w-full h-full object-cover"
             onError={() => setThumbnailUrl('/thumbnails/simple-thumbnail.jpg')}
           />
-          <PlayButton />
-        </ThumbnailContainer>
+          <div className="absolute top-1/2 left-1/2 w-[60px] h-[60px] bg-black/50 rounded-full flex items-center justify-center text-white text-2xl z-5 transform -translate-x-1/2 -translate-y-1/2">
+            ▶
+          </div>
+        </div>
       )}
 
       {isLoading && !error && (
-        <LoadingOverlay>
-          <div>読み込み中...</div>
-        </LoadingOverlay>
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white text-lg z-10">
+          読み込み中...
+        </div>
       )}
 
-      <Canvas ref={canvas} style={{ display: is3DLoaded || fullPage ? 'block' : 'none' }} />
-    </ThreeContainer>
+      <canvas
+        ref={canvas}
+        className="w-full h-full block"
+        style={{ display: is3DLoaded || fullPage ? 'block' : 'none' }}
+      />
+    </div>
   )
 }
