@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "format": "run-p format:*",
-    "format:eslint": "run-s \" lint:eslint --fix \"",
+    "format:eslint": "run-s \" lint:eslint \"",
     "format:prettier": "run-s \" lint:prettier --write \"",
     "lint": "run-p lint:*",
     "lint:eslint": "next lint",
