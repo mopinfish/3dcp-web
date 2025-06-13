@@ -17,7 +17,7 @@ on:
 
 jobs:
   update-luma-data:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
@@ -36,8 +36,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            gconf-service \
-            libasound2 \
+            libasound2t64 \
             libatk1.0-0 \
             libatk-bridge2.0-0 \
             libc6 \
@@ -47,7 +46,6 @@ jobs:
             libexpat1 \
             libfontconfig1 \
             libgcc1 \
-            libgconf-2-4 \
             libgdk-pixbuf2.0-0 \
             libglib2.0-0 \
             libgtk-3-0 \
@@ -70,7 +68,7 @@ jobs:
             libxtst6 \
             ca-certificates \
             fonts-liberation \
-            libappindicator1 \
+            libappindicator3-1 \
             libnss3 \
             lsb-release \
             xdg-utils \
@@ -103,4 +101,8 @@ jobs:
           fi
 
           git commit -m "Update Luma.ai model data and thumbnails [automated]"
+
+          # リモートURLをGITHUB_TOKENを用いて再設定
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
           git push origin ${{ github.ref_name }}
