@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import Map from '../components/Map'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
 import { cultural_property as culturalPropertyService } from '@/domains/services'
@@ -9,16 +9,23 @@ import SearchConditionTab from '@/components/blocks/SearchConditionTab'
 const MapScreen = () => {
   const [properties, setProperties] = useState<CulturalProperties>([])
 
-  const actions = {
-    onload: async () => {
-      const properties = await culturalPropertyService.getProperties()
-      setProperties(properties)
-    },
-  }
+  const actions = useMemo(
+    () => ({
+      onload: () => {
+        culturalPropertyService
+          .getProperties()
+          .then(setProperties)
+          .catch((error) => {
+            console.error('Error fetching cultural properties:', error)
+          })
+      },
+    }),
+    [],
+  )
 
   useEffect(() => {
     actions.onload()
-  }, [])
+  }, [actions])
 
   return (
     <LayoutWithFooter>

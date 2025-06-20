@@ -15,13 +15,14 @@ function useIntersectionObserver(options: IntersectionObserverOptions = {}) {
       setIsIntersecting(entry.isIntersecting)
     }, options)
 
-    if (targetRef.current) {
-      observer.observe(targetRef.current)
+    const node = targetRef.current
+    if (node) {
+      observer.observe(node)
     }
 
     return () => {
-      if (targetRef.current) {
-        observer.unobserve(targetRef.current)
+      if (node) {
+        observer.unobserve(node)
       }
     }
   }, [options])

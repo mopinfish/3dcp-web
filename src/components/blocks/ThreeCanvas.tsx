@@ -1,14 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useCallback, useMemo, useRef, useState } from 'react'
 import { WebGLRenderer, PerspectiveCamera, Scene } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { LumaSplatsThree } from '@lumaai/luma-web'
 import { movie as movieService } from '@/domains/services'
 import { Movie } from '@/domains/models'
 
-type LumaThreeProps = {
-  id: number
-  fullPage?: boolean
-}
+type LumaThreeProps = { id: number; fullPage?: boolean }
 
 export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) => {
   const canvas = useRef<HTMLCanvasElement | null>(null)
@@ -20,69 +17,14 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
   const rendererRef = useRef<WebGLRenderer | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const actions = {
-    onload: async () => {
-      try {
-        const movieData = await movieService.findMovie(id)
-        setMovie(movieData)
-
-        if (!fullPage) {
-          setThumbnailUrl(`/thumbnails/movie-${id}.jpg`)
-        }
-      } catch (err) {
-        console.error('Error loading movie data:', err)
-        setError('データの読み込みに失敗しました')
-      }
-    },
-    load3DModel: () => {
-      if (is3DLoaded) return
-      setIsLoading(true)
-      setTimeout(() => {
-        try {
-          initThreeJS()
-          setIsLoading(false)
-          setIs3DLoaded(true)
-        } catch (err) {
-          console.error('Error initializing ThreeJS:', err)
-          setError('3Dモデルの読み込みに失敗しました')
-          setIsLoading(false)
-        }
-      }, 100)
-    },
-  }
-
-  useEffect(() => {
-    if (id) actions.onload()
-  }, [id])
-
-  useEffect(() => {
-    if (fullPage && movie) {
-      actions.load3DModel()
-    }
-  }, [movie, fullPage])
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current && canvas.current && is3DLoaded) {
-        const { clientWidth, clientHeight } = containerRef.current
-        rendererRef.current?.setSize(clientWidth, clientHeight, false)
-      }
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [is3DLoaded])
-
-  const initThreeJS = () => {
+  const initThreeJS = useCallback(() => {
     if (!movie || !canvas.current || !movie.url) {
       setError('モデルURLが見つかりません')
       return
     }
 
     try {
-      const renderer = new WebGLRenderer({
-        canvas: canvas.current,
-        antialias: true,
-      })
+      const renderer = new WebGLRenderer({ canvas: canvas.current, antialias: true })
       rendererRef.current = renderer
 
       const { clientWidth, clientHeight } = containerRef.current ?? {
@@ -111,7 +53,62 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
       console.error('Error in initThreeJS:', err)
       setError('3Dモデルの初期化に失敗しました')
     }
-  }
+  }, [movie])
+
+  const actions = useMemo(
+    () => ({
+      onload: async () => {
+        try {
+          const movieData = await movieService.findMovie(id)
+          setMovie(movieData)
+
+          if (!fullPage) {
+            setThumbnailUrl(`/thumbnails/movie-${id}.jpg`)
+          }
+        } catch (err) {
+          console.error('Error loading movie data:', err)
+          setError('データの読み込みに失敗しました')
+        }
+      },
+      load3DModel: () => {
+        if (is3DLoaded) return
+        setIsLoading(true)
+        setTimeout(() => {
+          try {
+            initThreeJS()
+            setIsLoading(false)
+            setIs3DLoaded(true)
+          } catch (err) {
+            console.error('Error initializing ThreeJS:', err)
+            setError('3Dモデルの読み込みに失敗しました')
+            setIsLoading(false)
+          }
+        }, 100)
+      },
+    }),
+    [fullPage, id, is3DLoaded, initThreeJS],
+  )
+
+  useEffect(() => {
+    if (id) actions.onload()
+  }, [actions, id])
+
+  useEffect(() => {
+    if (fullPage && movie) {
+      actions.load3DModel()
+    }
+  }, [actions, movie, fullPage])
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current && canvas.current && is3DLoaded) {
+        const { clientWidth, clientHeight } = containerRef.current
+        rendererRef.current?.setSize(clientWidth, clientHeight, false)
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [is3DLoaded])
 
   const handleClick = () => {
     actions.load3DModel()
