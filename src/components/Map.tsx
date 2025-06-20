@@ -13,13 +13,9 @@ export default function Map({ properties }: MapProps) {
   const map = useRef<maplibregl.Map | null>(null)
   const [selectedProperties, setSelectedProperties] = useState<CulturalProperties>([])
   const [currentLocation, setCurrentLocation] = useState<[number, number] | null>(null)
-  const [center, setCenter] = useState<[number, number]>([139.79667139325397, 35.71489576634944])
-  const [geojsonData, setGeojsonData] = useState<GeoJSON.FeatureCollection<
-    GeoJSON.Geometry,
-    GeoJSON.GeoJsonProperties
-  > | null>(null)
 
   useEffect(() => {
+    if (!mapContainer.current || properties.length === 0) return
     // GeoJSON フィーチャーコレクションに変換
     const geojsonData: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
       type: 'FeatureCollection',
@@ -38,11 +34,6 @@ export default function Map({ properties }: MapProps) {
         },
       })),
     }
-    setGeojsonData(geojsonData)
-  }, [properties, selectedProperties])
-
-  useEffect(() => {
-    if (!mapContainer.current || properties.length === 0) return
     // 文化財のレイヤー追加
     if (map.current) {
       // 文化財のデータをソースに追加
@@ -64,11 +55,12 @@ export default function Map({ properties }: MapProps) {
         })
       }
     }
-  }, [geojsonData])
+  }, [properties, selectedProperties])
 
   useEffect(() => {
     if (!mapContainer.current || properties.length === 0) return
 
+    const initialCenter: [number, number] = [139.79667139325397, 35.71489576634944]
     map.current = new maplibregl.Map({
       container: mapContainer.current,
       style: {
@@ -85,7 +77,7 @@ export default function Map({ properties }: MapProps) {
           { id: 'simple-tiles', type: 'raster', source: 'raster-tiles', minzoom: 0, maxzoom: 22 },
         ],
       },
-      center: center,
+      center: initialCenter,
       zoom: 13,
     })
 
@@ -99,13 +91,6 @@ export default function Map({ properties }: MapProps) {
       map.current.addImage('property_icon', image.data)
       const selectedImage = await map.current.loadImage('/img/selected_marker_icon.png')
       map.current.addImage('selected_property_icon', selectedImage.data)
-    })
-
-    // 地図を移動するごとに中心座標を更新
-    map.current.on('move', () => {
-      if (map.current) {
-        setCenter(map.current.getCenter().toArray() as [number, number])
-      }
     })
 
     // クリックで地物を選択
@@ -130,7 +115,7 @@ export default function Map({ properties }: MapProps) {
         map.current.remove()
       }
     }
-  }, [properties.length])
+  }, [properties])
 
   // 現在地取得
   const handleGetCurrentLocation = () => {

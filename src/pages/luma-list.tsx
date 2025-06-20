@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
 import { Movie } from '@/domains/models'
 
@@ -61,10 +62,12 @@ const LumaList: React.FC = () => {
             >
               <div className="w-full h-52 bg-gray-200 flex items-center justify-center relative overflow-hidden">
                 {thumbnails[movie.id] ? (
-                  <img
+                  <Image
                     src={thumbnails[movie.id]}
                     alt={movie.title}
                     className="w-full h-full object-cover"
+                    width={600} // 必須
+                    height={400} // 必須
                   />
                 ) : (
                   <span className="text-sm text-gray-600">{movie.title}</span>

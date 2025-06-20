@@ -13,6 +13,5 @@ module.exports = {
     'react/display-name': 'off',
     'react/no-unknown-property': 'off',
     'react-hooks/exhaustive-deps': 'warn', // または 'off'
-    '@next/next/no-img-element': 'off',
   },
 }

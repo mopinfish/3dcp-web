@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useMemo, useRef, useState } from 'react'
+import Image from 'next/image'
 import { WebGLRenderer, PerspectiveCamera, Scene } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { LumaSplatsThree } from '@lumaai/luma-web'
@@ -130,11 +131,13 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
 
       {!is3DLoaded && thumbnailUrl && !fullPage && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-lg overflow-hidden">
-          <img
+          <Image
             src={thumbnailUrl}
             alt="3D model thumbnail"
             className="w-full h-full object-cover"
             onError={() => setThumbnailUrl('/thumbnails/simple-thumbnail.jpg')}
+            width={600} // 必須
+            height={400} // 必須
           />
           <div className="absolute top-1/2 left-1/2 w-[60px] h-[60px] bg-black/50 rounded-full flex items-center justify-center text-white text-2xl z-5 transform -translate-x-1/2 -translate-y-1/2">
             ▶
