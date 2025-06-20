@@ -49,10 +49,10 @@ const Map3D = ({ properties }: MapProps) => {
   // GeoJSONフィーチャーコレクションに変換
   const geojsonData = useMemo(() => {
     return {
-      type: 'FeatureCollection',
+      type: 'FeatureCollection' as const,
       features: properties.map((item) => ({
-        type: 'Feature',
-        geometry: { type: 'Point', coordinates: [item.longitude, item.latitude] },
+        type: 'Feature' as const,
+        geometry: { type: 'Point' as const, coordinates: [item.longitude, item.latitude] },
         properties: {
           id: item.id,
           name: item.name,

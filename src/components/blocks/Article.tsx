@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { useInView } from 'react-intersection-observer'
 import { ThreeCanvas } from '@/components/blocks/ThreeCanvas'
@@ -47,11 +48,13 @@ const Article: FC<ArticleProps> = ({
               key={index}
               className="relative w-[calc(50%-0.5rem)] h-[150px] md:w-[calc(25%-0.75rem)] md:h-[200px]"
             >
-              <img
+              <Image
                 src={url ?? '/img/noimage.png'}
                 alt={`${title} - image ${index + 1}`}
                 className="w-full h-full object-cover rounded"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                width={600}
+                height={400}
               />
             </div>
           ))}

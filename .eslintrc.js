@@ -9,9 +9,5 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react'],
-  rules: {
-    'react/display-name': 'off',
-    'react/no-unknown-property': 'off',
-    'react-hooks/exhaustive-deps': 'warn', // または 'off'
-  },
+  rules: { 'react/no-unknown-property': 'off' },
 }

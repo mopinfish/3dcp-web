@@ -1,16 +1,12 @@
 import React, { useRef } from 'react'
+import Image from 'next/image'
 import { ThreeCanvas } from './ThreeCanvas'
 
 const Loading: React.FC = () => {
   return <div>Loading...</div>
 }
 
-type CulturalPropertyPopupProps = {
-  name: string
-  imageUrl: string
-  url: string
-  address: string
-}
+type CulturalPropertyPopupProps = { name: string; imageUrl: string; url: string; address: string }
 
 export const CulturalPropertyPopup: React.FC<CulturalPropertyPopupProps> = ({
   name,
@@ -20,7 +16,13 @@ export const CulturalPropertyPopup: React.FC<CulturalPropertyPopupProps> = ({
 }) => {
   return (
     <div className="w-full flex flex-col">
-      <img src={imageUrl} alt={name} className="w-full h-[100px] object-contain rounded" />
+      <Image
+        src={imageUrl}
+        alt={name}
+        className="w-full h-[100px] object-contain rounded"
+        width={600}
+        height={400}
+      />
       <h3 className="mt-2 mb-1 text-lg font-semibold">{name}</h3>
       <p className="mb-2 text-sm text-gray-600">{address}</p>
       <div className="mt-2 flex justify-center w-full">
@@ -37,10 +39,7 @@ export const CulturalPropertyPopup: React.FC<CulturalPropertyPopupProps> = ({
   )
 }
 
-type CulturalPropertyThreeCanvasPopupProps = {
-  id: number
-  url: string
-}
+type CulturalPropertyThreeCanvasPopupProps = { id: number; url: string }
 
 export const CulturalPropertyThreeCanvasPopup: React.FC<CulturalPropertyThreeCanvasPopupProps> = ({
   id,

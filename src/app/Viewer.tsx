@@ -87,3 +87,4 @@ export const Viewer = forwardRef<HTMLDivElement, ViewerProps>(
     )
   },
 )
+Viewer.displayName = 'Viewer'
