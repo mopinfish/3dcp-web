@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+
+html,
+body,
+#__next {
+  @apply w-full h-full m-0 text-gray-800;
+}

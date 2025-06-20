@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { CulturalProperties } from '@/domains/models'
@@ -19,10 +19,7 @@ const plateauLayer: maplibregl.FillExtrusionLayerSpecification = {
   'source-layer': 'bldg',
   minzoom: 10,
   maxzoom: 20,
-  paint: {
-    'fill-extrusion-color': '#797979',
-    'fill-extrusion-height': ['get', 'measuredHeight'],
-  },
+  paint: { 'fill-extrusion-color': '#797979', 'fill-extrusion-height': ['get', 'measuredHeight'] },
 }
 const initialStyles: { [key: string]: maplibregl.StyleSpecification } = {
   osm: {
@@ -38,67 +35,52 @@ const initialStyles: { [key: string]: maplibregl.StyleSpecification } = {
       plateau: plateauSource,
     },
     layers: [
-      {
-        id: 'osm-layer',
-        type: 'raster',
-        source: 'osm',
-        minzoom: 0,
-        maxzoom: 19,
-      },
+      { id: 'osm-layer', type: 'raster', source: 'osm', minzoom: 0, maxzoom: 19 },
       plateauLayer,
     ],
   },
 }
 
-type MapProps = {
-  properties: CulturalProperties
-}
+type MapProps = { properties: CulturalProperties }
 
 const Map3D = ({ properties }: MapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null)
   const [styles, setStyles] = useState<Record<string, maplibregl.StyleSpecification>>(initialStyles)
   // GeoJSONフィーチャーコレクションに変換
-  const geojsonData: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
-    type: 'FeatureCollection',
-    features: properties.map((item) => ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [item.longitude, item.latitude],
-      },
-      properties: {
-        id: item.id,
-        name: item.name,
-        address: item.address,
-        movies: item.movies,
-        images: item.images,
-        thumb: item.images[0]?.image || '/img/noimage.png',
-        // その他必要なプロパティを追加
-      },
-    })),
-  }
+  const geojsonData = useMemo(() => {
+    return {
+      type: 'FeatureCollection' as const,
+      features: properties.map((item) => ({
+        type: 'Feature' as const,
+        geometry: { type: 'Point' as const, coordinates: [item.longitude, item.latitude] },
+        properties: {
+          id: item.id,
+          name: item.name,
+          address: item.address,
+          movies: item.movies,
+          images: item.images,
+          thumb: item.images[0]?.image || '/img/noimage.png',
+          // その他必要なプロパティを追加
+        },
+      })),
+    }
+  }, [properties])
 
   /**
    * 地図スタイルの読み込みおよび設定
    */
-  const loadStyles = () => {
+  const loadStyles = useCallback(() => {
     // propertiesが読み込まれてから下記の処理を実行
     if (properties.length === 0) return
     const otherSources: { [key: string]: maplibregl.GeoJSONSourceSpecification } = {
-      cultural_properties: {
-        type: 'geojson',
-        data: geojsonData,
-      },
+      cultural_properties: { type: 'geojson', data: geojsonData },
     }
     const otherLayers = [
       {
         id: 'cultural_properties',
         type: 'symbol',
         source: 'cultural_properties',
-        layout: {
-          'icon-image': ['get', 'thumb'],
-          'icon-size': 0.2,
-        },
+        layout: { 'icon-image': ['get', 'thumb'], 'icon-size': 0.2 },
       },
     ]
     if (!initialStyles.osm.sources.cultural_properties) {
@@ -109,57 +91,60 @@ const Map3D = ({ properties }: MapProps) => {
       ]
     }
     setStyles(initialStyles)
-  }
+  }, [properties, geojsonData])
 
-  const onMapLoad = async (mapInstance: maplibregl.Map) => {
-    for (const feature of geojsonData.features) {
-      const imageUrl = feature.properties ? feature.properties.thumb : '/img/noimage.png'
-      if (mapInstance && !mapInstance.hasImage(imageUrl)) {
-        try {
-          const response = await fetch(imageUrl, {
-            mode: 'cors', // CORSリクエストを明示
-          })
-          const blob = await response.blob()
-          const imageBitmap = await createImageBitmap(blob)
-          mapInstance.addImage(imageUrl, imageBitmap)
-        } catch (error) {
-          console.error('画像の読み込みエラー:', error)
+  const onMapLoad = useCallback(
+    async (mapInstance: maplibregl.Map) => {
+      for (const feature of geojsonData.features) {
+        const imageUrl = feature.properties ? feature.properties.thumb : '/img/noimage.png'
+        if (mapInstance && !mapInstance.hasImage(imageUrl)) {
+          try {
+            const response = await fetch(imageUrl, {
+              mode: 'cors', // CORSリクエストを明示
+            })
+            const blob = await response.blob()
+            const imageBitmap = await createImageBitmap(blob)
+            mapInstance.addImage(imageUrl, imageBitmap)
+          } catch (error) {
+            console.error('画像の読み込みエラー:', error)
+          }
         }
       }
-    }
 
-    console.log('すべてのアイコンがロードされました')
+      console.log('すべてのアイコンがロードされました')
 
-    // ポップアップを表示する
-    mapInstance.on('click', 'cultural_properties', (event) => {
-      if (event.features === undefined) return
-      const feature = event.features[0]
-      const coordinates = event.lngLat
-      const property = feature.properties
-      const movie = JSON.parse(property.movies)[0]
-      const id = Number(movie.id)
-      const url = '/luma/' + movie.id
-
-      const popupContainer = document.createElement('div') // 動的コンテンツ用のコンテナ
       // ポップアップを表示する
-      const popup = new maplibregl.Popup({
-        offset: 10, // ポップアップの位置
-        closeButton: false, // 閉じるボタンの表示
-      })
-        .setLngLat(coordinates)
-        .setDOMContent(popupContainer) // HTMLではなくDOM要素を設定
-        .addTo(mapInstance)
+      mapInstance.on('click', 'cultural_properties', (event) => {
+        if (event.features === undefined) return
+        const feature = event.features[0]
+        const coordinates = event.lngLat
+        const property = feature.properties
+        const movie = JSON.parse(property.movies)[0]
+        const id = Number(movie.id)
+        const url = '/luma/' + movie.id
 
-      // Reactコンポーネントをポップアップ内のコンテナにマウント
-      const root = createRoot(popupContainer)
-      root.render(<CulturalPropertyThreeCanvasPopup id={id} url={url} />)
+        const popupContainer = document.createElement('div') // 動的コンテンツ用のコンテナ
+        // ポップアップを表示する
+        const popup = new maplibregl.Popup({
+          offset: 10, // ポップアップの位置
+          closeButton: false, // 閉じるボタンの表示
+        })
+          .setLngLat(coordinates)
+          .setDOMContent(popupContainer) // HTMLではなくDOM要素を設定
+          .addTo(mapInstance)
 
-      // ポップアップが閉じられたときにReactコンポーネントをアンマウント
-      popup.on('close', () => {
-        root.unmount()
+        // Reactコンポーネントをポップアップ内のコンテナにマウント
+        const root = createRoot(popupContainer)
+        root.render(<CulturalPropertyThreeCanvasPopup id={id} url={url} />)
+
+        // ポップアップが閉じられたときにReactコンポーネントをアンマウント
+        popup.on('close', () => {
+          root.unmount()
+        })
       })
-    })
-  }
+    },
+    [geojsonData], // ✅ 依存関係に geojsonData を忘れずに含める
+  )
 
   useEffect(() => {
     loadStyles()
@@ -185,7 +170,7 @@ const Map3D = ({ properties }: MapProps) => {
     })
 
     return () => mapInstance.remove()
-  }, [properties, styles])
+  }, [properties, styles, loadStyles, onMapLoad])
 
   return (
     <>

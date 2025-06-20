@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
@@ -7,23 +7,28 @@ import { CulturalProperties } from '@/domains/models/cultural_property'
 import NavigationTab from '@/components/blocks/NavigationTab'
 import SearchConditionTab from '@/components/blocks/SearchConditionTab'
 
-const Map3D = dynamic(() => import('../components/blocks/3dMap'), {
-  ssr: false,
-})
+const Map3D = dynamic(() => import('../components/blocks/3dMap'), { ssr: false })
 
 const MapScreen3D: NextPage = () => {
   const [properties, setProperties] = useState<CulturalProperties>([])
 
-  const actions = {
-    onload: async () => {
-      const properties = await culturalPropertyService.getProperties()
-      setProperties(properties)
-    },
-  }
+  const actions = useMemo(
+    () => ({
+      onload: () => {
+        culturalPropertyService
+          .getProperties()
+          .then(setProperties)
+          .catch((error) => {
+            console.error('Error fetching cultural properties:', error)
+          })
+      },
+    }),
+    [],
+  )
 
   useEffect(() => {
     actions.onload()
-  }, [])
+  }, [actions])
   return (
     <LayoutWithFooter>
       <NavigationTab />

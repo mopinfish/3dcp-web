@@ -5,6 +5,7 @@ import { Clock } from './app/Clock'
 import { Lighting } from './app/Lighting'
 import { MapboxImagery } from './app/MapboxImagery'
 import { Viewer } from './app/Viewer'
+import './src/styles/globals.css'
 
 export const App: React.FC = () => {
   return (

@@ -1,87 +1,12 @@
 import React, { FC, useState } from 'react'
-import styled from 'styled-components'
 import Link from 'next/link'
+import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { useInView } from 'react-intersection-observer'
 import { ThreeCanvas } from '@/components/blocks/ThreeCanvas'
 import { v4 as uuidv4 } from 'uuid'
 
 const HtmlRenderer = dynamic(() => import('@/components/helpers/html_renderer'), { ssr: false })
-
-const ArticleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 800px;
-  margin: 0 auto 1rem;
-  padding: 1rem;
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  background-color: #ffffff;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  @media (min-width: 768px) {
-    flex-direction: column;
-  }
-`
-
-const ContentWrapper = styled.div`
-  flex: 1;
-`
-
-const Title = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-`
-
-const ImagesWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
-`
-
-const ImageWrapper = styled.div`
-  position: relative;
-  width: calc(50% - 0.5rem);
-  height: 150px;
-
-  @media (min-width: 768px) {
-    width: calc(25% - 0.75rem);
-    height: 200px;
-  }
-`
-
-const Image = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 4px;
-`
-
-const Description = styled.div`
-  font-size: 1rem;
-  margin-bottom: 1rem;
-`
-
-const CanvasWarpper = styled.div`
-  width: 100%;
-  margin-bottom: 1rem;
-`
-
-const StyledLink = styled(Link)`
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: #0070f3;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  font-size: 1rem;
-`
 
 interface ArticleProps {
   imageUrls: string[]
@@ -104,31 +29,41 @@ const Article: FC<ArticleProps> = ({
   const [canvasKey] = useState(() => uuidv4())
 
   return (
-    <ArticleContainer>
-      <ContentWrapper>
-        <Title>{title}</Title>
-        <CanvasWarpper>
+    <div className="flex flex-col max-w-3xl mx-auto mb-4 p-4 shadow-md rounded-lg bg-white last:mb-0">
+      <div className="flex-1">
+        <h2 className="text-xl font-semibold mb-2">{title}</h2>
+        <div className="w-full mb-4">
           <div ref={ref}>{inView && <ThreeCanvas key={canvasKey} id={movieId} />}</div>
-          <StyledLink href={linkHref} target="_blank">
+          <Link
+            href={linkHref}
+            target="_blank"
+            className="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded text-base hover:bg-blue-800 transition"
+          >
             {linkText}
-          </StyledLink>
-        </CanvasWarpper>
-        <ImagesWrapper>
+          </Link>
+        </div>
+        <div className="flex flex-wrap gap-4 mb-4">
           {imageUrls.slice(0, 4).map((url, index) => (
-            <ImageWrapper key={index}>
+            <div
+              key={index}
+              className="relative w-[calc(50%-0.5rem)] h-[150px] md:w-[calc(25%-0.75rem)] md:h-[200px]"
+            >
               <Image
                 src={url ?? '/img/noimage.png'}
                 alt={`${title} - image ${index + 1}`}
+                className="w-full h-full object-cover rounded"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                width={600}
+                height={400}
               />
-            </ImageWrapper>
+            </div>
           ))}
-        </ImagesWrapper>
-        <Description>
+        </div>
+        <div className="text-base mb-4">
           <HtmlRenderer htmlContent={description} />
-        </Description>
-      </ContentWrapper>
-    </ArticleContainer>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -6,31 +6,22 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
 import { CulturalProperties } from '@/domains/models/cultural_property'
 
-type MapProps = {
-  properties: CulturalProperties
-}
+type MapProps = { properties: CulturalProperties }
 
 export default function Map({ properties }: MapProps) {
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<maplibregl.Map | null>(null)
   const [selectedProperties, setSelectedProperties] = useState<CulturalProperties>([])
   const [currentLocation, setCurrentLocation] = useState<[number, number] | null>(null)
-  const [center, setCenter] = useState<[number, number]>([139.79667139325397, 35.71489576634944])
-  const [geojsonData, setGeojsonData] = useState<GeoJSON.FeatureCollection<
-    GeoJSON.Geometry,
-    GeoJSON.GeoJsonProperties
-  > | null>(null)
 
   useEffect(() => {
+    if (!mapContainer.current || properties.length === 0) return
     // GeoJSON フィーチャーコレクションに変換
     const geojsonData: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
       type: 'FeatureCollection',
       features: properties.map((item) => ({
         type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [item.longitude, item.latitude],
-        },
+        geometry: { type: 'Point', coordinates: [item.longitude, item.latitude] },
         properties: {
           id: item.id,
           name: item.name,
@@ -43,11 +34,6 @@ export default function Map({ properties }: MapProps) {
         },
       })),
     }
-    setGeojsonData(geojsonData)
-  }, [properties, selectedProperties])
-
-  useEffect(() => {
-    if (!mapContainer.current || properties.length === 0) return
     // 文化財のレイヤー追加
     if (map.current) {
       // 文化財のデータをソースに追加
@@ -65,18 +51,16 @@ export default function Map({ properties }: MapProps) {
           id: 'cultural_properties',
           type: 'symbol',
           source: 'cultural-properties',
-          layout: {
-            'icon-image': ['get', 'icon'],
-            'icon-size': 0.2,
-          },
+          layout: { 'icon-image': ['get', 'icon'], 'icon-size': 0.2 },
         })
       }
     }
-  }, [geojsonData])
+  }, [properties, selectedProperties])
 
   useEffect(() => {
     if (!mapContainer.current || properties.length === 0) return
 
+    const initialCenter: [number, number] = [139.79667139325397, 35.71489576634944]
     map.current = new maplibregl.Map({
       container: mapContainer.current,
       style: {
@@ -90,16 +74,10 @@ export default function Map({ properties }: MapProps) {
           },
         },
         layers: [
-          {
-            id: 'simple-tiles',
-            type: 'raster',
-            source: 'raster-tiles',
-            minzoom: 0,
-            maxzoom: 22,
-          },
+          { id: 'simple-tiles', type: 'raster', source: 'raster-tiles', minzoom: 0, maxzoom: 22 },
         ],
       },
-      center: center,
+      center: initialCenter,
       zoom: 13,
     })
 
@@ -113,13 +91,6 @@ export default function Map({ properties }: MapProps) {
       map.current.addImage('property_icon', image.data)
       const selectedImage = await map.current.loadImage('/img/selected_marker_icon.png')
       map.current.addImage('selected_property_icon', selectedImage.data)
-    })
-
-    // 地図を移動するごとに中心座標を更新
-    map.current.on('move', () => {
-      if (map.current) {
-        setCenter(map.current.getCenter().toArray() as [number, number])
-      }
     })
 
     // クリックで地物を選択
@@ -203,19 +174,11 @@ export default function Map({ properties }: MapProps) {
       if (route && map.current) {
         if (map.current.getSource('route')) {
           const source = map.current.getSource('route') as maplibregl.GeoJSONSource
-          source.setData({
-            type: 'Feature',
-            geometry: route,
-            properties: {},
-          })
+          source.setData({ type: 'Feature', geometry: route, properties: {} })
         } else {
           map.current.addSource('route', {
             type: 'geojson',
-            data: {
-              type: 'Feature',
-              geometry: route,
-              properties: {},
-            },
+            data: { type: 'Feature', geometry: route, properties: {} },
           })
 
           map.current.addLayer({
@@ -223,10 +186,7 @@ export default function Map({ properties }: MapProps) {
             type: 'line',
             source: 'route',
             layout: {},
-            paint: {
-              'line-color': '#FF5733',
-              'line-width': 5,
-            },
+            paint: { 'line-color': '#FF5733', 'line-width': 5 },
           })
         }
       }
