@@ -5,7 +5,11 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="ja">
-        <Head />
+       <Head>
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+          <link rel="apple-touch-icon" href="/apple-icon.png" sizes="180x180" />
+        </Head>
         <body>
           <Main />
           <NextScript />
