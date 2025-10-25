@@ -1,0 +1,69 @@
+/**
+ * API エラークラス
+ */
+export class ApiError extends Error {
+  public status: number
+  public data: any
+
+  constructor(status: number, data: any, message?: string) {
+    super(message || 'API Error')
+    this.name = 'ApiError'
+    this.status = status
+    this.data = data
+
+    // TypeScriptのプロトタイプチェーンを正しく維持
+    Object.setPrototypeOf(this, ApiError.prototype)
+  }
+
+  /**
+   * エラーメッセージを取得
+   */
+  getErrorMessage(): string {
+    // data が文字列の場合
+    if (typeof this.data === 'string') {
+      return this.data
+    }
+
+    // data がオブジェクトの場合
+    if (typeof this.data === 'object' && this.data !== null) {
+      // non_field_errors を優先
+      if (this.data.non_field_errors && Array.isArray(this.data.non_field_errors)) {
+        return this.data.non_field_errors.join(', ')
+      }
+
+      // detail フィールド
+      if (this.data.detail) {
+        return this.data.detail
+      }
+
+      // message フィールド
+      if (this.data.message) {
+        return this.data.message
+      }
+
+      // error フィールド
+      if (this.data.error) {
+        return this.data.error
+      }
+
+      // フィールドエラーの場合（username, password など）
+      const fieldErrors: string[] = []
+      for (const [field, errors] of Object.entries(this.data)) {
+        if (Array.isArray(errors)) {
+          fieldErrors.push(`${field}: ${errors.join(', ')}`)
+        } else if (typeof errors === 'string') {
+          fieldErrors.push(`${field}: ${errors}`)
+        }
+      }
+
+      if (fieldErrors.length > 0) {
+        return fieldErrors.join('\n')
+      }
+
+      // その他の場合はJSON文字列化
+      return JSON.stringify(this.data)
+    }
+
+    return 'An unknown error occurred'
+  }
+}
