@@ -10,7 +10,14 @@
  * - これによりNext.jsの開発モードでError Overlayが表示されなくなる
  */
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from 'react'
 import * as authRepo from '@/infrastructures/repositories/auth'
 import type { User, SignInRequest, SignUpRequest } from '@/domains/models/user'
 import { ApiError } from '@/infrastructures/lib/errors'
@@ -97,7 +104,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   /**
    * ユーザー情報を取得
    */
-  const fetchUser = async (token: string): Promise<User | null> => {
+  const fetchUser = useCallback(async (token: string): Promise<User | null> => {
     try {
       const userData = await authRepo.getCurrentUser(token)
       setUser(userData)
@@ -108,7 +115,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUser(null)
       return null
     }
-  }
+  }, [])
 
   /**
    * ユーザー情報を再取得
@@ -246,7 +253,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     initAuth()
-  }, [])
+  }, [fetchUser])
 
   const value: AuthContextType = {
     user,

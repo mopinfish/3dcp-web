@@ -52,6 +52,7 @@ function MyPageContent() {
                 <div className="flex justify-center">
                   <div className="h-32 w-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                     {user.avatar ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={user.avatar}
                         alt={user.name || user.username}
@@ -71,20 +72,14 @@ function MyPageContent() {
 
                 {/* ユーザー情報 */}
                 <div className="mt-6 text-center">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    {user.name || user.username}
-                  </h2>
+                  <h2 className="text-2xl font-bold text-gray-900">{user.name || user.username}</h2>
                   <p className="text-sm text-gray-600 mt-1">@{user.username}</p>
 
                   {/* メール認証バッジ */}
                   <div className="mt-4">
                     {user.is_email_verified ? (
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                        <svg
-                          className="mr-1 h-4 w-4"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
+                        <svg className="mr-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                           <path
                             fillRule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -95,11 +90,7 @@ function MyPageContent() {
                       </span>
                     ) : (
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                        <svg
-                          className="mr-1 h-4 w-4"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
+                        <svg className="mr-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
                           <path
                             fillRule="evenodd"
                             d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
@@ -129,105 +120,64 @@ function MyPageContent() {
           <div className="lg:col-span-2">
             <div className="bg-white overflow-hidden shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                  基本情報
-                </h3>
+                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">基本情報</h3>
 
-                <dl className="space-y-4">
-                  {/* メールアドレス */}
-                  <div className="border-b border-gray-200 pb-4">
-                    <dt className="text-sm font-medium text-gray-500">
-                      メールアドレス
-                    </dt>
+                <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">ユーザー名</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{user.username}</dd>
+                  </div>
+
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">名前</dt>
+                    <dd className="mt-1 text-sm text-gray-900">{user.name || '未設定'}</dd>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <dt className="text-sm font-medium text-gray-500">メールアドレス</dt>
                     <dd className="mt-1 text-sm text-gray-900">{user.email}</dd>
                   </div>
 
-                  {/* 名前 */}
-                  <div className="border-b border-gray-200 pb-4">
-                    <dt className="text-sm font-medium text-gray-500">名前</dt>
-                    <dd className="mt-1 text-sm text-gray-900">
-                      {user.name || '未設定'}
-                    </dd>
-                  </div>
-
-                  {/* 自己紹介 */}
-                  <div className="border-b border-gray-200 pb-4">
+                  <div className="sm:col-span-2">
                     <dt className="text-sm font-medium text-gray-500">自己紹介</dt>
-                    <dd className="mt-1 text-sm text-gray-900">
-                      {user.bio || '未設定'}
-                    </dd>
+                    <dd className="mt-1 text-sm text-gray-900">{user.bio || '未設定'}</dd>
                   </div>
 
-                  {/* 登録日 */}
-                  <div className="border-b border-gray-200 pb-4">
+                  <div>
                     <dt className="text-sm font-medium text-gray-500">登録日</dt>
                     <dd className="mt-1 text-sm text-gray-900">
-                      {new Date(user.created_at).toLocaleDateString('ja-JP', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
+                      {user.date_joined
+                        ? new Date(user.date_joined).toLocaleDateString('ja-JP')
+                        : '不明'}
                     </dd>
                   </div>
 
-                  {/* 最終更新日 */}
-                  <div className="pb-4">
-                    <dt className="text-sm font-medium text-gray-500">
-                      最終更新日
-                    </dt>
+                  <div>
+                    <dt className="text-sm font-medium text-gray-500">最終ログイン</dt>
                     <dd className="mt-1 text-sm text-gray-900">
-                      {new Date(user.updated_at).toLocaleDateString('ja-JP', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
+                      {user.last_login
+                        ? new Date(user.last_login).toLocaleDateString('ja-JP')
+                        : '不明'}
                     </dd>
                   </div>
                 </dl>
               </div>
             </div>
 
-            {/* クイックアクション */}
-            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <svg
-                  className="mr-2 h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            {/* パスワード変更 */}
+            <div className="mt-6 bg-white overflow-hidden shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">セキュリティ</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  パスワードを変更する場合は、以下のボタンからパスワード変更ページへ移動してください。
+                </p>
+                <Link
+                  href="/mypage/change-password"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  />
-                </svg>
-                トップページへ
-              </Link>
-
-              <Link
-                href="/map"
-                className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                <svg
-                  className="mr-2 h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                  />
-                </svg>
-                マップを見る
-              </Link>
+                  パスワードを変更
+                </Link>
+              </div>
             </div>
           </div>
         </div>

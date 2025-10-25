@@ -16,6 +16,17 @@ import { useAuth } from '@/contexts/AuthContext'
 import { SignUpRequest } from '@/domains/models/user'
 import { ApiError } from '@/infrastructures/lib/errors'
 
+// エラーレスポンスの型定義
+interface ApiErrorData {
+  non_field_errors?: string[]
+  username?: string[] | string
+  email?: string[] | string
+  password?: string[] | string
+  password_confirm?: string[] | string
+  name?: string[] | string
+  [key: string]: unknown
+}
+
 export default function SignUpPage() {
   const router = useRouter()
   const { signUp } = useAuth()
@@ -111,6 +122,7 @@ export default function SignUpPage() {
     // ApiErrorインスタンスかチェック
     if (error instanceof ApiError) {
       const { status, data } = error
+      const apiData = data as ApiErrorData
 
       // ネットワークエラー (status = 0)
       if (status === 0) {
@@ -121,10 +133,10 @@ export default function SignUpPage() {
 
       // 400 Bad Request - バリデーションエラー
       if (status === 400) {
-        if (typeof data === 'object' && data !== null) {
+        if (typeof apiData === 'object' && apiData !== null) {
           // non_field_errorsの処理
-          if (data.non_field_errors && Array.isArray(data.non_field_errors)) {
-            newErrors.submit = data.non_field_errors.join(', ')
+          if (apiData.non_field_errors && Array.isArray(apiData.non_field_errors)) {
+            newErrors.submit = apiData.non_field_errors.join(', ')
           }
 
           // フィールドごとのエラーを日本語化
@@ -136,12 +148,12 @@ export default function SignUpPage() {
             name: 'name',
           }
 
-          for (const [field, fieldErrors] of Object.entries(data)) {
+          for (const [field, fieldErrors] of Object.entries(apiData)) {
             const mappedField = fieldMapping[field] || field
 
             if (Array.isArray(fieldErrors)) {
               // よくあるエラーメッセージの日本語化
-              const translatedErrors = fieldErrors.map((err: string) => {
+              const translatedErrors = fieldErrors.map((err: unknown) => {
                 if (typeof err === 'string') {
                   // ユーザー名関連
                   if (
@@ -183,7 +195,7 @@ export default function SignUpPage() {
                     return 'パスワードは数字のみでは設定できません'
                   }
                 }
-                return err
+                return String(err)
               })
 
               newErrors[mappedField] = translatedErrors.join(', ')
@@ -337,27 +349,6 @@ export default function SignUpPage() {
               {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
             </div>
 
-            {/* 名前 */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                名前
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                value={formData.name}
-                onChange={handleChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                  errors.name ? 'border-red-500' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                placeholder="山田 太郎"
-                disabled={isLoading}
-              />
-              {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
-            </div>
-
             {/* パスワード */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -374,13 +365,14 @@ export default function SignUpPage() {
                 className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
                   errors.password ? 'border-red-500' : 'border-gray-300'
                 } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                placeholder="8文字以上"
+                placeholder="********"
                 disabled={isLoading}
               />
               {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+              <p className="mt-1 text-xs text-gray-500">8文字以上で入力してください</p>
             </div>
 
-            {/* パスワード確認 */}
+            {/* パスワード(確認) */}
             <div>
               <label htmlFor="password_confirm" className="block text-sm font-medium text-gray-700">
                 パスワード(確認) <span className="text-red-500">*</span>
@@ -396,18 +388,39 @@ export default function SignUpPage() {
                 className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
                   errors.password_confirm ? 'border-red-500' : 'border-gray-300'
                 } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                placeholder="もう一度入力"
+                placeholder="********"
                 disabled={isLoading}
               />
               {errors.password_confirm && (
                 <p className="mt-1 text-sm text-red-600">{errors.password_confirm}</p>
               )}
             </div>
+
+            {/* 名前(任意) */}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                名前 <span className="text-gray-400">(任意)</span>
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                value={formData.name}
+                onChange={handleChange}
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
+                  errors.name ? 'border-red-500' : 'border-gray-300'
+                } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                placeholder="山田 太郎"
+                disabled={isLoading}
+              />
+              {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+            </div>
           </div>
 
-          {/* エラーメッセージ */}
+          {/* 全体のエラーメッセージ */}
           {errors.submit && (
-            <div className="rounded-md bg-red-50 p-4 border border-red-200">
+            <div className="rounded-md bg-red-50 border border-red-200 p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
                   <svg
@@ -462,22 +475,9 @@ export default function SignUpPage() {
                   登録中...
                 </>
               ) : (
-                'アカウントを登録'
+                'アカウントを作成'
               )}
             </button>
-          </div>
-
-          {/* 利用規約 */}
-          <div className="text-xs text-gray-500 text-center">
-            登録することで、
-            <Link href="/terms" className="text-blue-600 hover:text-blue-500">
-              利用規約
-            </Link>
-            および
-            <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
-              プライバシーポリシー
-            </Link>
-            に同意したものとみなされます
           </div>
         </form>
       </div>

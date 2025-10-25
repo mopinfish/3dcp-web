@@ -3,9 +3,9 @@
  */
 export class ApiError extends Error {
   public status: number
-  public data: any
+  public data: unknown
 
-  constructor(status: number, data: any, message?: string) {
+  constructor(status: number, data: unknown, message?: string) {
     super(message || 'API Error')
     this.name = 'ApiError'
     this.status = status
@@ -26,29 +26,31 @@ export class ApiError extends Error {
 
     // data がオブジェクトの場合
     if (typeof this.data === 'object' && this.data !== null) {
+      const dataObj = this.data as Record<string, unknown>
+
       // non_field_errors を優先
-      if (this.data.non_field_errors && Array.isArray(this.data.non_field_errors)) {
-        return this.data.non_field_errors.join(', ')
+      if (dataObj.non_field_errors && Array.isArray(dataObj.non_field_errors)) {
+        return dataObj.non_field_errors.join(', ')
       }
 
       // detail フィールド
-      if (this.data.detail) {
-        return this.data.detail
+      if (dataObj.detail) {
+        return String(dataObj.detail)
       }
 
       // message フィールド
-      if (this.data.message) {
-        return this.data.message
+      if (dataObj.message) {
+        return String(dataObj.message)
       }
 
       // error フィールド
-      if (this.data.error) {
-        return this.data.error
+      if (dataObj.error) {
+        return String(dataObj.error)
       }
 
-      // フィールドエラーの場合（username, password など）
+      // フィールドエラーの場合(username, password など)
       const fieldErrors: string[] = []
-      for (const [field, errors] of Object.entries(this.data)) {
+      for (const [field, errors] of Object.entries(dataObj)) {
         if (Array.isArray(errors)) {
           fieldErrors.push(`${field}: ${errors.join(', ')}`)
         } else if (typeof errors === 'string') {

@@ -6,7 +6,6 @@ import { CulturalProperty, CulturalProperties } from '@/domains/models/cultural_
 import NavigationTab from '@/components/blocks/NavigationTab'
 import TranslationButton from '@/components/blocks/TranslationButton'
 import SearchConditionTab from '@/components/blocks/SearchConditionTab'
-import { get } from 'http'
 
 const Home = () => {
   const [properties, setProperties] = useState<CulturalProperties>([])

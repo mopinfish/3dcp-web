@@ -16,6 +16,24 @@ import { useAuth } from '@/contexts/AuthContext'
 import { ApiError } from '@/infrastructures/lib/errors'
 import type { SignInRequest } from '@/domains/models/user'
 
+// エラーレスポンスの型定義
+interface ErrorDetail {
+  string?: string
+  message?: string
+  [key: string]: unknown
+}
+
+interface ApiErrorData {
+  non_field_errors?: unknown[]
+  nonFieldErrors?: unknown[]
+  detail?: string
+  error?: string
+  message?: string
+  username?: unknown
+  password?: unknown
+  [key: string]: unknown
+}
+
 export default function SignInPage() {
   const router = useRouter()
   const { signIn } = useAuth()
@@ -73,6 +91,7 @@ export default function SignInPage() {
     // ApiErrorインスタンスかチェック
     if (error instanceof ApiError) {
       const { status, data } = error
+      const apiData = data as ApiErrorData
 
       // ネットワークエラー (status = 0)
       if (status === 0) {
@@ -83,17 +102,18 @@ export default function SignInPage() {
 
       // 400 Bad Request - バリデーションエラー
       if (status === 400) {
-        if (typeof data === 'object' && data !== null) {
+        if (typeof apiData === 'object' && apiData !== null) {
           // non_field_errorsの処理(スネークケース)
-          if ('non_field_errors' in data) {
-            const nonFieldErrors = (data as any).non_field_errors
+          if ('non_field_errors' in apiData) {
+            const nonFieldErrors = apiData.non_field_errors
 
             if (Array.isArray(nonFieldErrors) && nonFieldErrors.length > 0) {
               // 配列の各要素を文字列に変換
-              const errorMessages = nonFieldErrors.map((err: any) => {
+              const errorMessages = nonFieldErrors.map((err: unknown) => {
                 // ErrorDetailオブジェクトの場合
                 if (typeof err === 'object' && err !== null) {
-                  return err.string || err.message || err.toString()
+                  const errDetail = err as ErrorDetail
+                  return errDetail.string || errDetail.message || String(err)
                 }
                 return String(err)
               })
@@ -103,12 +123,13 @@ export default function SignInPage() {
           }
 
           // nonFieldErrors(キャメルケース)の処理
-          if ('nonFieldErrors' in data) {
-            const nonFieldErrors = (data as any).nonFieldErrors
+          if ('nonFieldErrors' in apiData) {
+            const nonFieldErrors = apiData.nonFieldErrors
             if (Array.isArray(nonFieldErrors) && nonFieldErrors.length > 0) {
-              const errorMessages = nonFieldErrors.map((err: any) => {
+              const errorMessages = nonFieldErrors.map((err: unknown) => {
                 if (typeof err === 'object' && err !== null) {
-                  return err.string || err.message || err.toString()
+                  const errDetail = err as ErrorDetail
+                  return errDetail.string || errDetail.message || String(err)
                 }
                 return String(err)
               })
@@ -118,31 +139,32 @@ export default function SignInPage() {
           }
 
           // detailフィールドの処理
-          if ('detail' in data) {
-            newErrors.submit = String((data as any).detail)
+          if ('detail' in apiData) {
+            newErrors.submit = String(apiData.detail)
             return newErrors
           }
 
           // errorフィールドの処理
-          if ('error' in data) {
-            newErrors.submit = String((data as any).error)
+          if ('error' in apiData) {
+            newErrors.submit = String(apiData.error)
             return newErrors
           }
 
           // messageフィールドの処理
-          if ('message' in data) {
-            newErrors.submit = String((data as any).message)
+          if ('message' in apiData) {
+            newErrors.submit = String(apiData.message)
             return newErrors
           }
 
           // フィールドごとのエラー
-          for (const [field, fieldErrors] of Object.entries(data)) {
+          for (const [field, fieldErrors] of Object.entries(apiData)) {
             if (field === 'username' || field === 'password') {
               if (Array.isArray(fieldErrors)) {
                 newErrors[field] = fieldErrors
-                  .map((err) => {
+                  .map((err: unknown) => {
                     if (typeof err === 'object' && err !== null) {
-                      return (err as any).string || (err as any).message || String(err)
+                      const errDetail = err as ErrorDetail
+                      return errDetail.string || errDetail.message || String(err)
                     }
                     return String(err)
                   })
@@ -150,8 +172,8 @@ export default function SignInPage() {
               } else if (typeof fieldErrors === 'string') {
                 newErrors[field] = fieldErrors
               } else if (typeof fieldErrors === 'object' && fieldErrors !== null) {
-                newErrors[field] =
-                  (fieldErrors as any).string || (fieldErrors as any).message || String(fieldErrors)
+                const errDetail = fieldErrors as ErrorDetail
+                newErrors[field] = errDetail.string || errDetail.message || String(fieldErrors)
               }
             }
           }

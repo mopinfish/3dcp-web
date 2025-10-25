@@ -9,6 +9,8 @@ export type User = {
   bio: string
   avatar: string | null
   is_email_verified: boolean
+  date_joined: string
+  last_login: string | null
   created_at: string
   updated_at: string
 }

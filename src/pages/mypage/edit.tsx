@@ -20,9 +20,7 @@ function EditProfileContent() {
     avatar: null,
   })
 
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(
-    user?.avatar || null,
-  )
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(user?.avatar || null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string>('')
@@ -30,9 +28,7 @@ function EditProfileContent() {
   /**
    * フォーム入力変更ハンドラー
    */
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -54,7 +50,7 @@ function EditProfileContent() {
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      // ファイルサイズチェック（5MB以下）
+      // ファイルサイズチェック(5MB以下)
       if (file.size > 5 * 1024 * 1024) {
         setErrors((prev) => ({
           ...prev,
@@ -174,12 +170,7 @@ function EditProfileContent() {
               href="/mypage"
               className="mr-4 inline-flex items-center text-gray-600 hover:text-gray-900"
             >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -188,9 +179,7 @@ function EditProfileContent() {
                 />
               </svg>
             </Link>
-            <h1 className="text-3xl font-bold text-gray-900">
-              プロフィールを編集
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900">プロフィールを編集</h1>
           </div>
         </div>
       </header>
@@ -204,11 +193,7 @@ function EditProfileContent() {
               <div className="mb-6 rounded-md bg-green-50 p-4">
                 <div className="flex">
                   <div className="flex-shrink-0">
-                    <svg
-                      className="h-5 w-5 text-green-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
+                    <svg className="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -217,9 +202,7 @@ function EditProfileContent() {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-green-800">
-                      {successMessage}
-                    </p>
+                    <p className="text-sm font-medium text-green-800">{successMessage}</p>
                   </div>
                 </div>
               </div>
@@ -227,12 +210,11 @@ function EditProfileContent() {
 
             {/* アバター画像 */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                アバター画像
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">アバター画像</label>
               <div className="flex items-center space-x-6">
                 <div className="h-24 w-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                   {avatarPreview ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={avatarPreview}
                       alt="Avatar preview"
@@ -263,14 +245,10 @@ function EditProfileContent() {
                   >
                     画像を選択
                   </label>
-                  <p className="mt-2 text-xs text-gray-500">
-                    JPG, PNG, GIF形式。最大5MB。
-                  </p>
+                  <p className="mt-2 text-xs text-gray-500">JPG, PNG, GIF形式。最大5MB。</p>
                 </div>
               </div>
-              {errors.avatar && (
-                <p className="mt-2 text-sm text-red-600">{errors.avatar}</p>
-              )}
+              {errors.avatar && <p className="mt-2 text-sm text-red-600">{errors.avatar}</p>}
             </div>
 
             {/* 名前 */}
@@ -287,9 +265,7 @@ function EditProfileContent() {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="山田 太郎"
               />
-              {errors.name && (
-                <p className="mt-2 text-sm text-red-600">{errors.name}</p>
-              )}
+              {errors.name && <p className="mt-2 text-sm text-red-600">{errors.name}</p>}
             </div>
 
             {/* 自己紹介 */}
@@ -306,12 +282,8 @@ function EditProfileContent() {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 placeholder="自己紹介を入力してください"
               />
-              <p className="mt-2 text-xs text-gray-500">
-                {formData.bio.length} / 500文字
-              </p>
-              {errors.bio && (
-                <p className="mt-2 text-sm text-red-600">{errors.bio}</p>
-              )}
+              <p className="mt-2 text-xs text-gray-500">{formData.bio.length} / 500文字</p>
+              {errors.bio && <p className="mt-2 text-sm text-red-600">{errors.bio}</p>}
             </div>
 
             {/* エラーメッセージ */}
