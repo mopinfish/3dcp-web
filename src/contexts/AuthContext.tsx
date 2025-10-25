@@ -130,7 +130,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signIn = async (data: SignInRequest): Promise<AuthResult> => {
     try {
       console.log('AuthContext: signIn started')
-      console.log('AuthContext: Request data:', { username: data.username, password: '***' })
 
       // バックエンドからのレスポンス形式:
       // {
