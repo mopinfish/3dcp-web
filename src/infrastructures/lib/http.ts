@@ -37,7 +37,7 @@ async function request<T>(url: string, options: RequestOptions): Promise<T> {
   }
 
   if (body) {
-    config.body = body instanceof FormData ? body : body
+    config.body = body
   }
 
   try {
