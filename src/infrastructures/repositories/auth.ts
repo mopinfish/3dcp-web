@@ -24,7 +24,6 @@ const HOST = process.env.NEXT_PUBLIC_BACKEND_API_HOST
 export async function signUp(data: SignUpRequest): Promise<{ message: string; user: User }> {
   const url = `${HOST}/api/v1/auth/signup/`
 
-  console.log('authRepo: signUp API call started')
 
   try {
     const result = await Http.post<{ message: string; user: User }>(url, data)
