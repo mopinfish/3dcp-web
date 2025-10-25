@@ -165,21 +165,38 @@ function EditProfileContent() {
       {/* ヘッダー */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Link
+                href="/mypage"
+                className="inline-flex items-center text-gray-600 hover:text-gray-900"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                <span className="ml-2">マイページへ戻る</span>
+              </Link>
+              <h1 className="text-3xl font-bold text-gray-900">プロフィールを編集</h1>
+            </div>
             <Link
-              href="/mypage"
-              className="mr-4 inline-flex items-center text-gray-600 hover:text-gray-900"
+              href="/"
+              className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900"
             >
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="mr-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                 />
               </svg>
+              トップページ
             </Link>
-            <h1 className="text-3xl font-bold text-gray-900">プロフィールを編集</h1>
           </div>
         </div>
       </header>

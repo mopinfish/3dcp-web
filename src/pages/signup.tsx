@@ -7,6 +7,7 @@
  * ✅ 修正内容:
  * - signUp関数の返り値{ success, error }をチェックしてエラーメッセージを表示
  * - エラーがthrowされないためError Overlayは表示されない
+ * - トップページへのリンクを追加
  */
 
 import React, { useState } from 'react'
@@ -192,8 +193,16 @@ export default function SignUpPage() {
                     err.toLowerCase().includes('password') &&
                     err.toLowerCase().includes('numeric')
                   ) {
-                    return 'パスワードは数字のみでは設定できません'
+                    return 'パスワードに数字のみは使用できません'
                   }
+                  if (
+                    err.toLowerCase().includes('password') &&
+                    err.toLowerCase().includes('similar')
+                  ) {
+                    return 'パスワードがユーザー情報と類似しすぎています'
+                  }
+                  // その他
+                  return err
                 }
                 return String(err)
               })
@@ -213,12 +222,6 @@ export default function SignUpPage() {
         return newErrors
       }
 
-      // 409 Conflict - 重複エラー
-      if (status === 409) {
-        newErrors.submit = 'このユーザー名またはメールアドレスは既に登録されています。'
-        return newErrors
-      }
-
       // 429 Too Many Requests
       if (status === 429) {
         newErrors.submit = '登録試行回数が多すぎます。しばらく時間をおいてから再度お試しください。'
@@ -231,10 +234,6 @@ export default function SignUpPage() {
           'サーバーエラーが発生しました。しばらく時間をおいてから再度お試しください。'
         return newErrors
       }
-
-      // その他のエラー
-      newErrors.submit = error.getErrorMessage() || '予期しないエラーが発生しました。'
-      return newErrors
     }
 
     // 一般的なエラー
@@ -478,6 +477,24 @@ export default function SignUpPage() {
                 'アカウントを作成'
               )}
             </button>
+          </div>
+
+          {/* トップページへのリンク */}
+          <div className="text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              トップページへ戻る
+            </Link>
           </div>
         </form>
       </div>

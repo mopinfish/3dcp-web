@@ -2,33 +2,34 @@
  * signin.tsx
  *
  * サインイン画面
- * ユーザー名またはメールアドレスとパスワードでログイン
+ * ログインフォーム
  *
  * ✅ 修正内容:
  * - signIn関数の返り値{ success, error }をチェックしてエラーメッセージを表示
- * - try-catchは残すが、エラーがthrowされないためError Overlayは表示されない
+ * - エラーがthrowされないためError Overlayは表示されない
+ * - トップページへのリンクを追加
  */
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
+import { SignInRequest } from '@/domains/models/user'
 import { ApiError } from '@/infrastructures/lib/errors'
-import type { SignInRequest } from '@/domains/models/user'
 
 // エラーレスポンスの型定義
 interface ErrorDetail {
-  string?: string
   message?: string
-  [key: string]: unknown
+  string?: string
+  code?: string
 }
 
 interface ApiErrorData {
   non_field_errors?: unknown[]
   nonFieldErrors?: unknown[]
-  detail?: string
-  error?: string
-  message?: string
+  detail?: unknown
+  error?: unknown
+  message?: unknown
   username?: unknown
   password?: unknown
   [key: string]: unknown
@@ -47,11 +48,15 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
 
   /**
-   * 入力値の変更ハンドラー
+   * フォーム入力変更ハンドラー
    */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
     // 入力時にエラーをクリア
     if (errors[name]) {
       setErrors((prev) => {
@@ -69,13 +74,11 @@ export default function SignInPage() {
     const newErrors: Record<string, string> = {}
 
     if (!formData.username.trim()) {
-      newErrors.username = 'ユーザー名またはメールアドレスを入力してください'
+      newErrors.username = 'ユーザー名/メールアドレスを入力してください'
     }
 
     if (!formData.password) {
       newErrors.password = 'パスワードを入力してください'
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'パスワードは8文字以上で入力してください'
     }
 
     setErrors(newErrors)
@@ -404,6 +407,24 @@ export default function SignInPage() {
                 'サインイン'
               )}
             </button>
+          </div>
+
+          {/* トップページへのリンク */}
+          <div className="text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              トップページへ戻る
+            </Link>
           </div>
         </form>
       </div>
