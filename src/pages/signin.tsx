@@ -96,7 +96,6 @@ export default function SignInPage() {
           // non_field_errorsの処理(スネークケース)
           if ('non_field_errors' in data) {
             const nonFieldErrors = (data as any).non_field_errors
-            console.log('non_field_errors:', nonFieldErrors)
 
             if (Array.isArray(nonFieldErrors) && nonFieldErrors.length > 0) {
               // 配列の各要素を文字列に変換
