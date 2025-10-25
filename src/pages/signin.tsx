@@ -70,18 +70,9 @@ export default function SignInPage() {
   const parseApiError = (error: unknown): Record<string, string> => {
     const newErrors: Record<string, string> = {}
 
-    console.log('=== Error Debug ===')
-    console.log('Error:', error)
-    console.log('Error type:', typeof error)
-    console.log('Is ApiError:', error instanceof ApiError)
-
     // ApiErrorインスタンスかチェック
     if (error instanceof ApiError) {
       const { status, data } = error
-
-      console.log('Status:', status)
-      console.log('Data:', data)
-      console.log('Data type:', typeof data)
 
       // ネットワークエラー (status = 0)
       if (status === 0) {
@@ -107,7 +98,6 @@ export default function SignInPage() {
                 return String(err)
               })
               newErrors.submit = errorMessages.join(', ')
-              console.log('Set submit error:', newErrors.submit)
               return newErrors
             }
           }
@@ -147,8 +137,6 @@ export default function SignInPage() {
 
           // フィールドごとのエラー
           for (const [field, fieldErrors] of Object.entries(data)) {
-            console.log(`Field: ${field}, Errors:`, fieldErrors)
-
             if (field === 'username' || field === 'password') {
               if (Array.isArray(fieldErrors)) {
                 newErrors[field] = fieldErrors
@@ -218,7 +206,6 @@ export default function SignInPage() {
     }
 
     // 不明なエラー
-    console.log('Unknown error type')
     newErrors.submit = '予期しないエラーが発生しました。'
     return newErrors
   }
@@ -242,28 +229,19 @@ export default function SignInPage() {
     setIsLoading(true)
     setErrors({}) // エラーをクリア
 
-    console.log('=== SignIn Attempt ===')
-    console.log('Username/Email:', formData.username)
-    console.log('Password length:', formData.password.length)
-
     // ✅ signIn関数を呼び出して結果オブジェクトを取得
     const result = await signIn(formData)
 
     // ✅ 結果をチェック
     if (result.success) {
-      console.log('SignIn successful')
-
       // サインイン成功後、リダイレクト先へ遷移
       const redirect = (router.query.redirect as string) || '/mypage'
       await router.push(redirect)
     } else {
       // ✅ エラーがある場合、エラーメッセージを表示
-      console.error('=== SignIn Error ===')
-      console.error('Error:', result.error)
 
       // エラーを解析してユーザーフレンドリーなメッセージに変換
       const parsedErrors = parseApiError(result.error)
-      console.log('Parsed errors:', parsedErrors)
 
       // エラーをstateにセット
       setErrors(parsedErrors)
