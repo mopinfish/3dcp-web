@@ -24,7 +24,6 @@ const HOST = process.env.NEXT_PUBLIC_BACKEND_API_HOST
 export async function signUp(data: SignUpRequest): Promise<{ message: string; user: User }> {
   const url = `${HOST}/api/v1/auth/signup/`
 
-
   try {
     const result = await Http.post<{ message: string; user: User }>(url, data)
     console.log('authRepo: signUp API call successful')
@@ -50,7 +49,7 @@ export async function signIn(data: SignInRequest): Promise<LoginResponse> {
   console.log('authRepo: Request data:', { username: data.username, password: '***' })
 
   try {
-    // CRITICAL: 型パラメータを正しく設定（Promiseでラップしない）
+    // CRITICAL: 型パラメータを正しく設定(Promiseでラップしない)
     const result = await Http.post<LoginResponse>(url, data)
 
     console.log('authRepo: signIn API call successful')
@@ -191,6 +190,11 @@ export async function updateProfile(token: string, data: UpdateProfileRequest): 
   const url = `${HOST}/api/v1/auth/profile/`
 
   console.log('authRepo: updateProfile API call started')
+  console.log('authRepo: Update data:', {
+    hasName: 'name' in data,
+    hasBio: 'bio' in data,
+    hasAvatar: 'avatar' in data,
+  })
 
   const headers = {
     Authorization: `Token ${token}`,
@@ -198,12 +202,27 @@ export async function updateProfile(token: string, data: UpdateProfileRequest): 
 
   // FormDataを使用して画像アップロードに対応
   const formData = new FormData()
-  if (data.name) formData.append('name', data.name)
-  if (data.bio) formData.append('bio', data.bio)
-  if (data.avatar) formData.append('avatar', data.avatar)
+
+  // 🔧 修正: undefined や null でない限り、値を追加
+  if (data.name !== undefined && data.name !== null) {
+    formData.append('name', data.name)
+  }
+  if (data.bio !== undefined && data.bio !== null) {
+    formData.append('bio', data.bio)
+  }
+  if (data.avatar) {
+    formData.append('avatar', data.avatar)
+  }
+
+  // デバッグ: FormDataの内容をログ出力
+  console.log('authRepo: FormData contents:')
+  for (const [key, value] of formData.entries()) {
+    console.log(`  ${key}:`, typeof value === 'string' ? value : '[File]')
+  }
 
   try {
-    const result = await Http.put<User>(url, formData, headers)
+    // 🔧 重要な修正: PUTの代わりにPATCHを使用（部分更新）
+    const result = await Http.patch<User>(url, formData, headers)
     console.log('authRepo: updateProfile API call successful')
     return result
   } catch (error) {

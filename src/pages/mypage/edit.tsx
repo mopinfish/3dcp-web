@@ -129,12 +129,39 @@ function EditProfileContent() {
         throw new Error('認証トークンが見つかりません')
       }
 
-      // プロフィール更新
+      // 🔧 修正: 変更されたフィールドのみを送信する
       const updateData: UpdateProfileRequest = {}
-      if (formData.name !== user?.name) updateData.name = formData.name
-      if (formData.bio !== user?.bio) updateData.bio = formData.bio
-      if (formData.avatar) updateData.avatar = formData.avatar
 
+      // 名前が変更されている場合のみ追加
+      if (formData.name !== (user?.name || '')) {
+        updateData.name = formData.name
+      }
+
+      // bioが変更されている場合のみ追加
+      if (formData.bio !== (user?.bio || '')) {
+        updateData.bio = formData.bio
+      }
+
+      // アバターが選択されている場合は追加
+      if (formData.avatar) {
+        updateData.avatar = formData.avatar
+      }
+
+      // 🔧 修正: 何も変更されていない場合の処理
+      if (Object.keys(updateData).length === 0) {
+        setSuccessMessage('変更はありませんでした')
+        setIsLoading(false)
+
+        // 2秒後にマイページへリダイレクト
+        setTimeout(() => {
+          router.push('/mypage')
+        }, 2000)
+        return
+      }
+
+      console.log('Updating profile with data:', updateData)
+
+      // プロフィール更新
       await authRepo.updateProfile(token, updateData)
 
       // ユーザー情報を再取得
