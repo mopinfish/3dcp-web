@@ -1,14 +1,23 @@
+/**
+ * verify-email.tsx
+ *
+ * メール認証ページ
+ * メールに記載されたリンクからアクセスし、トークンを検証してメールアドレスを認証する
+ */
+
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import * as authRepo from '@/infrastructures/repositories/auth'
+import { ApiError } from '@/infrastructures/lib/errors'
 
-type VerifyStatus = 'verifying' | 'success' | 'error'
+type VerificationStatus = 'verifying' | 'success' | 'error'
 
 export default function VerifyEmailPage() {
   const router = useRouter()
-  const [status, setStatus] = useState<VerifyStatus>('verifying')
+  const [status, setStatus] = useState<VerificationStatus>('verifying')
   const [message, setMessage] = useState<string>('')
+  const [errorDetails, setErrorDetails] = useState<string>('')
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -20,8 +29,11 @@ export default function VerifyEmailPage() {
       if (!token) {
         setStatus('error')
         setMessage('認証トークンが見つかりません。')
+        setErrorDetails('URLにトークンパラメータが含まれていません。')
         return
       }
+
+      console.log('Verifying email with token:', token.substring(0, 10) + '...')
 
       try {
         const response = await authRepo.verifyEmail({ token })
@@ -35,9 +47,19 @@ export default function VerifyEmailPage() {
       } catch (error) {
         console.error('Verification failed:', error)
         setStatus('error')
-        setMessage(
-          'メール認証に失敗しました。トークンの有効期限が切れているか、無効なトークンです。',
-        )
+
+        // ApiErrorの場合、詳細なエラーメッセージを表示
+        if (error instanceof ApiError) {
+          const errorMessage = error.getErrorMessage()
+          setMessage('メール認証に失敗しました')
+          setErrorDetails(errorMessage)
+
+          console.log('API Error Status:', error.status)
+          console.log('API Error Data:', error.data)
+        } else {
+          setMessage('メール認証に失敗しました')
+          setErrorDetails('予期しないエラーが発生しました。')
+        }
       }
     }
 
@@ -54,9 +76,7 @@ export default function VerifyEmailPage() {
               <div className="mx-auto flex items-center justify-center h-24 w-24">
                 <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
               </div>
-              <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-                メール認証中...
-              </h2>
+              <h2 className="mt-6 text-3xl font-extrabold text-gray-900">メール認証中...</h2>
               <p className="mt-2 text-gray-600">しばらくお待ちください</p>
             </>
           )}
@@ -79,21 +99,11 @@ export default function VerifyEmailPage() {
                   />
                 </svg>
               </div>
-              <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-                認証完了しました!
-              </h2>
-              <p className="mt-4 text-gray-600">{message}</p>
+              <h2 className="mt-6 text-3xl font-extrabold text-gray-900">認証完了しました!</h2>
+              <p className="mt-2 text-gray-600">{message}</p>
               <p className="mt-2 text-sm text-gray-500">
-                3秒後に自動的にサインイン画面へ移動します...
+                3秒後にサインイン画面へ自動的に移動します...
               </p>
-              <div className="mt-8">
-                <Link
-                  href="/signin"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  今すぐサインインする
-                </Link>
-              </div>
             </>
           )}
 
@@ -115,52 +125,73 @@ export default function VerifyEmailPage() {
                   />
                 </svg>
               </div>
-              <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-                認証に失敗しました
-              </h2>
-              <p className="mt-4 text-gray-600">{message}</p>
+              <h2 className="mt-6 text-3xl font-extrabold text-gray-900">{message}</h2>
 
-              <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-md p-4">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <svg
-                      className="h-5 w-5 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-yellow-800">
-                      再度サインアップしてください
-                    </h3>
-                    <p className="mt-2 text-sm text-yellow-700">
-                      認証リンクの有効期限は24時間です。期限が切れた場合は、もう一度サインアップからやり直してください。
-                    </p>
+              {/* エラー詳細 */}
+              {errorDetails && (
+                <div className="mt-4 bg-red-50 border border-red-200 rounded-md p-4">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 text-red-400"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm text-red-800 whitespace-pre-line">{errorDetails}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              <div className="mt-8 space-y-4">
-                <Link
-                  href="/signup"
-                  className="block w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  サインアップへ戻る
-                </Link>
-                <Link
-                  href="/"
-                  className="block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  トップページへ戻る
-                </Link>
+              {/* 対処方法 */}
+              <div className="mt-6 bg-blue-50 border border-blue-200 rounded-md p-4">
+                <h3 className="text-sm font-medium text-blue-800">対処方法</h3>
+                <div className="mt-2 text-sm text-blue-700">
+                  <ul className="list-disc list-inside space-y-1">
+                    <li>認証リンクの有効期限は24時間です</li>
+                    <li>期限切れの場合は、再度サインアップしてください</li>
+                    <li>すでに認証済みの場合は、サインインしてください</li>
+                  </ul>
+                </div>
               </div>
             </>
+          )}
+
+          {/* アクションボタン */}
+          {status !== 'verifying' && (
+            <div className="mt-8 space-y-4">
+              {status === 'error' && (
+                <>
+                  <Link
+                    href="/signup"
+                    className="block w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    新規登録画面へ
+                  </Link>
+                  <Link
+                    href="/signin"
+                    className="block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    サインイン画面へ
+                  </Link>
+                </>
+              )}
+              <Link
+                href="/"
+                className="block w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                トップページへ戻る
+              </Link>
+            </div>
           )}
         </div>
       </div>
