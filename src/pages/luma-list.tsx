@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { LayoutWithFooter } from '@/components/layouts/Layout'
+import { Movie } from '@/domains/models/movie'
 import Link from 'next/link'
 import Image from 'next/image'
-import { LayoutWithFooter } from '@/components/layouts/Layout'
-import { Movie } from '@/domains/models'
 
 const LumaList: React.FC = () => {
   const [movies, setMovies] = useState<Movie[]>([])
@@ -64,21 +64,23 @@ const LumaList: React.FC = () => {
                 {thumbnails[movie.id] ? (
                   <Image
                     src={thumbnails[movie.id]}
-                    alt={movie.title}
+                    alt={movie.title || `Movie ${movie.id}`}
                     className="w-full h-full object-cover"
-                    width={600} // 必須
-                    height={400} // 必須
+                    width={600}
+                    height={400}
                   />
                 ) : (
-                  <span className="text-sm text-gray-600">{movie.title}</span>
+                  <span className="text-sm text-gray-600">{movie.title || `Movie ${movie.id}`}</span>
                 )}
                 <div className="absolute top-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
                   3D
                 </div>
               </div>
               <div className="p-4">
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">{movie.title}</h2>
-                <p className="text-sm text-gray-600 mb-4">{movie.note}</p>
+                <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                  {movie.title || `Movie ${movie.id}`}
+                </h2>
+                <p className="text-sm text-gray-600 mb-4">{movie.note || ''}</p>
                 <div className="flex gap-2">
                   <Link
                     href={`/luma/${movie.id}`}
