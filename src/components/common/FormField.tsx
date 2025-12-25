@@ -5,9 +5,48 @@
  *
  * - ラベル、入力フィールド、エラーメッセージを統一的に表示
  * - 必須マーク、説明文の表示に対応
+ * - スマートフォンでも入力しやすいUIデザイン
  */
 
 import React, { ReactNode } from 'react'
+
+/**
+ * 共通のインプットスタイル
+ * - 十分なパディングでタッチしやすく
+ * - 16px以上のフォントサイズでiOSのズームを防止
+ * - 明確なボーダーとフォーカス状態
+ */
+const baseInputStyles = `
+  block w-full
+  px-4 py-3
+  text-base text-gray-900
+  placeholder-gray-400
+  bg-white
+  border-2 border-gray-200
+  rounded-lg
+  transition-all duration-200
+  outline-none
+  appearance-none
+`
+
+const focusStyles = `
+  focus:border-blue-500
+  focus:ring-2
+  focus:ring-blue-500/20
+`
+
+const errorStyles = `
+  border-red-400
+  focus:border-red-500
+  focus:ring-red-500/20
+`
+
+const disabledStyles = `
+  bg-gray-50
+  text-gray-500
+  cursor-not-allowed
+  border-gray-200
+`
 
 /**
  * 基本のFormFieldProps
@@ -33,22 +72,41 @@ export function FormField({
   children,
 }: FormFieldProps) {
   return (
-    <div className="mb-4">
+    <div className="mb-5">
       <label
         htmlFor={name}
-        className="block text-sm font-medium text-gray-700 mb-1"
+        className="block text-sm font-semibold text-gray-700 mb-2"
       >
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && (
+          <span className="text-red-500 ml-1 font-normal">*</span>
+        )}
       </label>
 
       {children}
 
       {description && (
-        <p className="mt-1 text-xs text-gray-500">{description}</p>
+        <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+          {description}
+        </p>
       )}
 
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="mt-2 text-sm text-red-600 flex items-center">
+          <svg
+            className="w-4 h-4 mr-1.5 flex-shrink-0"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+          {error}
+        </p>
+      )}
     </div>
   )
 }
@@ -83,6 +141,14 @@ export function TextInput({
   disabled = false,
   maxLength,
 }: TextInputProps) {
+  const inputClassName = `
+    ${baseInputStyles}
+    ${error ? errorStyles : focusStyles}
+    ${disabled ? disabledStyles : ''}
+  `
+    .replace(/\s+/g, ' ')
+    .trim()
+
   return (
     <FormField
       label={label}
@@ -100,11 +166,8 @@ export function TextInput({
         placeholder={placeholder}
         disabled={disabled}
         maxLength={maxLength}
-        className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
-          error
-            ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-        } ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+        autoComplete="off"
+        className={inputClassName}
       />
     </FormField>
   )
@@ -136,10 +199,19 @@ export function TextArea({
   required = false,
   error,
   description,
-  rows = 3,
+  rows = 4,
   disabled = false,
   maxLength,
 }: TextAreaProps) {
+  const textareaClassName = `
+    ${baseInputStyles}
+    ${error ? errorStyles : focusStyles}
+    ${disabled ? disabledStyles : ''}
+    resize-none
+  `
+    .replace(/\s+/g, ' ')
+    .trim()
+
   return (
     <FormField
       label={label}
@@ -157,11 +229,7 @@ export function TextArea({
         rows={rows}
         disabled={disabled}
         maxLength={maxLength}
-        className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
-          error
-            ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-        } ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+        className={textareaClassName}
       />
     </FormField>
   )
@@ -200,6 +268,17 @@ export function Select({
   description,
   disabled = false,
 }: SelectProps) {
+  const selectClassName = `
+    ${baseInputStyles}
+    ${error ? errorStyles : focusStyles}
+    ${disabled ? disabledStyles : ''}
+    pr-10
+    bg-no-repeat
+    cursor-pointer
+  `
+    .replace(/\s+/g, ' ')
+    .trim()
+
   return (
     <FormField
       label={label}
@@ -208,25 +287,30 @@ export function Select({
       error={error}
       description={description}
     >
-      <select
-        id={name}
-        name={name}
-        value={value}
-        onChange={onChange}
-        disabled={disabled}
-        className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm ${
-          error
-            ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-            : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-        } ${disabled ? 'bg-gray-100 cursor-not-allowed' : ''}`}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
+      <div className="relative">
+        <select
+          id={name}
+          name={name}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          className={selectClassName}
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+            backgroundPosition: 'right 12px center',
+            backgroundSize: '20px 20px',
+          }}
+        >
+          <option value="" disabled>
+            {placeholder}
           </option>
-        ))}
-      </select>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
     </FormField>
   )
 }
@@ -247,11 +331,14 @@ export function ReadOnlyField({
 }: ReadOnlyFieldProps) {
   const displayValue =
     value !== null && value !== undefined && value !== '' ? value : emptyText
+  const isEmpty = displayValue === emptyText
 
   return (
-    <div className="py-3 sm:grid sm:grid-cols-3 sm:gap-4">
-      <dt className="text-sm font-medium text-gray-500">{label}</dt>
-      <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+    <div className="py-4 border-b border-gray-100 last:border-b-0">
+      <dt className="text-sm font-medium text-gray-500 mb-1">{label}</dt>
+      <dd
+        className={`text-base ${isEmpty ? 'text-gray-400 italic' : 'text-gray-900'}`}
+      >
         {displayValue}
       </dd>
     </div>

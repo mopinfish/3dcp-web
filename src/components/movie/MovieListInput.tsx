@@ -4,6 +4,7 @@
  * 複数ムービーを動的に追加・編集・削除できるコンポーネント
  *
  * 文化財登録フォームで使用し、ムービーを任意で追加できます。
+ * スマートフォン対応のUI
  */
 
 import React, { useState } from 'react'
@@ -25,6 +26,39 @@ const emptyMovie: MovieFormData = {
   title: '',
   note: '',
 }
+
+/**
+ * 共通のインプットスタイル
+ */
+const inputClassName = `
+  block w-full
+  px-4 py-3
+  text-base text-gray-900
+  placeholder-gray-400
+  bg-white
+  border-2 border-gray-200
+  rounded-lg
+  transition-all duration-200
+  outline-none
+  focus:border-blue-500
+  focus:ring-2
+  focus:ring-blue-500/20
+`
+
+const inputErrorClassName = `
+  block w-full
+  px-4 py-3
+  text-base text-gray-900
+  placeholder-gray-400
+  bg-white
+  border-2 border-red-400
+  rounded-lg
+  transition-all duration-200
+  outline-none
+  focus:border-red-500
+  focus:ring-2
+  focus:ring-red-500/20
+`
 
 export function MovieListInput({
   movies,
@@ -119,25 +153,47 @@ export function MovieListInput({
           {movies.map((movie, index) => (
             <div
               key={index}
-              className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+              className="bg-gray-50 rounded-xl p-5 border-2 border-gray-200"
             >
-              <div className="flex justify-between items-start mb-3">
-                <h4 className="text-sm font-medium text-gray-700">
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="text-base font-semibold text-gray-800 flex items-center">
+                  <svg
+                    className="w-5 h-5 mr-2 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
+                  </svg>
                   3D映像 {index + 1}
                 </h4>
                 <button
                   type="button"
                   onClick={() => onRemove(index)}
-                  className="text-red-600 hover:text-red-800 text-sm"
+                  className="
+                    px-3 py-1.5
+                    text-sm font-medium
+                    text-red-600
+                    bg-red-50
+                    rounded-lg
+                    hover:bg-red-100
+                    active:bg-red-200
+                    transition-colors duration-200
+                  "
                 >
                   削除
                 </button>
               </div>
 
               {/* URL */}
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  URL <span className="text-red-500">*</span>
+              <div className="mb-4">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  URL <span className="text-red-500 font-normal">*</span>
                 </label>
                 <input
                   type="url"
@@ -145,22 +201,31 @@ export function MovieListInput({
                   value={movie.url}
                   onChange={(e) => handleExistingMovieChange(index, e)}
                   placeholder="https://lumalabs.ai/capture/..."
-                  className={`block w-full rounded-md shadow-sm sm:text-sm ${
-                    errors[index]?.url
-                      ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-                      : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-                  }`}
+                  className={
+                    errors[index]?.url ? inputErrorClassName : inputClassName
+                  }
                 />
                 {errors[index]?.url && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-2 text-sm text-red-600 flex items-center">
+                    <svg
+                      className="w-4 h-4 mr-1.5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
                     {errors[index].url}
                   </p>
                 )}
               </div>
 
               {/* タイトル */}
-              <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+              <div className="mb-4">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   タイトル
                 </label>
                 <input
@@ -169,13 +234,13 @@ export function MovieListInput({
                   value={movie.title}
                   onChange={(e) => handleExistingMovieChange(index, e)}
                   placeholder="映像のタイトル"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className={inputClassName}
                 />
               </div>
 
               {/* 備考 */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
                   備考
                 </label>
                 <textarea
@@ -183,8 +248,8 @@ export function MovieListInput({
                   value={movie.note}
                   onChange={(e) => handleExistingMovieChange(index, e)}
                   placeholder="映像についての説明"
-                  rows={2}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  rows={3}
+                  className={`${inputClassName} resize-none`}
                 />
               </div>
             </div>
@@ -194,15 +259,28 @@ export function MovieListInput({
 
       {/* 新規追加フォーム */}
       {isAdding ? (
-        <div className="border border-blue-200 rounded-lg p-4 bg-blue-50">
-          <h4 className="text-sm font-medium text-blue-700 mb-3">
+        <div className="bg-blue-50 rounded-xl p-5 border-2 border-blue-200">
+          <h4 className="text-base font-semibold text-blue-800 mb-4 flex items-center">
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
             新しい3D映像を追加
           </h4>
 
           {/* URL */}
-          <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              URL <span className="text-red-500">*</span>
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              URL <span className="text-red-500 font-normal">*</span>
             </label>
             <input
               type="url"
@@ -210,23 +288,34 @@ export function MovieListInput({
               value={newMovie.url}
               onChange={handleNewMovieChange}
               placeholder="https://lumalabs.ai/capture/..."
-              className={`block w-full rounded-md shadow-sm sm:text-sm ${
-                newMovieErrors.url
-                  ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
-              }`}
+              className={
+                newMovieErrors.url ? inputErrorClassName : inputClassName
+              }
             />
             {newMovieErrors.url && (
-              <p className="mt-1 text-sm text-red-600">{newMovieErrors.url}</p>
+              <p className="mt-2 text-sm text-red-600 flex items-center">
+                <svg
+                  className="w-4 h-4 mr-1.5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {newMovieErrors.url}
+              </p>
             )}
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-2 text-sm text-gray-500">
               Luma AIで生成した3D映像のURLを入力してください
             </p>
           </div>
 
           {/* タイトル */}
-          <div className="mb-3">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               タイトル
             </label>
             <input
@@ -235,13 +324,13 @@ export function MovieListInput({
               value={newMovie.title}
               onChange={handleNewMovieChange}
               placeholder="映像のタイトル"
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={inputClassName}
             />
           </div>
 
           {/* 備考 */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="mb-5">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               備考
             </label>
             <textarea
@@ -249,26 +338,48 @@ export function MovieListInput({
               value={newMovie.note}
               onChange={handleNewMovieChange}
               placeholder="映像についての説明"
-              rows={2}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              rows={3}
+              className={`${inputClassName} resize-none`}
             />
           </div>
 
           {/* ボタン */}
-          <div className="flex justify-end space-x-2">
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
             <button
               type="button"
               onClick={handleCancel}
-              className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="
+                w-full sm:w-auto
+                px-5 py-3
+                text-base font-medium
+                text-gray-700
+                bg-white
+                border-2 border-gray-300
+                rounded-lg
+                hover:bg-gray-50
+                active:bg-gray-100
+                transition-colors duration-200
+              "
             >
               キャンセル
             </button>
             <button
               type="button"
               onClick={handleAdd}
-              className="px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+              className="
+                w-full sm:w-auto
+                px-5 py-3
+                text-base font-medium
+                text-white
+                bg-blue-600
+                border-2 border-transparent
+                rounded-lg
+                hover:bg-blue-700
+                active:bg-blue-800
+                transition-colors duration-200
+              "
             >
-              追加
+              追加する
             </button>
           </div>
         </div>
@@ -276,7 +387,19 @@ export function MovieListInput({
         <button
           type="button"
           onClick={() => setIsAdding(true)}
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200"
+          className="
+            w-full
+            px-5 py-4
+            text-base font-medium
+            text-blue-700
+            bg-blue-50
+            border-2 border-blue-200 border-dashed
+            rounded-xl
+            hover:bg-blue-100
+            active:bg-blue-200
+            transition-colors duration-200
+            flex items-center justify-center
+          "
         >
           <svg
             className="w-5 h-5 mr-2"
@@ -297,7 +420,7 @@ export function MovieListInput({
 
       {/* 説明 */}
       {movies.length === 0 && !isAdding && (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 text-center">
           3D映像は後から追加することもできます。
         </p>
       )}

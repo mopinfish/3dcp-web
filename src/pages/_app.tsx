@@ -1,13 +1,16 @@
 import React from 'react'
 import type { AppProps } from 'next/app'
 import { AuthProvider } from '@/contexts/AuthContext'
-import '../styles/globals.css' // グローバルCSSのインポート
+import { CulturalPropertyFormProvider } from '@/contexts/CulturalPropertyFormContext'
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  console.log('✅ _app.tsx is loaded') // ← これがポイント
+  console.log('✅ _app.tsx is loaded')
   return (
     <AuthProvider>
-      <Component {...pageProps} />
+      <CulturalPropertyFormProvider>
+        <Component {...pageProps} />
+      </CulturalPropertyFormProvider>
     </AuthProvider>
   )
 }
