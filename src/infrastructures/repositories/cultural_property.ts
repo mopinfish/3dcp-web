@@ -3,12 +3,9 @@
  *
  * 文化財（CulturalProperty）のAPIリポジトリ
  *
- * ✅ 変更内容:
- * - create: 文化財作成API
- * - update: 文化財更新API
- * - remove: 文化財削除API
- * - getMy: 自分の文化財一覧取得API
- * - getById: 文化財詳細取得API
+ * ✅ クリーンアーキテクチャ対応:
+ * - 汎用的なクエリパラメータ対応
+ * - 具体的なフィルタリング・件数指定はService層で実施
  */
 
 import { Http } from '@/infrastructures/lib/http'
@@ -20,9 +17,26 @@ import {
   CulturalPropertyUpdateRequest,
 } from '@/domains/models/cultural_property'
 import { Tag } from '@/domains/models'
-import { getProps } from '@/domains/repositories/cultural_property'
 
 const HOST = process.env.NEXT_PUBLIC_BACKEND_API_HOST
+
+/**
+ * 汎用的なクエリパラメータ型
+ */
+export type QueryParams = {
+  ordering?: string
+  limit?: number
+  offset?: number
+  search?: string
+  has_movies?: boolean | string
+  lat?: string
+  lon?: string
+  distance?: string
+  tag_id?: string
+  tag_name?: string
+  created_by?: string
+  [key: string]: string | number | boolean | undefined
+}
 
 /**
  * 認証ヘッダーを生成
@@ -41,11 +55,26 @@ function getAuthHeaders(): Record<string, string> {
 }
 
 /**
- * 文化財一覧を取得
+ * クエリパラメータをURLSearchParamsに変換
  */
-export async function get(props: getProps): Promise<CulturalProperties> {
-  const queries = new URLSearchParams(props).toString()
-  const url = `${HOST}/cp_api/cultural_property/?${queries}`
+function buildQueryString(params?: QueryParams): string {
+  if (!params) return ''
+  
+  const filteredParams = Object.entries(params)
+    .filter(([_, v]) => v !== undefined && v !== null && v !== '')
+    .map(([k, v]) => [k, String(v)])
+  
+  if (filteredParams.length === 0) return ''
+  
+  return '?' + new URLSearchParams(filteredParams).toString()
+}
+
+/**
+ * 文化財一覧を取得（汎用的なクエリパラメータ対応）
+ */
+export async function findAll(params?: QueryParams): Promise<CulturalProperties> {
+  const queryString = buildQueryString(params)
+  const url = `${HOST}/cp_api/cultural_property/${queryString}`
   const res = await Http.get<CulturalPropertiesResponse>(url)
   return res.results
 }
@@ -53,59 +82,38 @@ export async function get(props: getProps): Promise<CulturalProperties> {
 /**
  * 文化財詳細を取得
  */
-export async function getById(id: number): Promise<CulturalProperty> {
+export async function find(id: number): Promise<CulturalProperty> {
   const url = `${HOST}/cp_api/cultural_property/${id}/`
   return await Http.get<CulturalProperty>(url)
 }
 
 /**
- * 位置情報で文化財を検索
+ * 自分が作成した文化財一覧を取得
  */
-export async function getByLocation(
-  lat: number,
-  lon: number,
-  distance: number,
-): Promise<CulturalProperties> {
-  const url = `${HOST}/cp_api/cultural_property/?lat=${lat}&lon=${lon}&distance=${distance}`
-  const res = await Http.get<CulturalPropertiesResponse>(url)
-  return res.results
-}
+export async function findMy(params?: QueryParams): Promise<CulturalPropertiesResponse> {
+  const queryString = buildQueryString(params)
+  const url = `${HOST}/cp_api/cultural_property/my/${queryString}`
+  const headers = getAuthHeaders()
 
-/**
- * タグで文化財を検索
- */
-export async function getByTag(tagId: number): Promise<CulturalProperties> {
-  const url = `${HOST}/cp_api/cultural_property/?tag_id=${tagId}`
-  const res = await Http.get<CulturalPropertiesResponse>(url)
-  return res.results
+  console.log('culturalPropertyRepo: findMy API call started')
+
+  try {
+    const result = await Http.get<CulturalPropertiesResponse>(url, headers)
+    console.log('culturalPropertyRepo: findMy API call successful')
+    return result
+  } catch (error) {
+    console.error('culturalPropertyRepo: findMy API call failed:', error)
+    throw error
+  }
 }
 
 /**
  * タグ一覧を取得
  */
-export async function getTags(): Promise<Tag[]> {
+export async function findTags(): Promise<Tag[]> {
   const url = `${HOST}/cp_api/tag/`
   const res = await Http.get<{ count: number; results: Tag[] }>(url)
   return res.results
-}
-
-/**
- * 自分が作成した文化財一覧を取得
- */
-export async function getMy(): Promise<CulturalPropertiesResponse> {
-  const url = `${HOST}/cp_api/cultural_property/my/`
-  const headers = getAuthHeaders()
-
-  console.log('culturalPropertyRepo: getMy API call started')
-
-  try {
-    const result = await Http.get<CulturalPropertiesResponse>(url, headers)
-    console.log('culturalPropertyRepo: getMy API call successful')
-    return result
-  } catch (error) {
-    console.error('culturalPropertyRepo: getMy API call failed:', error)
-    throw error
-  }
 }
 
 /**
@@ -174,15 +182,57 @@ export async function remove(id: number): Promise<void> {
   }
 }
 
+// 後方互換性のためのエクスポート
+// 古いgetPropsベースのインターフェースもサポート
+export type getProps = Record<string, string>
+
+export async function get(props: getProps): Promise<CulturalProperties> {
+  return findAll(props as QueryParams)
+}
+
+export async function getById(id: number): Promise<CulturalProperty> {
+  return find(id)
+}
+
+export async function getByLocation(
+  lat: number,
+  lon: number,
+  distance: number,
+): Promise<CulturalProperties> {
+  return findAll({
+    lat: lat.toString(),
+    lon: lon.toString(),
+    distance: distance.toString(),
+  })
+}
+
+export async function getByTag(tagId: number): Promise<CulturalProperties> {
+  return findAll({ tag_id: tagId.toString() })
+}
+
+export async function getTags(): Promise<Tag[]> {
+  return findTags()
+}
+
+export async function getMy(): Promise<CulturalPropertiesResponse> {
+  return findMy()
+}
+
 // デフォルトエクスポート（後方互換性のため）
 export const CulturalPropertyRepository = {
+  // 新しいAPI（クリーンアーキテクチャ対応）
+  findAll,
+  find,
+  findMy,
+  findTags,
+  create,
+  update,
+  remove,
+  // 後方互換性のためのAPI
   get,
   getById,
   getByLocation,
   getByTag,
   getTags,
   getMy,
-  create,
-  update,
-  remove,
 }
