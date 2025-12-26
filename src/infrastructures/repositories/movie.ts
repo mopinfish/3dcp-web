@@ -3,11 +3,9 @@
  *
  * ムービー（Movie）のAPIリポジトリ
  *
- * ✅ 変更内容:
- * - create: ムービー作成API
- * - update: ムービー更新API
- * - remove: ムービー削除API
- * - getMy: 自分のムービー一覧取得API
+ * ✅ クリーンアーキテクチャ対応:
+ * - 汎用的なクエリパラメータ対応
+ * - 具体的なフィルタリング・件数指定はService層で実施
  */
 
 import { Http } from '@/infrastructures/lib/http'
@@ -18,9 +16,21 @@ import {
   MovieCreateRequest,
   MovieUpdateRequest,
 } from '@/domains/models/movie'
-import { getProps } from '@/domains/repositories/movie'
 
 const HOST = process.env.NEXT_PUBLIC_BACKEND_API_HOST
+
+/**
+ * 汎用的なクエリパラメータ型
+ */
+export type QueryParams = {
+  ordering?: string
+  limit?: number
+  offset?: number
+  search?: string
+  cultural_property?: number | string
+  created_by?: string
+  [key: string]: string | number | boolean | undefined
+}
 
 /**
  * 認証ヘッダーを生成
@@ -39,11 +49,26 @@ function getAuthHeaders(): Record<string, string> {
 }
 
 /**
- * ムービー一覧を取得
+ * クエリパラメータをURLSearchParamsに変換
  */
-export async function get(props: getProps): Promise<Movies> {
-  const queries = new URLSearchParams(props).toString()
-  const url = `${HOST}/cp_api/movie/?${queries}`
+function buildQueryString(params?: QueryParams): string {
+  if (!params) return ''
+  
+  const filteredParams = Object.entries(params)
+    .filter(([_, v]) => v !== undefined && v !== null && v !== '')
+    .map(([k, v]) => [k, String(v)])
+  
+  if (filteredParams.length === 0) return ''
+  
+  return '?' + new URLSearchParams(filteredParams).toString()
+}
+
+/**
+ * ムービー一覧を取得（汎用的なクエリパラメータ対応）
+ */
+export async function findAll(params?: QueryParams): Promise<Movies> {
+  const queryString = buildQueryString(params)
+  const url = `${HOST}/cp_api/movie/${queryString}`
   const res = await Http.get<MoviesResponse>(url)
   return res.results
 }
@@ -59,18 +84,19 @@ export async function find(id: number): Promise<Movie> {
 /**
  * 自分が作成したムービー一覧を取得
  */
-export async function getMy(): Promise<MoviesResponse> {
-  const url = `${HOST}/cp_api/movie/my/`
+export async function findMy(params?: QueryParams): Promise<MoviesResponse> {
+  const queryString = buildQueryString(params)
+  const url = `${HOST}/cp_api/movie/my/${queryString}`
   const headers = getAuthHeaders()
 
-  console.log('movieRepo: getMy API call started')
+  console.log('movieRepo: findMy API call started')
 
   try {
     const result = await Http.get<MoviesResponse>(url, headers)
-    console.log('movieRepo: getMy API call successful')
+    console.log('movieRepo: findMy API call successful')
     return result
   } catch (error) {
-    console.error('movieRepo: getMy API call failed:', error)
+    console.error('movieRepo: findMy API call failed:', error)
     throw error
   }
 }
@@ -139,12 +165,48 @@ export async function remove(id: number): Promise<void> {
   }
 }
 
+/**
+ * サムネイルを再生成
+ */
+export async function regenerateThumbnail(id: number): Promise<Movie> {
+  const url = `${HOST}/cp_api/movie/${id}/regenerate_thumbnail/`
+  const headers = getAuthHeaders()
+
+  console.log('movieRepo: regenerateThumbnail API call started')
+  console.log('movieRepo: ID:', id)
+
+  try {
+    const result = await Http.post<{ message: string; movie: Movie }>(url, {}, headers)
+    console.log('movieRepo: regenerateThumbnail API call successful')
+    return result.movie
+  } catch (error) {
+    console.error('movieRepo: regenerateThumbnail API call failed:', error)
+    throw error
+  }
+}
+
+// 後方互換性のためのエクスポート
+export type getProps = Record<string, string>
+
+export async function get(props: getProps): Promise<Movies> {
+  return findAll(props as QueryParams)
+}
+
+export async function getMy(): Promise<MoviesResponse> {
+  return findMy()
+}
+
 // デフォルトエクスポート（後方互換性のため）
 export const MovieRepository = {
-  get,
+  // 新しいAPI（クリーンアーキテクチャ対応）
+  findAll,
   find,
-  getMy,
+  findMy,
   create,
   update,
   remove,
+  regenerateThumbnail,
+  // 後方互換性のためのAPI
+  get,
+  getMy,
 }
