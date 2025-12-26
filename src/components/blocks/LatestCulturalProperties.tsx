@@ -92,7 +92,7 @@ const LatestCulturalProperties: React.FC<Props> = ({
         {moreLink && (
           <Link
             href={moreLink}
-            className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+            className="text-sm text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
           >
             {moreLinkText} →
           </Link>
@@ -110,7 +110,7 @@ const LatestCulturalProperties: React.FC<Props> = ({
             <Link
               key={property.id}
               href={linkHref}
-              className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group"
+              className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group cursor-pointer"
             >
               {/* サムネイル */}
               <div className="w-12 h-12 rounded overflow-hidden bg-gray-100 mr-3 flex-shrink-0">

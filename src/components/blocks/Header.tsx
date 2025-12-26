@@ -3,7 +3,7 @@
  * グローバルヘッダーコンポーネント (最終版)
  *
  * 機能:
- * - ロゴ表示
+ * - ロゴ表示（スタイリングベース）
  * - ナビゲーションメニュー
  * - 認証状態に応じた表示切り替え
  *   - 未ログイン: ログイン・新規登録ボタン
@@ -17,11 +17,46 @@
 'use client'
 
 import React, { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/contexts/AuthContext'
 import UserMenu from './UserMenu'
+
+/**
+ * サイトロゴコンポーネント
+ * スタイリングのみで実現（画像不要）
+ */
+const SiteLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
+  return (
+    <Link href="/" className={`flex items-center group cursor-pointer ${className}`}>
+      {/* アイコン部分 */}
+      <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-2.5 group-hover:bg-blue-700 transition-colors">
+        <svg
+          className="w-6 h-6 text-white"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+          />
+        </svg>
+      </div>
+      {/* テキスト部分 */}
+      <div className="flex flex-col">
+        <span className="text-sm font-bold text-gray-800 leading-tight">
+          3D文化財
+        </span>
+        <span className="text-xs text-gray-500 leading-tight">
+          共有サイト
+        </span>
+      </div>
+    </Link>
+  )
+}
 
 const Header: React.FC = () => {
   const { user, isLoading, logout } = useAuth()
@@ -59,18 +94,9 @@ const Header: React.FC = () => {
   return (
     <header className="bg-white shadow-sm sticky top-0 z-40">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center py-3">
           {/* ロゴ */}
-          <Link href="/" className="relative w-20 h-20 flex-shrink-0">
-            <Image
-              src="/img/logo.png"
-              alt="OPEN3D Map Logo"
-              fill
-              sizes="(max-width: 768px) 80px, 80px"
-              style={{ objectFit: 'contain' }}
-              priority
-            />
-          </Link>
+          <SiteLogo />
 
           {/* デスクトップナビゲーション */}
           <nav className="hidden md:flex items-center space-x-6">
@@ -78,7 +104,7 @@ const Header: React.FC = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-gray-800 hover:text-blue-600 font-medium transition-colors duration-200"
+                className="text-gray-800 hover:text-blue-600 font-medium transition-colors duration-200 cursor-pointer"
               >
                 {item.label}
               </Link>
@@ -101,13 +127,13 @@ const Header: React.FC = () => {
               <>
                 <Link
                   href="/signin"
-                  className="px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium transition-colors duration-200"
+                  className="px-4 py-2 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium transition-colors duration-200 cursor-pointer"
                 >
                   ログイン
                 </Link>
                 <Link
                   href="/signup"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors duration-200 shadow-sm"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors duration-200 shadow-sm cursor-pointer"
                 >
                   新規登録
                 </Link>
@@ -117,7 +143,7 @@ const Header: React.FC = () => {
 
           {/* モバイルメニューボタン */}
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
             onClick={toggleMobileMenu}
             aria-label="メニュー"
             aria-expanded={isMobileMenuOpen}
@@ -165,7 +191,7 @@ const Header: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200"
+                  className="px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200 cursor-pointer"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
@@ -204,7 +230,7 @@ const Header: React.FC = () => {
                   {/* メニュー項目 */}
                   <Link
                     href="/mypage"
-                    className="flex items-center px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    className="flex items-center px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors duration-200 cursor-pointer"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <svg
@@ -225,7 +251,7 @@ const Header: React.FC = () => {
 
                   <Link
                     href="/mypage/edit"
-                    className="flex items-center px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    className="flex items-center px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg transition-colors duration-200 cursor-pointer"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <svg
@@ -250,7 +276,7 @@ const Header: React.FC = () => {
                   {/* ログアウト */}
                   <button
                     onClick={handleMobileLogout}
-                    className="flex items-center w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                    className="flex items-center w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200 cursor-pointer"
                   >
                     <svg
                       className="w-5 h-5 mr-3"
@@ -273,14 +299,14 @@ const Header: React.FC = () => {
                 <div className="space-y-2 px-4">
                   <Link
                     href="/signin"
-                    className="block w-full px-4 py-3 text-center text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium transition-colors duration-200"
+                    className="block w-full px-4 py-3 text-center text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium transition-colors duration-200 cursor-pointer"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     ログイン
                   </Link>
                   <Link
                     href="/signup"
-                    className="block w-full px-4 py-3 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors duration-200 shadow-sm"
+                    className="block w-full px-4 py-3 text-center bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors duration-200 shadow-sm cursor-pointer"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     新規登録
