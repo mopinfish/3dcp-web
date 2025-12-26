@@ -5,12 +5,30 @@
  *
  * ✅ 新規追加:
  * - アクティブユーザー一覧取得API
+ * 
+ * ✅ Phase 3追加:
+ * - 公開ユーザープロフィール取得API
  */
 
 import { Http } from '@/infrastructures/lib/http'
 import { ActiveUsersResponse } from '@/domains/models/active_user'
 
 const HOST = process.env.NEXT_PUBLIC_BACKEND_API_HOST
+
+/**
+ * 公開ユーザープロフィールの型
+ */
+export type PublicUserProfile = {
+  id: number
+  username: string
+  name: string | null
+  bio: string | null
+  avatar: string | null
+  avatar_url: string | null
+  cultural_property_count: number
+  movie_count: number
+  date_joined: string
+}
 
 /**
  * 汎用的なクエリパラメータ型
@@ -44,7 +62,17 @@ export async function findActiveUsers(params?: QueryParams): Promise<ActiveUsers
   return await Http.get<ActiveUsersResponse>(url)
 }
 
+/**
+ * 公開ユーザープロフィールを取得
+ * GET /api/v1/auth/users/<user_id>/
+ */
+export async function getById(userId: number): Promise<PublicUserProfile> {
+  const url = `${HOST}/api/v1/auth/users/${userId}/`
+  return await Http.get<PublicUserProfile>(url)
+}
+
 // デフォルトエクスポート
 export const UserRepository = {
   findActiveUsers,
+  getById,
 }
