@@ -84,13 +84,13 @@ const Header: React.FC = () => {
     }
   }
 
-  // メニュー項目（使い方を追加し、目立つスタイルを適用）
+  // メニュー項目
   const navItems = [
-    { href: '/', label: 'Home', highlight: false },
-    { href: '/howto', label: '使い方', highlight: true },
-    { href: '/about', label: 'About', highlight: false },
-    { href: '/map', label: 'Map', highlight: false },
-    { href: '/3d_map', label: '3D Map', highlight: false },
+    { href: '/', label: 'Home' },
+    { href: '/howto', label: '使い方' },
+    { href: '/about', label: 'About' },
+    { href: '/map', label: 'Map' },
+    { href: '/3d_map', label: '3D Map' },
   ]
 
   return (
@@ -106,27 +106,8 @@ const Header: React.FC = () => {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`font-medium transition-colors duration-200 cursor-pointer ${
-                  item.highlight
-                    ? 'text-blue-600 hover:text-blue-800 flex items-center'
-                    : 'text-gray-800 hover:text-blue-600'
-                }`}
+                className="text-gray-800 hover:text-blue-600 font-medium transition-colors duration-200 cursor-pointer"
               >
-                {item.highlight && (
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                )}
                 {item.label}
               </Link>
             ))}
@@ -212,28 +193,9 @@ const Header: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-4 py-3 rounded-lg font-medium transition-colors duration-200 cursor-pointer flex items-center ${
-                    item.highlight
-                      ? 'text-blue-600 bg-blue-50 hover:bg-blue-100'
-                      : 'text-gray-800 hover:bg-gray-50'
-                  }`}
+                  className="px-4 py-3 text-gray-800 hover:bg-gray-50 rounded-lg font-medium transition-colors duration-200 cursor-pointer"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {item.highlight && (
-                    <svg
-                      className="w-5 h-5 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  )}
                   {item.label}
                 </Link>
               ))}

@@ -79,15 +79,15 @@ const About: React.FC = () => {
   return (
     <LayoutWithFooter>
       {/* ヒーローセクション */}
-      <section className="bg-gradient-to-br from-blue-600 to-purple-700 text-white py-20">
+      <section className="bg-gray-800 text-white py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             3DCP - 3D Cultural Properties
           </h1>
-          <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
             地域の文化財を3Dで記録し、未来へ伝える
           </p>
-          <p className="text-lg text-blue-200 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             誰もが簡単に文化財を登録・共有できるプラットフォームで、
             地域の宝物をデジタルで保存し、世界中の人々と共有しましょう。
           </p>
@@ -434,7 +434,7 @@ const About: React.FC = () => {
             ご質問やご要望がございましたら、お気軽にお問い合わせください。
           </p>
           <a
-            href="mailto:support@3dcp.example.com"
+            href="mailto:mopinfish@gmail.com"
             className="inline-flex items-center text-blue-600 hover:text-blue-800 text-lg"
           >
             <svg
@@ -450,7 +450,7 @@ const About: React.FC = () => {
                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
               />
             </svg>
-            support@3dcp.example.com
+            mopinfish@gmail.com
           </a>
         </div>
       </section>

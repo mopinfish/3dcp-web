@@ -171,16 +171,16 @@ const MapContent: React.FC = () => (
     <section>
       <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
         <span className="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-3">1</span>
-        2D地図と3D地図
+        地図ページへアクセス
       </h3>
       <p className="text-gray-600 mb-4 leading-relaxed">
-        本サイトでは2種類の地図表示モードを提供しています。ヘッダーの「Map」から2D地図、「3D Map」から3D地図にアクセスできます。
-        2D地図は文化財の位置を俯瞰的に把握するのに便利で、3D地図は地形を立体的に表示して臨場感のある閲覧ができます。
+        ヘッダーの「Map」をクリックすると地図ページにアクセスできます。
+        地図上には登録されている文化財の位置がマーカーで表示され、位置関係を視覚的に把握することができます。
       </p>
-      {/* TODO: 2D地図と3D地図の比較スクリーンショットに差し替え */}
+      {/* TODO: 地図ページのスクリーンショットに差し替え */}
       <ImagePlaceholder 
-        alt="地図表示モード" 
-        description="2D地図と3D地図の両方が見える比較画像。または2つ並べた画像" 
+        alt="地図ページ" 
+        description="地図ページ全体のスクリーンショット。マーカーが複数表示されている状態" 
       />
     </section>
 
@@ -210,8 +210,6 @@ const MapContent: React.FC = () => (
         <ul className="list-disc list-inside space-y-2 ml-4">
           <li><strong>ズーム：</strong>マウスホイールまたはピンチ操作</li>
           <li><strong>移動：</strong>ドラッグ操作</li>
-          <li><strong>回転（3D地図）：</strong>右クリック+ドラッグまたは2本指回転</li>
-          <li><strong>傾き（3D地図）：</strong>Ctrl+ドラッグ</li>
         </ul>
       </div>
       {/* TODO: 地図操作のGIFまたは複数状態のスクリーンショットに差し替え */}
@@ -647,7 +645,7 @@ const HowtoPage: React.FC = () => {
           </p>
           <div className="flex flex-wrap gap-4">
             <a
-              href="mailto:support@example.com"
+              href="mailto:mopinfish@gmail.com"
               className="inline-flex items-center px-4 py-2 bg-white text-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200"
             >
               <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

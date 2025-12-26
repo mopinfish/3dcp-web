@@ -44,7 +44,6 @@ function Footer() {
     explore: [
       { href: '/cultural-properties', label: '文化財一覧' },
       { href: '/map', label: 'マップ' },
-      { href: '/3d_map', label: '3Dマップ' },
     ],
     legal: [
       { href: '/terms', label: '利用規約' },
@@ -160,7 +159,7 @@ function Footer() {
             </p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <a
-                href="mailto:support@3dcp.example.com"
+                href="mailto:mopinfish@gmail.com"
                 className="text-gray-400 hover:text-white transition-colors"
                 aria-label="メール"
               >

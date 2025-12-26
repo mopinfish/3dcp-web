@@ -303,10 +303,10 @@ export default function PrivacyPage() {
                   <p className="text-gray-700 mt-2">
                     <span className="font-medium">メールアドレス:</span>{' '}
                     <a
-                      href="mailto:support@3dcp.example.com"
+                      href="mailto:mopinfish@gmail.com"
                       className="text-blue-600 hover:underline"
                     >
-                      support@3dcp.example.com
+                      mopinfish@gmail.com
                     </a>
                   </p>
                 </div>
