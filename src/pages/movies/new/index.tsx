@@ -8,6 +8,9 @@
  * Step 2: 詳細情報入力（タイトル、備考）
  * Step 3: 文化財との紐付け（オプション）
  * Step 4: 確認・完了
+ * 
+ * ✅ SNSシェア機能追加:
+ * - 完了画面でSNSシェアボタンを表示
  */
 
 import React, { useState, useEffect, useCallback } from 'react'
@@ -21,6 +24,7 @@ import { Movie, MovieCreateRequest } from '@/domains/models/movie'
 import { CulturalProperty } from '@/domains/models/cultural_property'
 import * as MovieRepository from '@/infrastructures/repositories/movie'
 import * as CulturalPropertyRepository from '@/infrastructures/repositories/cultural_property'
+import SnsShareButtons from '@/components/blocks/SnsShareButtons'
 
 type Step = 1 | 2 | 3 | 4
 
@@ -168,6 +172,18 @@ export default function NewMoviePage() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  // シェア用のURL
+  const getShareUrl = () => {
+    if (typeof window !== 'undefined' && createdMovie) {
+      // 紐付いている文化財がある場合はそのページ、なければ3DモデルページのURLを使用
+      if (createdMovie.cultural_property) {
+        return `${window.location.origin}/cultural-properties/${createdMovie.cultural_property}`
+      }
+      return `${window.location.origin}/luma/${createdMovie.id}`
+    }
+    return ''
   }
 
   // ローディング中
@@ -486,6 +502,20 @@ export default function NewMoviePage() {
                   3Dモデルの登録が完了しました。サムネイルは自動生成されます。
                 </p>
 
+                {/* SNSシェアボタン */}
+                <div className="mb-6">
+                  <p className="text-sm text-gray-600 mb-3">
+                    🎉 登録した3Dモデルをシェアしましょう！
+                  </p>
+                  <SnsShareButtons
+                    url={getShareUrl()}
+                    title={createdMovie.title || '3Dモデル'}
+                    description={createdMovie.note || undefined}
+                    hashtags={['3D文化財']}
+                    shareType="registration_complete"
+                  />
+                </div>
+
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Link
                     href={`/luma/${createdMovie.id}`}
@@ -497,6 +527,17 @@ export default function NewMoviePage() {
                     </svg>
                     3Dモデルを見る
                   </Link>
+                  {createdMovie.cultural_property && (
+                    <Link
+                      href={`/cultural-properties/${createdMovie.cultural_property}`}
+                      className="inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
+                    >
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                      文化財を見る
+                    </Link>
+                  )}
                   <Link
                     href="/movies/new"
                     onClick={() => {
