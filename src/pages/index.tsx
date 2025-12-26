@@ -94,8 +94,8 @@ const Home = () => {
           {/* 最新の文化財 */}
           <LatestCulturalProperties 
             limit={5} 
-            moreLink="/map"
-            moreLinkText="マップで見る"
+            moreLink="/cultural-properties"
+            moreLinkText="すべて見る"
           />
           
           {/* 最新のムービー */}
@@ -121,7 +121,7 @@ const Home = () => {
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
             クイックリンク
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <Link
               href="/map"
               className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
@@ -131,6 +131,15 @@ const Home = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <span className="text-sm text-gray-700 font-medium">マップ</span>
+            </Link>
+            <Link
+              href="/cultural-properties"
+              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+            >
+              <svg className="w-8 h-8 text-indigo-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              <span className="text-sm text-gray-700 font-medium">文化財一覧</span>
             </Link>
             <Link
               href="/movies/new"

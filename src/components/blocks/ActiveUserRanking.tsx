@@ -3,9 +3,13 @@
  *
  * アクティブユーザーランキングコンポーネント
  * APIからアクティブユーザーを取得して表示
+ * 
+ * ✅ Phase 3対応:
+ * - ユーザー名をクリックするとプロフィールページに遷移
  */
 
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
 import Image from 'next/image'
 import { user as userService } from '@/domains/services'
 import { ActiveUsers } from '@/domains/models/active_user'
@@ -85,9 +89,10 @@ const ActiveUserRanking: React.FC<Props> = ({
       
       <div className="space-y-3">
         {users.map((user, index) => (
-          <div 
-            key={user.id} 
-            className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors"
+          <Link
+            key={user.id}
+            href={`/users/${user.id}`}
+            className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
           >
             {/* 順位バッジ */}
             <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-2 flex-shrink-0 ${
@@ -119,11 +124,11 @@ const ActiveUserRanking: React.FC<Props> = ({
             
             {/* ユーザー情報 */}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-800 truncate">
+              <p className="text-sm font-medium text-gray-800 truncate hover:text-blue-600">
                 {user.name || user.username}
               </p>
               <p className="text-xs text-gray-500">
-                文化財: {user.cultural_property_count}件 / ムービー: {user.movie_count}件
+                文化財: {user.cultural_property_count}件 / 3Dモデル: {user.movie_count}件
               </p>
             </div>
             
@@ -131,7 +136,7 @@ const ActiveUserRanking: React.FC<Props> = ({
             <div className="ml-2 px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
               {user.total_count}件
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

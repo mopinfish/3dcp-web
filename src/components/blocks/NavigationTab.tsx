@@ -10,6 +10,9 @@
  * ✅ Phase 2対応:
  * - 3Dマップへのリンクを削除（2Dマップを主体に）
  * - 3Dモデル登録へのリンクを追加
+ * 
+ * ✅ Phase 3-2対応:
+ * - 文化財一覧へのリンクを追加
  */
 
 import React from 'react'
@@ -47,6 +50,15 @@ const NavigationTab: React.FC = () => {
       ),
     },
     {
+      href: '/cultural-properties',
+      label: '文化財一覧',
+      icon: (
+        <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      ),
+    },
+    {
       href: '/luma-list',
       label: '3Dモデル一覧',
       icon: (
@@ -70,10 +82,15 @@ const NavigationTab: React.FC = () => {
    * アクティブ状態を判定
    * - 完全一致でチェック
    * - ホーム（/）は完全一致のみ
+   * - /cultural-properties は詳細ページも含む
    */
   const isActive = (href: string): boolean => {
     if (href === '/') {
       return router.pathname === '/'
+    }
+    // /cultural-properties は /cultural-properties/[id] も含む
+    if (href === '/cultural-properties') {
+      return router.pathname === '/cultural-properties' || router.pathname.startsWith('/cultural-properties/')
     }
     return router.pathname === href || router.pathname.startsWith(href + '/')
   }

@@ -354,7 +354,10 @@ export default function CulturalPropertyDetailPage() {
             {/* メタ情報 */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 pt-4 border-t border-gray-100">
               {property.created_by && (
-                <div className="flex items-center">
+                <Link
+                  href={`/users/${property.created_by.id}`}
+                  className="flex items-center hover:text-blue-600 cursor-pointer"
+                >
                   <svg
                     className="w-4 h-4 mr-1"
                     fill="none"
@@ -369,7 +372,7 @@ export default function CulturalPropertyDetailPage() {
                     />
                   </svg>
                   登録者: {property.created_by.name || property.created_by.username}
-                </div>
+                </Link>
               )}
               {property.updated_at && (
                 <div className="flex items-center">
