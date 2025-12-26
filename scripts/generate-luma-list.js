@@ -1,3 +1,21 @@
+/**
+ * ⚠️ 非推奨 (DEPRECATED)
+ * 
+ * このスクリプトは旧方式のバッチ処理によるムービーデータ取得です。
+ * 新しい実装では、フロントエンドがAPI経由で直接ムービーデータを取得し、
+ * thumbnail_urlもAPIレスポンスに含まれます。
+ * 
+ * 新方式:
+ * - フロントエンドはmovieService.getMovies()でAPI経由でデータ取得
+ * - thumbnail_urlはバックエンドで自動生成・管理
+ * - 静的JSONファイル（luma-movies.json）は不要
+ * 
+ * このスクリプトは互換性のために残されていますが、
+ * 将来的に削除される予定です。
+ * 
+ * @deprecated API経由でのデータ取得に置き換えられました
+ */
+
 // CommonJSスタイルのインポート
 const fs = require('fs')
 const path = require('path')
@@ -94,6 +112,10 @@ function generateSampleData() {
  * メイン関数
  */
 async function main() {
+  console.log('⚠️  このスクリプトは非推奨です。')
+  console.log('⚠️  新しい実装ではフロントエンドがAPI経由で直接データを取得します。')
+  console.log('⚠️  このスクリプトは互換性のために残されています。')
+  console.log('')
   console.log('Generating Luma.ai movie list...')
 
   let movies = []

@@ -3,6 +3,10 @@
  *
  * ムービーのカードコンポーネント
  * マイページで自分が登録したムービーを表示するために使用
+ * 
+ * ✅ 変更内容:
+ * - thumbnail_urlをAPIレスポンスから使用
+ * - サムネイルがない場合はプレースホルダーを表示
  */
 
 import React from 'react'
@@ -31,17 +35,8 @@ export function MovieCard({
     }
   }
 
-  // Luma AIのサムネイル（URLからIDを抽出して生成）
-  const getThumbnailUrl = (url: string): string | null => {
-    // https://lumalabs.ai/capture/xxx の形式から xxx を抽出
-    const match = url.match(/lumalabs\.ai\/capture\/([a-zA-Z0-9-]+)/)
-    if (match) {
-      return `https://cdn.lumalabs.ai/captures/${match[1]}/thumbnail.jpg`
-    }
-    return null
-  }
-
-  const thumbnailUrl = getThumbnailUrl(movie.url)
+  // APIから取得したthumbnail_urlを使用
+  const thumbnailUrl = movie.thumbnail_url || null
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200">
@@ -61,6 +56,7 @@ export function MovieCard({
               }}
             />
           ) : (
+            // プレースホルダー
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-600">
               <svg
                 className="w-16 h-16 text-white/50"
@@ -143,7 +139,7 @@ export function MovieCard({
                 bg-gray-100
                 rounded-lg
                 hover:bg-gray-200
-                transition-colors duration-200
+                transition-colors
               "
             >
               <svg
@@ -167,6 +163,7 @@ export function MovieCard({
               </svg>
               表示
             </Link>
+            
             <Link
               href={`/movies/${movie.id}/edit`}
               className="
@@ -177,7 +174,7 @@ export function MovieCard({
                 bg-blue-50
                 rounded-lg
                 hover:bg-blue-100
-                transition-colors duration-200
+                transition-colors
               "
             >
               <svg
@@ -195,32 +192,36 @@ export function MovieCard({
               </svg>
               編集
             </Link>
-            <button
-              onClick={handleDelete}
-              className="
-                px-3 py-2
-                text-sm font-medium
-                text-red-700
-                bg-red-50
-                rounded-lg
-                hover:bg-red-100
-                transition-colors duration-200
-              "
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            
+            {onDelete && (
+              <button
+                onClick={handleDelete}
+                className="
+                  flex items-center justify-center
+                  px-3 py-2
+                  text-sm font-medium
+                  text-red-700
+                  bg-red-50
+                  rounded-lg
+                  hover:bg-red-100
+                  transition-colors
+                "
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                />
-              </svg>
-            </button>
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -229,7 +230,9 @@ export function MovieCard({
 }
 
 /**
- * ムービーカードリストコンポーネント
+ * MovieCardList
+ * 
+ * ムービーカードのリスト表示コンポーネント
  */
 type MovieCardListProps = {
   movies: Movie[]
