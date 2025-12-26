@@ -1,3 +1,16 @@
+/**
+ * ⚠️ 廃止予定（DEPRECATED）
+ * 
+ * このページは廃止予定です。
+ * 今後は2Dマップページ（/map）を使用してください。
+ * 
+ * 参考用にソースコードは残していますが、
+ * サイトのナビゲーションからはリンクが削除されています。
+ * 
+ * 廃止日: 2024-XX-XX（予定）
+ * 代替ページ: /map
+ */
+
 import React, { useEffect, useState, useMemo } from 'react'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
@@ -9,6 +22,9 @@ import SearchConditionTab from '@/components/blocks/SearchConditionTab'
 
 const Map3D = dynamic(() => import('../components/blocks/3dMap'), { ssr: false })
 
+/**
+ * @deprecated このページは廃止予定です。/map を使用してください。
+ */
 const MapScreen3D: NextPage = () => {
   const [properties, setProperties] = useState<CulturalProperties>([])
 
@@ -29,6 +45,7 @@ const MapScreen3D: NextPage = () => {
   useEffect(() => {
     actions.onload()
   }, [actions])
+
   return (
     <LayoutWithFooter>
       <NavigationTab />

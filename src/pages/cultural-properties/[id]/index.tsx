@@ -5,6 +5,9 @@
  * - 文化財の詳細情報を表示
  * - 紐づいている3Dモデル一覧を表示
  * - 所有者のみ編集ページへのリンクを表示
+ * 
+ * ✅ Phase 2対応:
+ * - マップへのリンクを2Dマップ（/map）に変更
  */
 
 import React, { useState, useEffect, useCallback } from 'react'
@@ -134,8 +137,8 @@ export default function CulturalPropertyDetailPage() {
             </li>
             <li className="mx-2">/</li>
             <li>
-              <Link href="/3d_map" className="hover:text-blue-600 cursor-pointer">
-                3Dマップ
+              <Link href="/map" className="hover:text-blue-600 cursor-pointer">
+                マップ
               </Link>
             </li>
             <li className="mx-2">/</li>
@@ -511,7 +514,7 @@ export default function CulturalPropertyDetailPage() {
         {/* マップで見るボタン */}
         <div className="flex justify-center">
           <Link
-            href={`/3d_map?lat=${property.latitude}&lng=${property.longitude}&zoom=16`}
+            href={`/map?lat=${property.latitude}&lng=${property.longitude}&zoom=16`}
             className="inline-flex items-center px-6 py-3 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
           >
             <svg
@@ -524,10 +527,16 @@ export default function CulturalPropertyDetailPage() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            3Dマップで場所を確認する
+            マップで場所を確認する
           </Link>
         </div>
       </div>

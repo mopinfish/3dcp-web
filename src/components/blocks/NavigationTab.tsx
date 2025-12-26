@@ -6,6 +6,10 @@
  * ✅ UI改善対応:
  * - ホーム画面がダッシュボードに変更されたため、タブ構成を更新
  * - アクティブ状態の判定ロジックを改善
+ * 
+ * ✅ Phase 2対応:
+ * - 3Dマップへのリンクを削除（2Dマップを主体に）
+ * - 3Dモデル登録へのリンクを追加
  */
 
 import React from 'react'
@@ -34,20 +38,11 @@ const NavigationTab: React.FC = () => {
     },
     {
       href: '/map',
-      label: '2Dマップ',
+      label: 'マップ',
       icon: (
         <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-    },
-    {
-      href: '/3d_map',
-      label: '3Dマップ',
-      icon: (
-        <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
         </svg>
       ),
     },
@@ -57,6 +52,15 @@ const NavigationTab: React.FC = () => {
       icon: (
         <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+      ),
+    },
+    {
+      href: '/movies/new',
+      label: '3Dモデル登録',
+      icon: (
+        <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
         </svg>
       ),
     },
