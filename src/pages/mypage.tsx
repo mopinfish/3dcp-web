@@ -5,6 +5,9 @@
  * - ユーザープロフィール
  * - マイ文化財セクション
  * - マイムービーセクション
+ * 
+ * ✅ Phase 2-2対応:
+ * - 「3Dモデルを登録」ボタンを追加
  */
 
 import React, { useState, useEffect, useCallback } from 'react'
@@ -121,7 +124,7 @@ function MyPageContent() {
               </h1>
               <Link
                 href="/"
-                className="hidden sm:inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900"
+                className="hidden sm:inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 cursor-pointer"
               >
                 <svg
                   className="mr-1 h-4 w-4"
@@ -141,7 +144,7 @@ function MyPageContent() {
             </div>
             <button
               onClick={handleLogout}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200 cursor-pointer"
             >
               ログアウト
             </button>
@@ -241,13 +244,32 @@ function MyPageContent() {
                 <div className="mt-6 space-y-3">
                   <Link
                     href="/mypage/edit"
-                    className="w-full inline-flex justify-center items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                    className="w-full inline-flex justify-center items-center px-4 py-2.5 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 cursor-pointer"
                   >
                     プロフィールを編集
                   </Link>
                   <Link
+                    href="/movies/new"
+                    className="w-full inline-flex justify-center items-center px-4 py-2.5 border-2 border-purple-600 text-sm font-medium rounded-lg text-purple-700 bg-white hover:bg-purple-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200 cursor-pointer"
+                  >
+                    <svg
+                      className="w-4 h-4 mr-1.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                    3Dモデルを登録
+                  </Link>
+                  <Link
                     href="/cultural-properties/new"
-                    className="w-full inline-flex justify-center items-center px-4 py-2.5 border-2 border-blue-600 text-sm font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                    className="w-full inline-flex justify-center items-center px-4 py-2.5 border-2 border-blue-600 text-sm font-medium rounded-lg text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 cursor-pointer"
                   >
                     <svg
                       className="w-4 h-4 mr-1.5"
@@ -267,7 +289,7 @@ function MyPageContent() {
                   {/* CSVインポートへのリンク */}
                   <Link
                     href="/import"
-                    className="w-full inline-flex justify-center items-center px-4 py-2.5 border-2 border-green-600 text-sm font-medium rounded-lg text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200"
+                    className="w-full inline-flex justify-center items-center px-4 py-2.5 border-2 border-green-600 text-sm font-medium rounded-lg text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 cursor-pointer"
                   >
                     <svg
                       className="w-4 h-4 mr-1.5"
@@ -354,16 +376,7 @@ function MyPageContent() {
                   <div className="flex items-center space-x-2">
                     <Link
                       href="/import"
-                      className="
-                        inline-flex items-center
-                        px-3 py-1.5
-                        text-sm font-medium
-                        text-green-700
-                        bg-green-50
-                        rounded-lg
-                        hover:bg-green-100
-                        transition-colors duration-200
-                      "
+                      className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-green-700 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-200 cursor-pointer"
                     >
                       <svg
                         className="w-4 h-4 mr-1"
@@ -382,16 +395,7 @@ function MyPageContent() {
                     </Link>
                     <Link
                       href="/cultural-properties/new"
-                      className="
-                        inline-flex items-center
-                        px-4 py-2
-                        text-sm font-medium
-                        text-blue-700
-                        bg-blue-50
-                        rounded-lg
-                        hover:bg-blue-100
-                        transition-colors duration-200
-                      "
+                      className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200 cursor-pointer"
                     >
                       <svg
                         className="w-4 h-4 mr-1.5"
@@ -445,6 +449,25 @@ function MyPageContent() {
                       </span>
                     )}
                   </h3>
+                  <Link
+                    href="/movies/new"
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors duration-200 cursor-pointer"
+                  >
+                    <svg
+                      className="w-4 h-4 mr-1.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                    新規登録
+                  </Link>
                 </div>
 
                 <MovieCardList

@@ -9,6 +9,10 @@
  * - 最新のムービー（5件）
  * - アクティブユーザー（5件）
  * - お知らせ（JSONファイルから読み込み）
+ * 
+ * ✅ Phase 2-2対応:
+ * - ヒーローセクションに「3Dモデルを登録」ボタンを追加
+ * - クイックリンクに「3Dモデル登録」を追加
  */
 
 import React from 'react'
@@ -63,11 +67,20 @@ const Home = () => {
               3Dモデル一覧
             </Link>
             <Link
+              href="/movies/new"
+              className="inline-flex items-center px-5 py-2.5 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors cursor-pointer"
+            >
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              3Dモデルを登録
+            </Link>
+            <Link
               href="/cultural-properties/new"
               className="inline-flex items-center px-5 py-2.5 bg-white text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors border border-gray-300 cursor-pointer"
             >
               <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               文化財を登録
             </Link>
@@ -106,7 +119,7 @@ const Home = () => {
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
             クイックリンク
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <Link
               href="/map"
               className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
@@ -125,6 +138,15 @@ const Home = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
               </svg>
               <span className="text-sm text-gray-700 font-medium">3Dマップ</span>
+            </Link>
+            <Link
+              href="/movies/new"
+              className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+            >
+              <svg className="w-8 h-8 text-pink-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span className="text-sm text-gray-700 font-medium">3Dモデル登録</span>
             </Link>
             <Link
               href="/import"
