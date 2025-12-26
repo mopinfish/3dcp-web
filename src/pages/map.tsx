@@ -1,3 +1,13 @@
+/**
+ * map.tsx
+ *
+ * 2Dマップ画面
+ *
+ * ✅ Phase 2対応:
+ * - 全ての文化財を表示（getAllPropertiesを使用）
+ * - 3Dモデルがある文化財には「3D」バッジを表示
+ */
+
 import React, { useState, useEffect, useMemo } from 'react'
 import Map from '../components/Map'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
@@ -12,8 +22,9 @@ const MapScreen = () => {
   const actions = useMemo(
     () => ({
       onload: () => {
+        // getAllPropertiesを使用して全ての文化財を取得
         culturalPropertyService
-          .getProperties()
+          .getAllProperties()
           .then(setProperties)
           .catch((error) => {
             console.error('Error fetching cultural properties:', error)
