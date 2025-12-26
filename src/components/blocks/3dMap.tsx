@@ -1,8 +1,18 @@
+/**
+ * 3dMap.tsx
+ * 
+ * 3Dマップコンポーネント
+ * 
+ * ✅ 変更内容:
+ * - ポップアップに文化財ID、名前、住所を渡すように変更
+ * - ムービーがない文化財の場合はCulturalPropertyInfoPopupを表示
+ */
+
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { CulturalProperties } from '@/domains/models'
-import { CulturalPropertyThreeCanvasPopup } from './Popup'
+import { CulturalPropertyThreeCanvasPopup, CulturalPropertyInfoPopup } from './Popup'
 import { createRoot } from 'react-dom/client'
 
 const plateauSource: maplibregl.VectorSourceSpecification = {
@@ -57,10 +67,11 @@ const Map3D = ({ properties }: MapProps) => {
           id: item.id,
           name: item.name,
           address: item.address,
+          type: item.type,
           movies: item.movies,
           images: item.images,
           thumb: item.images[0]?.image || '/img/noimage.png',
-          // その他必要なプロパティを追加
+          hasMovies: item.movies && item.movies.length > 0,
         },
       })),
     }
@@ -118,24 +129,62 @@ const Map3D = ({ properties }: MapProps) => {
         if (event.features === undefined) return
         const feature = event.features[0]
         const coordinates = event.lngLat
-        const property = feature.properties
-        const movie = JSON.parse(property.movies)[0]
-        const id = Number(movie.id)
-        const url = '/luma/' + movie.id
+        const featureProperties = feature.properties
+        
+        // 文化財情報を取得
+        const culturalPropertyId = Number(featureProperties.id)
+        const culturalPropertyName = featureProperties.name
+        const address = featureProperties.address
+        const type = featureProperties.type
+        
+        // ムービー情報を取得
+        const moviesData = featureProperties.movies
+        let movies = []
+        try {
+          movies = typeof moviesData === 'string' ? JSON.parse(moviesData) : moviesData
+        } catch (e) {
+          console.error('Movies parse error:', e)
+        }
 
-        const popupContainer = document.createElement('div') // 動的コンテンツ用のコンテナ
-        // ポップアップを表示する
+        const popupContainer = document.createElement('div')
         const popup = new maplibregl.Popup({
-          offset: 10, // ポップアップの位置
-          closeButton: false, // 閉じるボタンの表示
+          offset: 10,
+          closeButton: true,
+          closeOnClick: true,
+          maxWidth: '320px',
         })
           .setLngLat(coordinates)
-          .setDOMContent(popupContainer) // HTMLではなくDOM要素を設定
+          .setDOMContent(popupContainer)
           .addTo(mapInstance)
 
-        // Reactコンポーネントをポップアップ内のコンテナにマウント
         const root = createRoot(popupContainer)
-        root.render(<CulturalPropertyThreeCanvasPopup id={id} url={url} />)
+        
+        // ムービーがある場合は3Dビューア付きポップアップを表示
+        if (movies && movies.length > 0) {
+          const movie = movies[0]
+          const movieId = Number(movie.id)
+          const url = '/luma/' + movie.id
+
+          root.render(
+            <CulturalPropertyThreeCanvasPopup 
+              id={movieId} 
+              url={url}
+              culturalPropertyId={culturalPropertyId}
+              culturalPropertyName={culturalPropertyName}
+              address={address}
+            />
+          )
+        } else {
+          // ムービーがない場合は情報のみのポップアップを表示
+          root.render(
+            <CulturalPropertyInfoPopup
+              culturalPropertyId={culturalPropertyId}
+              name={culturalPropertyName}
+              address={address}
+              type={type}
+            />
+          )
+        }
 
         // ポップアップが閉じられたときにReactコンポーネントをアンマウント
         popup.on('close', () => {
@@ -143,7 +192,7 @@ const Map3D = ({ properties }: MapProps) => {
         })
       })
     },
-    [geojsonData], // ✅ 依存関係に geojsonData を忘れずに含める
+    [geojsonData],
   )
 
   useEffect(() => {

@@ -3,6 +3,9 @@
  *
  * 最新の文化財一覧コンポーネント
  * APIから最新の文化財を取得して表示
+ * 
+ * ✅ 変更内容:
+ * - リンク先を詳細ページ（/cultural-properties/[id]）に変更
  */
 
 import React, { useEffect, useState } from 'react'
@@ -101,10 +104,8 @@ const LatestCulturalProperties: React.FC<Props> = ({
       
       <div className="space-y-3">
         {properties.map((property) => {
-          // ムービーがある場合はそのページへ、なければ編集ページへ
-          const linkHref = property.movies && property.movies.length > 0
-            ? `/luma/${property.movies[0].id}`
-            : `/cultural-properties/${property.id}/edit`
+          // ✅ 変更: 常に詳細ページへリンク
+          const linkHref = `/cultural-properties/${property.id}`
 
           return (
             <Link
