@@ -18,3 +18,6 @@ export {
   ThumbnailImage,
   AvatarImage,
 } from './OptimizedImage'
+
+export { default as TagInput } from './TagInput'
+export { default as TagFilter } from './TagFilter'

@@ -19,7 +19,7 @@ import NavigationTab from '@/components/blocks/NavigationTab'
 import { CulturalProperty } from '@/domains/models/cultural_property'
 import { Tag } from '@/domains/models/tag'
 import * as CulturalPropertyRepository from '@/infrastructures/repositories/cultural_property'
-import { tag as tagService } from '@/domains/services'
+import * as TagRepository from '@/infrastructures/repositories/tag'
 
 const ITEMS_PER_PAGE = 12
 
@@ -44,7 +44,7 @@ export default function CulturalPropertiesListPage() {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const fetchedTags = await tagService.getTags()
+        const fetchedTags = await TagRepository.get()
         setTags(fetchedTags)
       } catch (error) {
         console.error('Failed to fetch tags:', error)
