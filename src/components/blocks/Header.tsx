@@ -1,10 +1,10 @@
 /**
  * Header.tsx
- * グローバルヘッダーコンポーネント (最終版)
+ * グローバルヘッダーコンポーネント (更新版)
  *
  * 機能:
  * - ロゴ表示（スタイリングベース）
- * - ナビゲーションメニュー
+ * - ナビゲーションメニュー（使い方リンク追加）
  * - 認証状態に応じた表示切り替え
  *   - 未ログイン: ログイン・新規登録ボタン
  *   - ログイン済み: ユーザーメニュー
@@ -28,7 +28,10 @@ import UserMenu from './UserMenu'
  */
 const SiteLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
-    <Link href="/" className={`flex items-center group cursor-pointer ${className}`}>
+    <Link
+      href="/"
+      className={`flex items-center group cursor-pointer ${className}`}
+    >
       {/* アイコン部分 */}
       <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-2.5 group-hover:bg-blue-700 transition-colors">
         <svg
@@ -50,9 +53,7 @@ const SiteLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
         <span className="text-sm font-bold text-gray-800 leading-tight">
           3D文化財
         </span>
-        <span className="text-xs text-gray-500 leading-tight">
-          共有サイト
-        </span>
+        <span className="text-xs text-gray-500 leading-tight">共有サイト</span>
       </div>
     </Link>
   )
@@ -86,6 +87,7 @@ const Header: React.FC = () => {
   // メニュー項目
   const navItems = [
     { href: '/', label: 'Home' },
+    { href: '/howto', label: '使い方' },
     { href: '/about', label: 'About' },
     { href: '/map', label: 'Map' },
     { href: '/3d_map', label: '3D Map' },
@@ -222,7 +224,9 @@ const Header: React.FC = () => {
                         <p className="text-sm font-medium text-gray-900 truncate">
                           {user.name || user.username}
                         </p>
-                        <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                        <p className="text-xs text-gray-500 truncate">
+                          {user.email}
+                        </p>
                       </div>
                     </div>
                   </div>

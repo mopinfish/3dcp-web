@@ -5,19 +5,27 @@
  * - 文化財の詳細情報を表示
  * - 紐づいている3Dモデル一覧を表示
  * - 所有者のみ編集ページへのリンクを表示
- * 
+ * - SNSシェアボタンを常時表示
+ *
  * ✅ Phase 2対応:
  * - マップへのリンクを2Dマップ（/map）に変更
+ *
+ * ✅ SNSシェア機能追加:
+ * - X（Twitter）、Facebook、LINEへのシェアボタン
+ * - URLコピー機能
+ * - #3D文化財 ハッシュタグ
  */
 
 import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Head from 'next/head'
 import Image from 'next/image'
 import { LayoutWithFooter } from '@/components/layouts/Layout'
 import { useAuth } from '@/contexts/AuthContext'
 import { CulturalProperty } from '@/domains/models/cultural_property'
 import * as CulturalPropertyRepository from '@/infrastructures/repositories/cultural_property'
+import SnsShareButtons from '@/components/blocks/SnsShareButtons'
 
 export default function CulturalPropertyDetailPage() {
   const router = useRouter()
@@ -48,6 +56,14 @@ export default function CulturalPropertyDetailPage() {
       fetchProperty()
     }
   }, [router.isReady, id, fetchProperty])
+
+  // シェア用のURL（クライアントサイドで取得）
+  const getShareUrl = () => {
+    if (typeof window !== 'undefined') {
+      return window.location.href
+    }
+    return ''
+  }
 
   if (isLoading) {
     return (
@@ -126,6 +142,19 @@ export default function CulturalPropertyDetailPage() {
 
   return (
     <LayoutWithFooter>
+      {/* OGP用のHead */}
+      <Head>
+        <title>{property.name} | 3DCP - 3D Cultural Properties</title>
+        <meta name="description" content={property.note || `${property.name}の詳細情報`} />
+        <meta property="og:title" content={`${property.name} | 3DCP`} />
+        <meta property="og:description" content={property.note || `${property.name}の詳細情報`} />
+        <meta property="og:type" content="article" />
+        {hasMovies && property.movies[0].thumbnail_url && (
+          <meta property="og:image" content={property.movies[0].thumbnail_url} />
+        )}
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+
       <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
         {/* パンくずリスト */}
         <nav className="mb-6">
@@ -262,14 +291,16 @@ export default function CulturalPropertyDetailPage() {
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-50 text-blue-700">
                 {property.type}
               </span>
-              {property.tags && property.tags.length > 0 && property.tags.map((tag) => (
-                <span
-                  key={tag.id}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700"
-                >
-                  {tag.name}
-                </span>
-              ))}
+              {property.tags &&
+                property.tags.length > 0 &&
+                property.tags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700"
+                  >
+                    {tag.name}
+                  </span>
+                ))}
             </div>
 
             {/* 住所 */}
@@ -396,6 +427,17 @@ export default function CulturalPropertyDetailPage() {
           </div>
         </div>
 
+        {/* SNSシェアボタン */}
+        <div className="mb-6">
+          <SnsShareButtons
+            url={getShareUrl()}
+            title={property.name}
+            description={property.note || undefined}
+            hashtags={['3D文化財']}
+            shareType="cultural_property"
+          />
+        </div>
+
         {/* 3Dモデル一覧 */}
         <div className="bg-white shadow-sm rounded-xl border border-gray-100 p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
@@ -467,7 +509,9 @@ export default function CulturalPropertyDetailPage() {
                       {movie.title || '3Dモデル'}
                     </p>
                     {movie.note && (
-                      <p className="text-sm text-gray-500 truncate mt-1">{movie.note}</p>
+                      <p className="text-sm text-gray-500 truncate mt-1">
+                        {movie.note}
+                      </p>
                     )}
                   </div>
                 </Link>
@@ -491,7 +535,7 @@ export default function CulturalPropertyDetailPage() {
               <p>3Dモデルはまだ登録されていません</p>
               {isOwner && (
                 <Link
-                  href={`/cultural-properties/${property.id}/edit`}
+                  href={`/movies/new?cultural_property_id=${property.id}`}
                   className="inline-flex items-center mt-4 text-blue-600 hover:text-blue-800 cursor-pointer"
                 >
                   <svg
