@@ -28,18 +28,25 @@ const Home = () => {
       {/* メインコンテンツ */}
       <div className="max-w-screen-xl mx-auto px-4 py-6">
         {/* ヒーローセクション */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 mb-8 text-white">
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">
-            3D文化財共有サイト
-          </h1>
-          <p className="text-white/80 mb-6 max-w-2xl">
+        <div className="bg-white border border-gray-200 rounded-xl p-8 mb-8 shadow-sm">
+          <div className="flex items-center mb-3">
+            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mr-3">
+              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
+              3D文化財共有サイト
+            </h1>
+          </div>
+          <p className="text-gray-600 mb-6 max-w-2xl">
             文化財の3Dモデルを登録・共有できるプラットフォームです。
             地域の貴重な文化財をデジタルで保存し、世界中の人々と共有しましょう。
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/3d_map"
-              className="inline-flex items-center px-5 py-2.5 bg-white text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
@@ -48,18 +55,18 @@ const Home = () => {
             </Link>
             <Link
               href="/luma-list"
-              className="inline-flex items-center px-5 py-2.5 bg-white/20 text-white font-medium rounded-lg hover:bg-white/30 transition-colors border border-white/30"
+              className="inline-flex items-center px-5 py-2.5 bg-white text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors border border-gray-300"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
               3Dモデル一覧
             </Link>
             <Link
               href="/cultural-properties/new"
-              className="inline-flex items-center px-5 py-2.5 bg-white/20 text-white font-medium rounded-lg hover:bg-white/30 transition-colors border border-white/30"
+              className="inline-flex items-center px-5 py-2.5 bg-white text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors border border-gray-300"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
               文化財を登録
