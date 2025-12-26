@@ -8,9 +8,13 @@
  * - ムービーがある場合は3Dビューアへのリンクも表示
  * - マーカークリック時のポップアップUIを改善
  * 
+ * ✅ Phase 2-3対応:
+ * - 3Dモデルがある文化財に「3D」バッジを表示
+ * 
  * ✅ バグ修正:
  * - マップ初期化とレイヤー追加のタイミングを修正
  * - 画像読み込み完了後にレイヤーを追加するように変更
+ * - ポップアップの閉じるボタンサイズを拡大
  */
 
 'use client'
@@ -22,6 +26,38 @@ import React from 'react'
 import { CulturalProperties, CulturalProperty } from '@/domains/models/cultural_property'
 
 type MapProps = { properties: CulturalProperties }
+
+/**
+ * 3Dバッジ画像を生成する関数
+ * Canvasを使用して「3D」と書かれた緑色のバッジを作成
+ */
+function create3DBadgeImageData(): ImageData {
+  const canvas = document.createElement('canvas')
+  const size = 64
+  canvas.width = size
+  canvas.height = size
+  const ctx = canvas.getContext('2d')!
+  
+  // 背景の円（緑色）
+  ctx.beginPath()
+  ctx.arc(size / 2, size / 2, size / 2 - 4, 0, Math.PI * 2)
+  ctx.fillStyle = '#22c55e' // green-500
+  ctx.fill()
+  
+  // 白い縁取り
+  ctx.strokeStyle = '#ffffff'
+  ctx.lineWidth = 4
+  ctx.stroke()
+  
+  // テキスト「3D」
+  ctx.fillStyle = '#ffffff'
+  ctx.font = 'bold 24px Arial, sans-serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('3D', size / 2, size / 2)
+  
+  return ctx.getImageData(0, 0, size, size)
+}
 
 export default function Map({ properties }: MapProps) {
   const mapContainer = useRef<HTMLDivElement | null>(null)
@@ -103,6 +139,54 @@ export default function Map({ properties }: MapProps) {
     `
   }, [])
 
+  // ポップアップのスタイルを適用
+  useEffect(() => {
+    // ポップアップの閉じるボタンを大きくするCSSを追加
+    const style = document.createElement('style')
+    style.id = 'maplibre-popup-style'
+    style.textContent = `
+      .maplibregl-popup-close-button {
+        font-size: 24px !important;
+        width: 32px !important;
+        height: 32px !important;
+        line-height: 32px !important;
+        padding: 0 !important;
+        right: 4px !important;
+        top: 4px !important;
+        color: #6b7280 !important;
+        background: rgba(255, 255, 255, 0.9) !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      .maplibregl-popup-close-button:hover {
+        background: #f3f4f6 !important;
+        color: #111827 !important;
+      }
+      .maplibregl-popup-content {
+        padding: 16px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+      }
+    `
+    
+    // 既存のスタイルがあれば削除
+    const existingStyle = document.getElementById('maplibre-popup-style')
+    if (existingStyle) {
+      existingStyle.remove()
+    }
+    
+    document.head.appendChild(style)
+
+    return () => {
+      const styleEl = document.getElementById('maplibre-popup-style')
+      if (styleEl) {
+        styleEl.remove()
+      }
+    }
+  }, [])
+
   // マップの初期化
   useEffect(() => {
     if (!mapContainer.current) return
@@ -146,7 +230,15 @@ export default function Map({ properties }: MapProps) {
         const selectedImage = await map.current.loadImage('/img/selected_marker_icon.png')
         map.current.addImage('selected_property_icon', selectedImage.data)
 
-        console.log('=== Marker images loaded ===')
+        // 3Dバッジ画像を生成して追加
+        const badgeImageData = create3DBadgeImageData()
+        map.current.addImage('3d_badge', {
+          width: badgeImageData.width,
+          height: badgeImageData.height,
+          data: new Uint8Array(badgeImageData.data),
+        })
+        
+        console.log('=== Marker images and 3D badge loaded ===')
 
         // マップ準備完了
         setIsMapReady(true)
@@ -182,28 +274,38 @@ export default function Map({ properties }: MapProps) {
     console.log('=== Updating cultural properties layer ===')
     console.log('Properties count:', properties.length)
 
+    // 3Dモデルの有無をカウント
+    const propertiesWithMovies = properties.filter(p => p.movies && p.movies.length > 0)
+    console.log('Properties with movies:', propertiesWithMovies.length)
+
     // GeoJSON フィーチャーコレクションに変換
     const geojsonData: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
       type: 'FeatureCollection',
-      features: properties.map((item) => ({
-        type: 'Feature',
-        geometry: { type: 'Point', coordinates: [item.longitude, item.latitude] },
-        properties: {
-          id: item.id,
-          name: item.name,
-          address: item.address,
-          type: item.type,
-          movies: JSON.stringify(item.movies),
-          images: item.images,
-          hasMovies: item.movies && item.movies.length > 0,
-          icon: item.movies && item.movies.length > 0 ? 'property_icon_3d' : 'property_icon',
-        },
-      })),
+      features: properties.map((item) => {
+        const hasMovies = item.movies && item.movies.length > 0
+        return {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [item.longitude, item.latitude] },
+          properties: {
+            id: item.id,
+            name: item.name,
+            address: item.address,
+            type: item.type,
+            movies: JSON.stringify(item.movies),
+            images: item.images,
+            hasMovies: hasMovies,
+            icon: 'property_icon',
+          },
+        }
+      }),
     }
 
     console.log('GeoJSON features:', geojsonData.features.length)
 
     // 既存のレイヤーとソースを削除
+    if (map.current.getLayer('cultural_properties_3d_badge')) {
+      map.current.removeLayer('cultural_properties_3d_badge')
+    }
     if (map.current.getLayer('cultural_properties')) {
       map.current.removeLayer('cultural_properties')
     }
@@ -217,19 +319,35 @@ export default function Map({ properties }: MapProps) {
       data: geojsonData,
     })
 
-    // レイヤーを追加
+    // マーカーレイヤーを追加
     map.current.addLayer({
       id: 'cultural_properties',
       type: 'symbol',
       source: 'cultural-properties',
       layout: { 
-        'icon-image': ['get', 'icon'], 
+        'icon-image': 'property_icon', 
         'icon-size': 0.2, 
-        'icon-allow-overlap': true 
+        'icon-allow-overlap': true,
+        'icon-anchor': 'bottom',
       },
     })
 
-    console.log('=== Layer added successfully ===')
+    // 3Dバッジレイヤーを追加（ムービーがある文化財のみ）
+    map.current.addLayer({
+      id: 'cultural_properties_3d_badge',
+      type: 'symbol',
+      source: 'cultural-properties',
+      filter: ['==', ['get', 'hasMovies'], true],
+      layout: {
+        'icon-image': '3d_badge',
+        'icon-size': 0.4,
+        'icon-allow-overlap': true,
+        'icon-anchor': 'bottom-left',
+        'icon-offset': [40, -60],
+      },
+    })
+
+    console.log('=== Layers added successfully ===')
 
     // クリックイベントハンドラー
     const handleClick = (event: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
@@ -273,15 +391,21 @@ export default function Map({ properties }: MapProps) {
     }
 
     map.current.on('click', 'cultural_properties', handleClick)
+    map.current.on('click', 'cultural_properties_3d_badge', handleClick)
     map.current.on('mouseenter', 'cultural_properties', handleMouseEnter)
+    map.current.on('mouseenter', 'cultural_properties_3d_badge', handleMouseEnter)
     map.current.on('mouseleave', 'cultural_properties', handleMouseLeave)
+    map.current.on('mouseleave', 'cultural_properties_3d_badge', handleMouseLeave)
 
     // クリーンアップ
     return () => {
       if (map.current) {
         map.current.off('click', 'cultural_properties', handleClick)
+        map.current.off('click', 'cultural_properties_3d_badge', handleClick)
         map.current.off('mouseenter', 'cultural_properties', handleMouseEnter)
+        map.current.off('mouseenter', 'cultural_properties_3d_badge', handleMouseEnter)
         map.current.off('mouseleave', 'cultural_properties', handleMouseLeave)
+        map.current.off('mouseleave', 'cultural_properties_3d_badge', handleMouseLeave)
       }
     }
   }, [properties, isMapReady, createPopupHTML])
@@ -316,11 +440,6 @@ export default function Map({ properties }: MapProps) {
         alert('現在地の取得に失敗しました')
       },
     )
-  }
-
-  // ルート表示（現在は未使用だが将来のために残す）
-  const handleShowRoute = async () => {
-    alert('ルート表示機能は現在準備中です')
   }
 
   return (
