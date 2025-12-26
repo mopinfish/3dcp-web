@@ -11,15 +11,16 @@
  * ✅ Phase 2-3対応:
  * - 3Dモデルがある文化財に「3D」バッジを表示
  * 
- * ✅ バグ修正:
- * - マップ初期化とレイヤー追加のタイミングを修正
- * - 画像読み込み完了後にレイヤーを追加するように変更
- * - ポップアップの閉じるボタンサイズを拡大
+ * ✅ Phase 3-3対応:
+ * - クラスタリング機能を追加（パフォーマンス改善）
+ * - 1000件以上のマーカーでも軽快に動作
+ * - ズームレベルに応じてクラスタを展開
+ * - メモ化による再レンダリング最適化
  */
 
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback, useMemo, memo } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import React from 'react'
@@ -27,44 +28,41 @@ import { CulturalProperties, CulturalProperty } from '@/domains/models/cultural_
 
 type MapProps = { properties: CulturalProperties }
 
-/**
- * 3Dバッジ画像を生成する関数
- * Canvasを使用して「3D」と書かれた緑色のバッジを作成
- */
-function create3DBadgeImageData(): ImageData {
-  const canvas = document.createElement('canvas')
-  const size = 64
-  canvas.width = size
-  canvas.height = size
-  const ctx = canvas.getContext('2d')!
-  
-  // 背景の円（緑色）
-  ctx.beginPath()
-  ctx.arc(size / 2, size / 2, size / 2 - 4, 0, Math.PI * 2)
-  ctx.fillStyle = '#22c55e' // green-500
-  ctx.fill()
-  
-  // 白い縁取り
-  ctx.strokeStyle = '#ffffff'
-  ctx.lineWidth = 4
-  ctx.stroke()
-  
-  // テキスト「3D」
-  ctx.fillStyle = '#ffffff'
-  ctx.font = 'bold 24px Arial, sans-serif'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillText('3D', size / 2, size / 2)
-  
-  return ctx.getImageData(0, 0, size, size)
-}
-
-export default function Map({ properties }: MapProps) {
+const Map = memo(function Map({ properties }: MapProps) {
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<maplibregl.Map | null>(null)
   const popupRef = useRef<maplibregl.Popup | null>(null)
   const [isMapReady, setIsMapReady] = useState(false)
   const [currentLocation, setCurrentLocation] = useState<[number, number] | null>(null)
+
+  // GeoJSONデータをメモ化
+  const geojsonData = useMemo(() => {
+    if (!properties || properties.length === 0) {
+      return { type: 'FeatureCollection' as const, features: [] }
+    }
+    
+    return {
+      type: 'FeatureCollection' as const,
+      features: properties.map((item) => {
+        const hasMovies = item.movies && item.movies.length > 0
+        return {
+          type: 'Feature' as const,
+          geometry: { 
+            type: 'Point' as const, 
+            coordinates: [item.longitude, item.latitude] 
+          },
+          properties: {
+            id: item.id,
+            name: item.name,
+            address: item.address || '',
+            type: item.type || '',
+            hasMovies: hasMovies ? 1 : 0,
+            movies: JSON.stringify(item.movies || []),
+          },
+        }
+      }),
+    }
+  }, [properties])
 
   // ポップアップHTMLを生成
   const createPopupHTML = useCallback((property: CulturalProperty) => {
@@ -141,7 +139,6 @@ export default function Map({ properties }: MapProps) {
 
   // ポップアップのスタイルを適用
   useEffect(() => {
-    // ポップアップの閉じるボタンを大きくするCSSを追加
     const style = document.createElement('style')
     style.id = 'maplibre-popup-style'
     style.textContent = `
@@ -171,25 +168,21 @@ export default function Map({ properties }: MapProps) {
       }
     `
     
-    // 既存のスタイルがあれば削除
     const existingStyle = document.getElementById('maplibre-popup-style')
-    if (existingStyle) {
-      existingStyle.remove()
-    }
+    if (existingStyle) existingStyle.remove()
     
     document.head.appendChild(style)
 
     return () => {
       const styleEl = document.getElementById('maplibre-popup-style')
-      if (styleEl) {
-        styleEl.remove()
-      }
+      if (styleEl) styleEl.remove()
     }
   }, [])
 
   // マップの初期化
   useEffect(() => {
     if (!mapContainer.current) return
+    if (map.current) return // 既に初期化済み
 
     console.log('=== Map initialization started ===')
 
@@ -211,47 +204,19 @@ export default function Map({ properties }: MapProps) {
         ],
       },
       center: initialCenter,
-      zoom: 13,
+      zoom: 10, // 広域から表示開始
     })
 
     map.current.addControl(new maplibregl.NavigationControl(), 'top-right')
 
-    map.current.on('load', async () => {
+    map.current.on('load', () => {
       if (!map.current) return
-
       console.log('=== Map load event fired ===')
-
-      try {
-        // マーカー画像の読み込み
-        const image = await map.current.loadImage('/img/marker_icon.png')
-        map.current.addImage('property_icon', image.data)
-        map.current.addImage('property_icon_3d', image.data)
-        
-        const selectedImage = await map.current.loadImage('/img/selected_marker_icon.png')
-        map.current.addImage('selected_property_icon', selectedImage.data)
-
-        // 3Dバッジ画像を生成して追加
-        const badgeImageData = create3DBadgeImageData()
-        map.current.addImage('3d_badge', {
-          width: badgeImageData.width,
-          height: badgeImageData.height,
-          data: new Uint8Array(badgeImageData.data),
-        })
-        
-        console.log('=== Marker images and 3D badge loaded ===')
-
-        // マップ準備完了
-        setIsMapReady(true)
-        console.log('=== Map is ready ===')
-      } catch (error) {
-        console.error('Failed to load marker images:', error)
-      }
+      setIsMapReady(true)
     })
 
     return () => {
-      if (popupRef.current) {
-        popupRef.current.remove()
-      }
+      if (popupRef.current) popupRef.current.remove()
       if (map.current) {
         map.current.remove()
         map.current = null
@@ -260,158 +225,204 @@ export default function Map({ properties }: MapProps) {
     }
   }, [])
 
-  // プロパティが変更されたらレイヤーを更新
+  // クラスタリング対応レイヤーの追加
   useEffect(() => {
-    if (!map.current || !isMapReady || properties.length === 0) {
-      console.log('=== Skipping layer update ===', { 
-        hasMap: !!map.current, 
-        isMapReady, 
-        propertiesLength: properties.length 
-      })
-      return
-    }
+    if (!map.current || !isMapReady) return
+    if (properties.length === 0) return
 
-    console.log('=== Updating cultural properties layer ===')
+    const mapInstance = map.current
+
+    console.log('=== Setting up clustered layers ===')
     console.log('Properties count:', properties.length)
 
-    // 3Dモデルの有無をカウント
-    const propertiesWithMovies = properties.filter(p => p.movies && p.movies.length > 0)
-    console.log('Properties with movies:', propertiesWithMovies.length)
-
-    // GeoJSON フィーチャーコレクションに変換
-    const geojsonData: GeoJSON.FeatureCollection<GeoJSON.Geometry, GeoJSON.GeoJsonProperties> = {
-      type: 'FeatureCollection',
-      features: properties.map((item) => {
-        const hasMovies = item.movies && item.movies.length > 0
-        return {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [item.longitude, item.latitude] },
-          properties: {
-            id: item.id,
-            name: item.name,
-            address: item.address,
-            type: item.type,
-            movies: JSON.stringify(item.movies),
-            images: item.images,
-            hasMovies: hasMovies,
-            icon: 'property_icon',
-          },
-        }
-      }),
-    }
-
-    console.log('GeoJSON features:', geojsonData.features.length)
-
     // 既存のレイヤーとソースを削除
-    if (map.current.getLayer('cultural_properties_3d_badge')) {
-      map.current.removeLayer('cultural_properties_3d_badge')
-    }
-    if (map.current.getLayer('cultural_properties')) {
-      map.current.removeLayer('cultural_properties')
-    }
-    if (map.current.getSource('cultural-properties')) {
-      map.current.removeSource('cultural-properties')
+    const layersToRemove = [
+      'clusters', 
+      'cluster-count', 
+      'unclustered-point', 
+      'unclustered-point-3d',
+      'cultural_properties',
+      'cultural_properties_3d_badge',
+    ]
+    layersToRemove.forEach(layer => {
+      if (mapInstance.getLayer(layer)) mapInstance.removeLayer(layer)
+    })
+    if (mapInstance.getSource('cultural-properties')) {
+      mapInstance.removeSource('cultural-properties')
     }
 
-    // ソースを追加
-    map.current.addSource('cultural-properties', {
+    // クラスタリング対応のソースを追加
+    mapInstance.addSource('cultural-properties', {
       type: 'geojson',
       data: geojsonData,
-    })
-
-    // マーカーレイヤーを追加
-    map.current.addLayer({
-      id: 'cultural_properties',
-      type: 'symbol',
-      source: 'cultural-properties',
-      layout: { 
-        'icon-image': 'property_icon', 
-        'icon-size': 0.2, 
-        'icon-allow-overlap': true,
-        'icon-anchor': 'bottom',
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 60,
+      clusterProperties: {
+        // クラスタ内の3Dモデル数を集計
+        has3DCount: ['+', ['case', ['==', ['get', 'hasMovies'], 1], 1, 0]],
       },
     })
 
-    // 3Dバッジレイヤーを追加（ムービーがある文化財のみ）
-    map.current.addLayer({
-      id: 'cultural_properties_3d_badge',
+    // クラスタ円レイヤー
+    mapInstance.addLayer({
+      id: 'clusters',
+      type: 'circle',
+      source: 'cultural-properties',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': [
+          'step',
+          ['get', 'point_count'],
+          '#51bbd6',  // 10件未満: シアン
+          10, '#f1f075', // 10-50件: イエロー
+          50, '#f28cb1', // 50件以上: ピンク
+        ],
+        'circle-radius': [
+          'step',
+          ['get', 'point_count'],
+          18,   // 10件未満
+          10, 24, // 10-50件
+          50, 32, // 50件以上
+        ],
+        'circle-stroke-width': 3,
+        'circle-stroke-color': '#fff',
+      },
+    })
+
+    // クラスタカウントレイヤー
+    mapInstance.addLayer({
+      id: 'cluster-count',
       type: 'symbol',
       source: 'cultural-properties',
-      filter: ['==', ['get', 'hasMovies'], true],
+      filter: ['has', 'point_count'],
       layout: {
-        'icon-image': '3d_badge',
-        'icon-size': 0.4,
-        'icon-allow-overlap': true,
-        'icon-anchor': 'bottom-left',
-        'icon-offset': [40, -60],
+        'text-field': '{point_count_abbreviated}',
+        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+        'text-size': 13,
+      },
+      paint: {
+        'text-color': '#333',
       },
     })
 
-    console.log('=== Layers added successfully ===')
+    // 非クラスタポイント（3Dモデルなし）
+    mapInstance.addLayer({
+      id: 'unclustered-point',
+      type: 'circle',
+      source: 'cultural-properties',
+      filter: ['all', 
+        ['!', ['has', 'point_count']], 
+        ['==', ['get', 'hasMovies'], 0]
+      ],
+      paint: {
+        'circle-color': '#3b82f6',
+        'circle-radius': 8,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#fff',
+      },
+    })
 
-    // クリックイベントハンドラー
-    const handleClick = (event: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
-      if (!event.features || !map.current) return
-      const feature = event.features[0]
+    // 非クラスタポイント（3Dモデルあり）
+    mapInstance.addLayer({
+      id: 'unclustered-point-3d',
+      type: 'circle',
+      source: 'cultural-properties',
+      filter: ['all', 
+        ['!', ['has', 'point_count']], 
+        ['==', ['get', 'hasMovies'], 1]
+      ],
+      paint: {
+        'circle-color': '#22c55e',
+        'circle-radius': 10,
+        'circle-stroke-width': 3,
+        'circle-stroke-color': '#fff',
+      },
+    })
+
+    console.log('=== Clustered layers added ===')
+
+    // クラスタクリックでズームイン
+    const handleClusterClick = async (e: maplibregl.MapMouseEvent) => {
+      const features = mapInstance.queryRenderedFeatures(e.point, {
+        layers: ['clusters'],
+      })
+      if (!features.length) return
+
+      const clusterId = features[0].properties?.cluster_id
+      const source = mapInstance.getSource('cultural-properties') as maplibregl.GeoJSONSource
+
+      try {
+        const zoom = await source.getClusterExpansionZoom(clusterId)
+        const geometry = features[0].geometry as GeoJSON.Point
+
+        mapInstance.easeTo({
+          center: geometry.coordinates as [number, number],
+          zoom: (zoom ?? 14) + 1,
+        })
+      } catch (err) {
+        console.error('Failed to get cluster expansion zoom:', err)
+      }
+    }
+
+    // 個別ポイントクリックでポップアップ
+    const handlePointClick = (e: maplibregl.MapMouseEvent) => {
+      const features = mapInstance.queryRenderedFeatures(e.point, {
+        layers: ['unclustered-point', 'unclustered-point-3d'],
+      })
+      if (!features.length) return
+
+      const feature = features[0]
       const id = feature.properties?.id
-
       if (!id) return
 
       const property = properties.find((p) => p.id === id)
       if (!property) return
 
-      // 既存のポップアップを閉じる
-      if (popupRef.current) {
-        popupRef.current.remove()
-      }
+      if (popupRef.current) popupRef.current.remove()
 
-      // 新しいポップアップを作成
+      const geometry = feature.geometry as GeoJSON.Point
       popupRef.current = new maplibregl.Popup({
-        offset: 25,
+        offset: 15,
         closeButton: true,
         closeOnClick: true,
         maxWidth: '320px',
       })
-        .setLngLat([property.longitude, property.latitude])
+        .setLngLat(geometry.coordinates as [number, number])
         .setHTML(createPopupHTML(property))
-        .addTo(map.current)
+        .addTo(mapInstance)
     }
 
-    // カーソルスタイルの変更
-    const handleMouseEnter = () => {
-      if (map.current) {
-        map.current.getCanvas().style.cursor = 'pointer'
-      }
-    }
+    // カーソルスタイル変更
+    const setCursorPointer = () => { mapInstance.getCanvas().style.cursor = 'pointer' }
+    const setCursorDefault = () => { mapInstance.getCanvas().style.cursor = '' }
 
-    const handleMouseLeave = () => {
-      if (map.current) {
-        map.current.getCanvas().style.cursor = ''
-      }
-    }
+    mapInstance.on('click', 'clusters', handleClusterClick)
+    mapInstance.on('click', 'unclustered-point', handlePointClick)
+    mapInstance.on('click', 'unclustered-point-3d', handlePointClick)
+    
+    mapInstance.on('mouseenter', 'clusters', setCursorPointer)
+    mapInstance.on('mouseleave', 'clusters', setCursorDefault)
+    mapInstance.on('mouseenter', 'unclustered-point', setCursorPointer)
+    mapInstance.on('mouseleave', 'unclustered-point', setCursorDefault)
+    mapInstance.on('mouseenter', 'unclustered-point-3d', setCursorPointer)
+    mapInstance.on('mouseleave', 'unclustered-point-3d', setCursorDefault)
 
-    map.current.on('click', 'cultural_properties', handleClick)
-    map.current.on('click', 'cultural_properties_3d_badge', handleClick)
-    map.current.on('mouseenter', 'cultural_properties', handleMouseEnter)
-    map.current.on('mouseenter', 'cultural_properties_3d_badge', handleMouseEnter)
-    map.current.on('mouseleave', 'cultural_properties', handleMouseLeave)
-    map.current.on('mouseleave', 'cultural_properties_3d_badge', handleMouseLeave)
-
-    // クリーンアップ
     return () => {
-      if (map.current) {
-        map.current.off('click', 'cultural_properties', handleClick)
-        map.current.off('click', 'cultural_properties_3d_badge', handleClick)
-        map.current.off('mouseenter', 'cultural_properties', handleMouseEnter)
-        map.current.off('mouseenter', 'cultural_properties_3d_badge', handleMouseEnter)
-        map.current.off('mouseleave', 'cultural_properties', handleMouseLeave)
-        map.current.off('mouseleave', 'cultural_properties_3d_badge', handleMouseLeave)
-      }
+      mapInstance.off('click', 'clusters', handleClusterClick)
+      mapInstance.off('click', 'unclustered-point', handlePointClick)
+      mapInstance.off('click', 'unclustered-point-3d', handlePointClick)
+      mapInstance.off('mouseenter', 'clusters', setCursorPointer)
+      mapInstance.off('mouseleave', 'clusters', setCursorDefault)
+      mapInstance.off('mouseenter', 'unclustered-point', setCursorPointer)
+      mapInstance.off('mouseleave', 'unclustered-point', setCursorDefault)
+      mapInstance.off('mouseenter', 'unclustered-point-3d', setCursorPointer)
+      mapInstance.off('mouseleave', 'unclustered-point-3d', setCursorDefault)
     }
-  }, [properties, isMapReady, createPopupHTML])
+  }, [properties, geojsonData, isMapReady, createPopupHTML])
 
   // 現在地取得
-  const handleGetCurrentLocation = () => {
+  const handleGetCurrentLocation = useCallback(() => {
     if (!('geolocation' in navigator)) {
       alert('このブラウザは位置情報をサポートしていません')
       return
@@ -422,13 +433,11 @@ export default function Map({ properties }: MapProps) {
         const { latitude, longitude } = position.coords
         setCurrentLocation([longitude, latitude])
 
-        // 現在地マーカーを追加
         if (map.current) {
-          new maplibregl.Marker({ color: 'red' })
+          new maplibregl.Marker({ color: '#ef4444' })
             .setLngLat([longitude, latitude])
             .addTo(map.current)
           
-          // 現在地に移動
           map.current.flyTo({
             center: [longitude, latitude],
             zoom: 15,
@@ -440,20 +449,47 @@ export default function Map({ properties }: MapProps) {
         alert('現在地の取得に失敗しました')
       },
     )
-  }
+  }, [])
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="relative w-full" style={{ height: 'calc(100vh - 180px)' }}>
       {/* コントロールボタン */}
-      <div className="absolute top-4 left-4 z-10 flex gap-2">
+      <div className="absolute top-3 left-3 z-10 flex gap-2">
         <button 
           onClick={handleGetCurrentLocation} 
-          className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg shadow-md hover:bg-gray-50 transition-colors border border-gray-200 cursor-pointer"
+          className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-lg shadow-md hover:bg-gray-50 transition-colors border border-gray-200 flex items-center cursor-pointer"
         >
-          📍 現在地取得
+          <svg className="w-4 h-4 mr-1.5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+          現在地
         </button>
       </div>
-      
+
+      {/* 凡例 */}
+      <div className="absolute bottom-6 left-3 z-10 bg-white rounded-lg shadow-md p-3 text-xs">
+        <div className="font-medium text-gray-700 mb-2">凡例</div>
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="w-4 h-4 rounded-full bg-green-500 border-2 border-white shadow flex-shrink-0"></span>
+          <span className="text-gray-600">3Dモデルあり</span>
+        </div>
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="w-3 h-3 rounded-full bg-blue-500 border-2 border-white shadow flex-shrink-0"></span>
+          <span className="text-gray-600">文化財</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-5 h-5 rounded-full bg-cyan-400 border-2 border-white shadow flex items-center justify-center text-[9px] font-bold text-gray-700 flex-shrink-0">n</span>
+          <span className="text-gray-600">クラスタ（件数）</span>
+        </div>
+      </div>
+
+      {/* 件数表示 */}
+      {isMapReady && properties.length > 0 && (
+        <div className="absolute top-3 right-14 z-10 bg-white rounded-lg shadow-md px-3 py-1.5 text-sm text-gray-700 font-medium">
+          {properties.length.toLocaleString()} 件
+        </div>
+      )}
+
       {/* ローディング表示 */}
       {!isMapReady && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-20">
@@ -463,8 +499,18 @@ export default function Map({ properties }: MapProps) {
           </div>
         </div>
       )}
-      
-      <div ref={mapContainer} style={{ width: '100vw', height: '100vh' }} />
+
+      {/* データ読み込み中 */}
+      {isMapReady && properties.length === 0 && (
+        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10 bg-white rounded-lg shadow-md px-4 py-2 text-sm text-gray-600 flex items-center">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+          文化財データを読み込み中...
+        </div>
+      )}
+
+      <div ref={mapContainer} className="w-full h-full" />
     </div>
   )
-}
+})
+
+export default Map
