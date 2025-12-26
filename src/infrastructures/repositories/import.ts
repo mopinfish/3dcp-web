@@ -42,7 +42,7 @@ export const importRepository = {
       formData.append('check_duplicates', String(options.checkDuplicates))
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/import/preview/`, {
+    const response = await fetch(`${API_BASE_URL}/cp_api/import/preview/`, {
       method: 'POST',
       headers: {
         Authorization: `Token ${token}`,
@@ -69,7 +69,7 @@ export const importRepository = {
     request: ImportExecuteRequest,
     token: string
   ): Promise<ImportExecuteResponse> {
-    const response = await fetch(`${API_BASE_URL}/api/import/execute/`, {
+    const response = await fetch(`${API_BASE_URL}/cp_api/import/execute/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -7,6 +7,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useAuth } from '@/contexts/AuthContext'
 import Layout from '@/components/layouts/Layout'
 import FileUploadArea from '@/components/import/FileUploadArea'
@@ -23,6 +24,7 @@ import importRepository from '@/infrastructures/repositories/import'
 const TOKEN_KEY = 'auth_token'
 
 const ImportPage: React.FC = () => {
+  const router = useRouter()
   const { user, isLoading: authLoading } = useAuth()
 
   const [state, setState] = useState<ImportState>('idle')
@@ -113,13 +115,17 @@ const ImportPage: React.FC = () => {
     )
   }
 
+  // 未ログイン時はログイン画面へ（リダイレクトパラメータ付き）
   if (!user) {
     return (
       <Layout>
         <div className="max-w-2xl mx-auto px-4 py-12 text-center">
           <h1 className="text-2xl font-bold text-gray-800 mb-4">ログインが必要です</h1>
           <p className="text-gray-600 mb-6">CSVインポート機能を利用するにはログインしてください。</p>
-          <Link href="/signin" className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <Link
+            href="/signin?redirect=/import"
+            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
             ログイン
           </Link>
         </div>
@@ -139,6 +145,8 @@ const ImportPage: React.FC = () => {
         <nav className="mb-6">
           <ol className="flex items-center space-x-2 text-sm text-gray-500">
             <li><Link href="/" className="hover:text-blue-600">トップ</Link></li>
+            <li>/</li>
+            <li><Link href="/mypage" className="hover:text-blue-600">マイページ</Link></li>
             <li>/</li>
             <li className="text-gray-800">文化財CSVインポート</li>
           </ol>
