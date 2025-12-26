@@ -127,6 +127,9 @@ const ImportPage: React.FC = () => {
     )
   }
 
+  // ローディング状態
+  const isProcessing = state === 'uploading' || state === 'previewing' || state === 'importing'
+
   return (
     <Layout>
       <Head>
@@ -142,6 +145,7 @@ const ImportPage: React.FC = () => {
         </nav>
         <h1 className="text-2xl font-bold text-gray-800 mb-6">📥 文化財CSVインポート</h1>
 
+        {/* 完了状態 */}
         {state === 'completed' && result && (
           <div className="space-y-6">
             <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
@@ -178,6 +182,7 @@ const ImportPage: React.FC = () => {
           </div>
         )}
 
+        {/* プレビュー確認状態 */}
         {state === 'previewed' && preview && (
           <div className="space-y-6">
             <ImportPreviewSummary preview={preview} />
@@ -204,9 +209,10 @@ const ImportPage: React.FC = () => {
           </div>
         )}
 
+        {/* 初期状態・エラー状態 */}
         {(state === 'idle' || state === 'error') && (
           <div className="space-y-6">
-            <FileUploadArea onFileSelect={handleFileSelect} disabled={state === 'previewing'} />
+            <FileUploadArea onFileSelect={handleFileSelect} disabled={false} />
             {selectedFile && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="flex items-center justify-between">
@@ -232,7 +238,8 @@ const ImportPage: React.FC = () => {
           </div>
         )}
 
-        {(state === 'uploading' || state === 'previewing' || state === 'importing') && (
+        {/* ローディング状態 */}
+        {isProcessing && (
           <div className="flex flex-col items-center justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
             <p className="text-gray-600">
