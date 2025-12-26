@@ -1,3 +1,24 @@
+/**
+ * ⚠️ 非推奨 (DEPRECATED)
+ * 
+ * このスクリプトは旧方式のバッチ処理によるサムネイル生成です。
+ * 新しい実装では、バックエンドAPI（Django）でムービー保存時に
+ * 自動的にサムネイルが生成されます。
+ * 
+ * 新方式:
+ * - サムネイルはムービー登録/更新時にDjangoのSignalで自動生成
+ * - 保存先: /mnt/images/thumbnails/movie-{id}.jpg (本番環境)
+ * - APIレスポンスにthumbnail_urlが含まれる
+ * 
+ * このスクリプトは互換性のために残されていますが、
+ * 将来的に削除される予定です。
+ * 
+ * 既存データのマイグレーションには以下のDjangoコマンドを使用:
+ *   python manage.py generate_all_thumbnails
+ * 
+ * @deprecated バックエンドでの自動生成に置き換えられました
+ */
+
 const fs = require('fs')
 const path = require('path')
 const puppeteer = require('puppeteer')
@@ -15,6 +36,8 @@ if (!fs.existsSync(THUMBNAIL_DIR)) {
 
 /**
  * LumaのWebサイトから直接3Dモデルのサムネイルを取得する
+ * 
+ * @deprecated バックエンドのcp_api/services/thumbnail.pyに置き換えられました
  */
 async function captureLumaThumbnail(modelId, lumaUrl) {
   console.log(`Lumaサイトからサムネイルを取得中: ${lumaUrl}`)
@@ -113,6 +136,11 @@ async function captureLumaThumbnail(modelId, lumaUrl) {
 
 // メイン処理
 async function main() {
+  console.log('⚠️  このスクリプトは非推奨です。')
+  console.log('⚠️  新しい実装ではバックエンドでサムネイルが自動生成されます。')
+  console.log('⚠️  既存データのマイグレーションには以下を使用してください:')
+  console.log('⚠️    python manage.py generate_all_thumbnails')
+  console.log('')
   console.log('Lumaモデルからサムネイル生成プロセスを開始します...')
 
   if (FORCE_REGENERATE) {

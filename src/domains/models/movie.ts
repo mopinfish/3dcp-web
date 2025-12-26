@@ -5,6 +5,7 @@
  *
  * ✅ 変更内容:
  * - Movieにcreated_by, created_at, updated_atを追加
+ * - Movieにthumbnail_urlを追加（サムネイル画像URL）
  * - MovieCreateRequest型を追加（作成用）
  * - MovieUpdateRequest型を追加（更新用）
  */
@@ -20,10 +21,12 @@ export type Movie = {
   title: string | null
   note: string | null
   cultural_property?: number | null
-  // ✅ 新規追加フィールド
+  // 作成者・タイムスタンプフィールド
   created_by?: UserBrief | null
   created_at?: string | null
   updated_at?: string | null
+  // ✅ 新規追加: サムネイル画像URL
+  thumbnail_url?: string | null
 }
 
 export type Movies = Movie[]

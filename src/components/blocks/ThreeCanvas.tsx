@@ -63,8 +63,12 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
           const movieData = await movieService.findMovie(id)
           setMovie(movieData)
 
-          if (!fullPage) {
-            setThumbnailUrl(`/thumbnails/movie-${id}.jpg`)
+          if (!fullPage && movieData) {
+            // APIから取得したthumbnail_urlを使用
+            // thumbnail_urlがない場合はnullのまま（プレースホルダーを表示）
+            if (movieData.thumbnail_url) {
+              setThumbnailUrl(movieData.thumbnail_url)
+            }
           }
         } catch (err) {
           console.error('Error loading movie data:', err)
@@ -115,6 +119,14 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
     actions.load3DModel()
   }
 
+  /**
+   * サムネイル画像のエラーハンドリング
+   * エラー時はサムネイルをクリアしてプレースホルダーを表示
+   */
+  const handleThumbnailError = () => {
+    setThumbnailUrl(null)
+  }
+
   return (
     <div
       ref={containerRef}
@@ -129,16 +141,36 @@ export const ThreeCanvas: React.FC<LumaThreeProps> = ({ id, fullPage = false }) 
         </div>
       )}
 
-      {!is3DLoaded && thumbnailUrl && !fullPage && !error && (
+      {!is3DLoaded && !fullPage && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-lg overflow-hidden">
-          <Image
-            src={thumbnailUrl}
-            alt="3D model thumbnail"
-            className="w-full h-full object-cover"
-            onError={() => setThumbnailUrl('/thumbnails/simple-thumbnail.jpg')}
-            width={600} // 必須
-            height={400} // 必須
-          />
+          {thumbnailUrl ? (
+            <Image
+              src={thumbnailUrl}
+              alt="3D model thumbnail"
+              className="w-full h-full object-cover"
+              onError={handleThumbnailError}
+              width={600}
+              height={400}
+              unoptimized={thumbnailUrl.startsWith('http')}
+            />
+          ) : (
+            // プレースホルダー（サムネイルがない場合）
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-600 to-purple-600">
+              <svg
+                className="w-16 h-16 text-white/50"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+          )}
           <div className="absolute top-1/2 left-1/2 w-[60px] h-[60px] bg-black/50 rounded-full flex items-center justify-center text-white text-2xl z-5 transform -translate-x-1/2 -translate-y-1/2">
             ▶
           </div>
